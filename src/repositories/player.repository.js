@@ -8,7 +8,7 @@ const getById = async (id) => {
     return await Player.findByPk(id);
 }
 
-const udpate = async (id, playerData) => {
+const update = async (id, playerData) => {
     const player = await Player.findByPk(id);
     if (!player) {
         return null;
@@ -24,4 +24,11 @@ const remove = async (id) => {
     }
 
     await player.update({ isDeleted: true });
+}
+
+module.exports = {
+    create,
+    getById,
+    update,
+    remove
 }

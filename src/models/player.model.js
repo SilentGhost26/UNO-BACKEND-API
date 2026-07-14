@@ -1,27 +1,27 @@
-const { sequelize, DataType } = require('../database/mysql.database');
+const { sequelize, DataTypes } = require('../database/mysql.database');
 
 const Player = sequelize.define(
     'Player',
     {
         id: {
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
         name: {
-            type: DataType.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         age: {
-            type: DataType.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         email: {
-            type: DataType.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         isDeleted: {
-            type: DataType.BOOLEAN,
+            type: DataTypes.BOOLEAN,
             defaultValue: false
         }
 });
