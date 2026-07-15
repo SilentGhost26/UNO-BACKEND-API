@@ -18,8 +18,8 @@ const Game = sequelize.define(
             defaultValue: 2
         },
         status: {
-            type: DataTypes.STRING,
-            defaultValue: 'pending',
+            type: DataTypes.ENUM('waiting', 'playing', 'finished'),
+            defaultValue: 'waiting',
             allowNull: false
         },
         isDeleted: {
