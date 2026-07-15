@@ -1,30 +1,33 @@
 const { sequelize, DataTypes } = require('../database/mysql.database');
 
-const Player = sequelize.define(
-    'Player',
+const Game = sequelize.define(
+    'Game',
     {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
-        name: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        age: {
+        maxPlayers: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            defaultValue: 2
         },
-        email: {
+        status: {
             type: DataTypes.STRING,
+            defaultValue: 'pending',
             allowNull: false
         },
         isDeleted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-            allowNull: false
+            allowNull: false    
         }
-});
+    }
+);
 
-module.exports = Player;
+module.exports = Game;

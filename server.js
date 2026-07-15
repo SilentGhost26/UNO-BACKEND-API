@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./src/models/associations');
 const { sequelize } = require('./src/database/mysql.database');
 const app = require('./src/app');
 const PORT = process.env.PORT || 3000;
