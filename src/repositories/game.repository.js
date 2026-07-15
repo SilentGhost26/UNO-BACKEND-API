@@ -1,16 +1,21 @@
 const Game = require('../models/game.model');
 
-const create = (gameData) => {
+const create = async (gameData) => {
     return await Game.create(gameData);
 }
 
 const getById = async (id) => {
-    return await Game.findByPk(id);
+    const game = await Game.findByPk(id);
+    if(!game || game.isDeleted) {
+        return null;
+    }
+
+    return game;
 }
 
 const update = async (id, gameData) => {
     const game = await Game.findByPk(id);
-    if (!game) {
+    if (!game || game.isDeleted) {
         return null;
     }
 
@@ -19,11 +24,12 @@ const update = async (id, gameData) => {
 
 const remove = async (id) => {
     const game = await Game.findByPk(id);
-    if (!game) {
+    if (!game || game.isDeleted) {
         return false;
     }
 
     await game.update({ isDeleted: true });
+    return true;
 }
 
 module.exports = {

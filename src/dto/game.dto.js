@@ -4,6 +4,8 @@ const toResponseDto = (data) => {
         title: data.title,
         maxPlayers: data.maxPlayers,
         status: data.status,
+        ownerId: data.ownerId,
+        winnerId: data.winnerId,
         createdAt: data.createdAt
     }
 }

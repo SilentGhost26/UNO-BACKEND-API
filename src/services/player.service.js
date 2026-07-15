@@ -1,6 +1,6 @@
 const playerRepository = require('../repositories/player.repository');
 const playerDto = require('../dto/player.dto');
-const notFoundHelper = require('../helpers/not-found.helper')
+const notFoundHelper = require('../helpers/not-found.helper');
 
 const addPlayer = async (playerData) => {
     const player = playerDto.fromCreateDto(playerData);
@@ -19,12 +19,12 @@ const findPlayerById = async (id) => {
 
 const updatePlayer = async (id, playerData) => {
     const player = playerDto.fromUpdateDto(playerData);
-    const updatedPlayer = await playerRepository.update(id, playerUpdateDto);
+    const updatedPlayer = await playerRepository.update(id, player);
     if (!updatedPlayer) {
         notFoundHelper.throwError404(id, 'player');
     }
 
-    return playerDto.toResponseDto(updatePlayer);
+    return playerDto.toResponseDto(updatedPlayer);
 }
 
 const deletePlayer = async (id) => {

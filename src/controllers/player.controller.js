@@ -13,7 +13,7 @@ const getPlayerById = async (req, res) => {
 
 const updatePlayer = async (req, res) => {
     const { id } = req.params;
-    const player = await playerService.updatePlayer(req.body);
+    const player = await playerService.updatePlayer(id, req.body);
     res.status(200).json(player);
 }
     

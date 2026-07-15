@@ -5,12 +5,17 @@ const create = async (playerData) => {
 }
 
 const getById = async (id) => {
-    return await Player.findByPk(id);
+    const player = await Player.findByPk(id);
+    if(!player || player.isDeleted) {
+        return null;
+    }
+
+    return player;
 }
 
 const update = async (id, playerData) => {
     const player = await Player.findByPk(id);
-    if (!player) {
+    if (!player || player.isDeleted) {
         return null;
     }
 
@@ -19,11 +24,12 @@ const update = async (id, playerData) => {
 
 const remove = async (id) => {
     const player = await Player.findByPk(id);
-    if (!player) {
+    if (!player || player.isDeleted) {
         return false;
     }
 
     await player.update({ isDeleted: true });
+    return true;
 }
 
 module.exports = {
