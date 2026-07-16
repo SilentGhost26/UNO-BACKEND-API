@@ -9,10 +9,10 @@ const Card = sequelize.define(
         },
         value: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         type: {
-            type: DataTypes.ENUM('NUMBER', 'BLOCK', 'REVERSE', '+2', '+4', 'CHANGECOLOR'),
+            type: DataTypes.ENUM('NUMBER', 'BLOCK', 'REVERSE', '+2', '+4', 'WILD'),
             allowNull: false
         },
         isDeleted: {

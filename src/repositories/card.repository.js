@@ -40,10 +40,32 @@ const findAll = async () => {
     });
 }
 
+const bulkCreate = async (cards) => {
+    if (!cards) {
+        throw new Error('cards cannot be null or empty');
+    }
+    
+    if (!Array.isArray(cards)) {
+        throw new Error('cards must be a list');
+    }
+
+    return await Card.bulkCreate(cards);
+}
+
+const removeAll = async () => {
+    await Card.destroy({
+        where: {
+            isDeleted: false
+        }
+    })
+}
+
 module.exports = {
     create,
     getById,
     update,
     remove,
-    findAll
+    findAll,
+    bulkCreate,
+    removeAll
 }

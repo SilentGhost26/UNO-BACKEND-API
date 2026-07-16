@@ -22,7 +22,6 @@ const deleteGame = async (req, res) => {
     await gameService.deleteGame(id);
     res.status(204).send();
 }
-
 module.exports = {
     addGame,
     getGameById,

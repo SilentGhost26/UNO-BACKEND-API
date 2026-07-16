@@ -33,9 +33,20 @@ const deleteGame = async (id) => {
     }
 }
 
+function getRandomNumbers(min, max) {
+    const results = [];
+    while (results.length < max) {
+        const value = Math.floor(Math.random() * (max - min + 1)) + min;
+        if (!results.includes(value)) {
+            results.push(value);
+        }
+    }
+    return results;
+}
+
 module.exports = {
     addGame,
     findGameById,
     updateGame,
-    deleteGame
+    deleteGame,
 }

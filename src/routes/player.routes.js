@@ -4,9 +4,9 @@ const playerController = require('../controllers/player.controller');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const playerSchema = require('../schemas/player.schema');
 
-router.get('/player/:id', playerController.getPlayerById);
-router.post('/player', structureMiddleware(playerSchema), playerController.addPlayer);
-router.put('/player/:id', structureMiddleware(playerSchema), playerController.updatePlayer);
-router.delete('/player/:id', playerController.deletePlayer);
+router.get('/players/:id', playerController.getPlayerById);
+router.post('/players', structureMiddleware(playerSchema), playerController.addPlayer);
+router.put('/players/:id', structureMiddleware(playerSchema), playerController.updatePlayer);
+router.delete('/players/:id', playerController.deletePlayer);
 
 module.exports = router;

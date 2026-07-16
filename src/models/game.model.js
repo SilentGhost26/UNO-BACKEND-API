@@ -18,7 +18,7 @@ const Game = sequelize.define(
             defaultValue: 2
         },
         status: {
-            type: DataTypes.ENUM('waiting', 'playing', 'finished'),
+            type: DataTypes.ENUM('WAITING', 'PLAYING', 'FINISHED'),
             defaultValue: 'waiting',
             allowNull: false
         },

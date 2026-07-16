@@ -2,7 +2,7 @@ const playerService = require('../services/player.service');
 
 const addPlayer = async (req, res) => {
     const player = await playerService.addPlayer(req.body);
-    res.status(201).json(player)
+    res.status(201).json(player);
 }
 
 const getPlayerById = async (req, res) => {
