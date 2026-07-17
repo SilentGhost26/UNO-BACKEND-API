@@ -67,7 +67,7 @@ const updateGameCard = async (gameId, cardId, gameCardData) => {
         throw error;
     }
 
-    const newData = {...gameCardData, gameId: gameId, cardId: cardId, playerId: playerId};
+    const newData = {...gameCardData, playerId: playerId};
     if (gameCardData.zone != 'DECK') {
         newData.position = null;
     }
