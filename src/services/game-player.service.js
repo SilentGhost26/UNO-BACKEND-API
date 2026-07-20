@@ -4,22 +4,27 @@ const playerRepository = require('../repositories/player.repository');
 const gamePlayerDto = require('../dto/game-player.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
 
-const addGamePlayer = async (gameData) => {
-    const gamePlayer = gamePlayerDto.fromCreate(gameData);
-    const game = await gameRepository.getById(gameData.gameId);
+/**
+ * Add a player to a specific game, initializing its score
+ * @param gamePlayerData : data of the gamePlayer
+ * @returns the created gamePlayer
+ */
+const addGamePlayer = async (gamePlayerData) => {
+    const gamePlayer = gamePlayerDto.fromCreate(gamePlayerData);
+    const game = await gameRepository.getById(gamePlayerData.gameId);
     if (!game) {
-        notFoundHelper.throwError404(gameData.gameId, 'game');
+        notFoundHelper.throwError404(gamePlayerData.gameId, 'game');
     }
 
-    const player = await playerRepository.getById(gameData.playerId);
+    const player = await playerRepository.getById(gamePlayerData.playerId);
     if (!player) {
-        notFoundHelper.throwError404(gameData.gameId, 'player');
+        notFoundHelper.throwError404(gamePlayerData.gameId, 'player');
     }
 
-    const currentPlayers = await gamePlayerRepository.getByGameId(gameData.gameId);
-    if(currentPlayers.some(p => p.playerId === gameData.playerId)) {
-        const error = new Error(`player with ID ${gameData.playerId} already registered ` +
-             `in game with ID ${gameData.gameId}`);
+    const currentPlayers = await gamePlayerRepository.getByGameId(gamePlayerData.gameId);
+    if(currentPlayers.some(p => p.playerId === gamePlayerData.playerId)) {
+        const error = new Error(`player with ID ${gamePlayerData.playerId} already registered ` +
+             `in game with ID ${gamePlayerData.gameId}`);
         error.statusCode = 409;
         throw error;
     }
@@ -28,6 +33,11 @@ const addGamePlayer = async (gameData) => {
     return gamePlayerDto.toResponseDto(newGamePlayer);
 }
 
+/**
+ * Find the scores of all players that are part of a specific game
+ * @param gameId : id of game
+ * @returns a list of scores
+ */
 const findScoresBygameId = async (gameId) => {
     const scores = await gamePlayerRepository.getByGameId(gameId);
     if(!scores) {
@@ -37,6 +47,12 @@ const findScoresBygameId = async (gameId) => {
     return scores.map(s => gamePlayerDto.toScoreResponseDto(s));
 }
 
+/**
+ * Update the score of a specific gamePlayer
+ * @param id : the id of the gamePlayer
+ * @param score : the new score
+ * @returns the updated score
+ */
 const updateScore = async (id, score) => {
     
     const updatedGamePlayer = await gamePlayerRepository.update(id, { score: score });
@@ -46,6 +62,10 @@ const updateScore = async (id, score) => {
     return gamePlayerDto.toScoreResponseDto(updatedGamePlayer);
 }
 
+/**
+ * Remove a specific gamePlayer by its id
+ * @param id : id of the gamePlayer
+ */
 const deleteGamePlayer = async (id) => {
     const deleted = await gamePlayerRepository.remove(id);
     if(!deleted) {
@@ -53,6 +73,11 @@ const deleteGamePlayer = async (id) => {
     }
 }
 
+/**
+ * Find the score of a gamePlayer by its id
+ * @param id : id of the gamePlayer
+ * @returns the found score
+ */
 const findScoreById = async (id) => {
     const gamePlayer = await gamePlayerRepository.getById(id);
     if(!gamePlayer) {

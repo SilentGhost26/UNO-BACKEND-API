@@ -5,10 +5,21 @@ const playerRepository = require('../repositories/player.repository');
 const gameCardDto = require('../dto/game-card.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
 
+/**
+ * Initialize the deck that will be used by a specific game
+ * @param gameId : id of the game
+ */
 const createDeck = async (gameId) => {
     const game = await gameRepository.getById(gameId);
     if (!game) {
         notFoundHelper.throwError404(gameId, 'game');
+    }
+    const createdDeck = await gameCardRepository.getByGameId(gameId);
+    console.log(createdDeck)
+    if (createdDeck.length !== 0) {
+        const error = new Error(`Game with ID ${gameId} already has a deck`);
+        error.statusCode = 409;
+        throw error;
     }
 
     const cards = await cardRepository.findAll();
@@ -26,6 +37,11 @@ const createDeck = async (gameId) => {
     await gameCardRepository.bulkCreate(deck);
 }
 
+/**
+ * get the gameCards that are in a specific game
+ * @param gameId : id of the game
+ * @returns A list of found gameCards
+ */
 const getByGameId = async (gameId) => {
     const game = await gameRepository.getById(gameId);
     if (!game) {
@@ -75,6 +91,25 @@ const updateGameCard = async (gameId, cardId, gameCardData) => {
     const updatedGameCard = await gameCardRepository.update(gameId, cardId, newData);
     return gameCardDto.toGameCardResponseDto(updatedGameCard);
 }
+
+/**
+ * Function to get a list of random number without repetition between a range
+ * @param min : minimum value of the numbers 
+ * @param max : maximum value of the numbers
+ * @returns a list of the generated numbers
+ */
+function getRandomNumbers(min, max) {
+    const results = [];
+    while (results.length < max) {
+        const value = Math.floor(Math.random() * (max - min + 1)) + min;
+        if (!results.includes(value)) {
+            results.push(value);
+        }
+    }
+    return results;
+}
+
+
 
 module.exports = {
     createDeck,

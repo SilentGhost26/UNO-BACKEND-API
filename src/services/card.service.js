@@ -44,20 +44,33 @@ const initializeCards = async () => {
     await cardDto.toResponseDto(cardRepository.bulkCreate(newCards));
 }
 
+/**
+ * Get all cards
+ * @returns A list of the cards
+ */
 const getAllCards = async () => {
     const cards = await cardRepository.findAll();
     return cards.map(c => cardDto.toResponseDto(c));
 }
 
+/**
+ * Find a card by its Id
+ * @param id : id of the card
+ * @returns The found card
+ */
 const findCardById = async (id) => {
     const card = await cardRepository.getById(id);
     if(!card) {
         notFoundHelper.throwError404(id, 'card');
     }
-
     return cardDto.toResponseDto(card);
 }
 
+/**
+ * Create a card
+ * @param cardData : the data of the card that will be created 
+ * @returns The created card
+ */
 const createCard = async (cardData) => {
     const card = cardDto.fromCreate(cardData);
     const newCard = await cardRepository.create(card);
@@ -69,6 +82,12 @@ const createCard = async (cardData) => {
     return cardDto.toResponseDto(newCard);
 }
 
+/**
+ * Update a card by its id
+ * @param id : if of the card 
+ * @param cardData : the data of the card that will be updated
+ * @returns : The updated card
+ */
 const updateCard = async (id, cardData) => { 
     const card = cardDto.fromUpdate(cardData);
     const updatedCard = await cardRepository.update(card);
@@ -79,8 +98,12 @@ const updateCard = async (id, cardData) => {
     return cardDto.toResponseDto(updatedCard);
 }
 
+/**
+ * Delete a card by its id
+ * @param id : id of the card 
+ */
 const deleteCard = async (id) => {
-    const deleted = await playerRepository.remove(id);
+    const deleted = await cardRepository.remove(id);
     if(!deleted) {
         notFoundHelper.throwError404(id, 'card');
     }
