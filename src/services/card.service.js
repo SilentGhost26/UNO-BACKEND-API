@@ -1,6 +1,7 @@
 const cardRepository = require('../repositories/card.repository');
 const cardDto = require('../dto/card.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
+const conflictHelper = require('../helpers/conflict.helper');
 
 const CARDS_AMOUNT = 108;
 const CARD_COLORS = ['GREEN', 'BLUE', 'YELLOW', 'RED'];
@@ -15,9 +16,7 @@ const SPECIAL_TYPES = ['+4', 'WILD']
 const initializeCards = async () => {
     const cards = await cardRepository.findAll();
     if (cards.length == CARDS_AMOUNT) {
-        const error = new Error('Cards already initialized');
-        error.statusCode = 409;
-        throw error;
+        conflictHelper.throwError409('Cards already initialized');
     }
     await cardRepository.removeAll();
     const newCards = [];

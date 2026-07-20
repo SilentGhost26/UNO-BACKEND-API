@@ -18,13 +18,23 @@ const Player = sequelize.define(
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         isDeleted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
             allowNull: false
         }
-});
+    },
+    {
+        indexes: [
+            {
+                unique: true,
+            fields: ['email'],
+            }
+        ]
+    }
+);
 
 module.exports = Player;

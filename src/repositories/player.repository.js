@@ -54,11 +54,28 @@ const remove = async (id) => {
     return true;
 }
 
+/**
+ * Get a player by its email
+ * @param email : email of the player
+ * @returns the found player
+ */
+const getByEmail = async (email) => {
+    const player = await Player.findOne({
+        where: {
+            email: email
+        }
+    });
 
+    if (!player) {
+        return null;
+    }
+    return player;
+}
 
 module.exports = {
     create,
     getById,
     update,
-    remove
+    remove,
+    getByEmail
 }

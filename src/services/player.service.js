@@ -1,6 +1,7 @@
 const playerRepository = require('../repositories/player.repository');
 const playerDto = require('../dto/player.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
+const conflictHelper = require('../helpers/conflict.helper');
 
 /**
  * create a new player
@@ -9,6 +10,12 @@ const notFoundHelper = require('../helpers/not-found.helper');
  */
 const addPlayer = async (playerData) => {
     const player = playerDto.fromCreateDto(playerData);
+
+    const existingPlayer = await playerRepository.getByEmail(player.email)
+    if (existingPlayer) {
+        conflictHelper.throwError409('The email is already registered');
+    }
+
     const newPlayer = await playerRepository.create(player);
     return playerDto.toResponseDto(newPlayer);
 }

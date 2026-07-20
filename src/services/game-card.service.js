@@ -4,6 +4,7 @@ const cardRepository = require('../repositories/card.repository');
 const playerRepository = require('../repositories/player.repository');
 const gameCardDto = require('../dto/game-card.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
+const conflictHelper = require('../helpers/conflict.helper')
 
 /**
  * Initialize the deck that will be used by a specific game
@@ -17,9 +18,7 @@ const createDeck = async (gameId) => {
     const createdDeck = await gameCardRepository.getByGameId(gameId);
     console.log(createdDeck)
     if (createdDeck.length !== 0) {
-        const error = new Error(`Game with ID ${gameId} already has a deck`);
-        error.statusCode = 409;
-        throw error;
+        conflictHelper.throwError409(`Game with ID ${gameId} already has a deck`);
     }
 
     const cards = await cardRepository.findAll();
@@ -78,9 +77,7 @@ const updateGameCard = async (gameId, cardId, gameCardData) => {
     }
 
     if (game.status != 'PLAYING') {
-        const error = new Error(`game with ID ${gameId} is not playing`);
-        error.statusCode = 400;
-        throw error;
+        conflictHelper.throwError409(`game with ID ${gameId} is not playing`);
     }
 
     const newData = {...gameCardData, playerId: playerId};

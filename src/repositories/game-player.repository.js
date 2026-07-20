@@ -131,10 +131,25 @@ const remove = async (id) => {
     return true;
 }
 
+/**
+ * Get the amount of players that are already related with a game
+ * @param gameId : id of the game
+ * @returns the amount of players
+ */
+const getTotalPlayersInGame = async (gameId) => {
+    return await GamePlayer.count({
+        where: {
+            gameId: gameId,
+            isDeleted: false
+        }
+    });
+}
+
 module.exports = {
     remove,
     create,
     getByGameId,
     getById,
-    update
+    update,
+    getTotalPlayersInGame
 }

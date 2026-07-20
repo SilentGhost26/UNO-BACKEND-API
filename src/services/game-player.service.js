@@ -3,6 +3,7 @@ const gameRepository = require('../repositories/game.repository');
 const playerRepository = require('../repositories/player.repository');
 const gamePlayerDto = require('../dto/game-player.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
+const conflictHelper = require('../helpers/conflict.helper')
 
 /**
  * Add a player to a specific game, initializing its score
@@ -18,15 +19,21 @@ const addGamePlayer = async (gamePlayerData) => {
 
     const player = await playerRepository.getById(gamePlayerData.playerId);
     if (!player) {
-        notFoundHelper.throwError404(gamePlayerData.gameId, 'player');
+        notFoundHelper.throwError404(gamePlayerData.playerId, 'player');
     }
 
     const currentPlayers = await gamePlayerRepository.getByGameId(gamePlayerData.gameId);
-    if(currentPlayers.some(p => p.playerId === gamePlayerData.playerId)) {
-        const error = new Error(`player with ID ${gamePlayerData.playerId} already registered ` +
+    if (currentPlayers.some(p => p.playerId === gamePlayerData.playerId)) {
+        conflictHelper.throwError409(`player with ID ${gamePlayerData.playerId} already registered ` +
              `in game with ID ${gamePlayerData.gameId}`);
-        error.statusCode = 409;
-        throw error;
+    }
+
+    if (game.status != 'WAITING') {
+        conflictHelper.throwError409(`Game swith ID ${game.id} is not in waiting state`);
+    }
+    const totalCurrentPlayers = await gamePlayerRepository.getTotalPlayersInGame(game.id);
+    if (game.maxPlayers == totalCurrentPlayers) {
+        conflictHelper.throwError409(`The game with ID ${game.id} is full`);
     }
 
     const newGamePlayer = await gamePlayerRepository.create(gamePlayer);
@@ -43,7 +50,6 @@ const findScoresBygameId = async (gameId) => {
     if(!scores) {
         notFoundHelper.throwError404(id, 'scores in game');
     }
-    console.log(scores.map(s => gamePlayerDto.toScoreResponseDto(s)))
     return scores.map(s => gamePlayerDto.toScoreResponseDto(s));
 }
 
@@ -54,7 +60,6 @@ const findScoresBygameId = async (gameId) => {
  * @returns the updated score
  */
 const updateScore = async (id, score) => {
-    
     const updatedGamePlayer = await gamePlayerRepository.update(id, { score: score });
     if (!updatedGamePlayer) {
         notFoundHelper.throwError404(id, 'gamePlayer');
