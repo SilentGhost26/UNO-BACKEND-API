@@ -9,6 +9,9 @@ const addGame = async (req, res) => {
        description: 'Add a game',
        schema: { title: "string", maxPlayers: 2, status: "string" } 
       }
+     * /* #swagger.security = [{
+            "apiKeyAuth": []
+    }] 
      */
     const game = await gameService.addGame(req.body);
     res.status(201).json(game);

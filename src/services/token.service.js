@@ -13,8 +13,8 @@ const createUserToken = (userId) => {
 }
 
 const decodeValidToken = (token) => {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, { complete: true });
-    return decoded.payload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
 }
 
 module.exports = {

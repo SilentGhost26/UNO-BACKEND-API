@@ -11,7 +11,6 @@ const registerPlayer = async (req, res) => {
         }
      */
     const player = await authService.registerPlayer(req.body);
-    console.log(player);
     res.status(201).json(player);
 }
 
@@ -25,7 +24,6 @@ const authenticatePlayer = async (req, res) => {
         schema: { email: "string", password: "string" }
         }
      */
-    console.log(req.email)
     const token = await authService.authenticatePlayer(req.body.email, req.body.password);
     res.status(200).json({
         access_token: token

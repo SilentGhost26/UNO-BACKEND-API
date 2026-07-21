@@ -30,14 +30,6 @@ const Player = sequelize.define(
             defaultValue: false,
             allowNull: false
         }
-    },
-    {
-        indexes: [
-            {
-                unique: true,
-            fields: ['email'],
-            }
-        ]
     }
 );
 

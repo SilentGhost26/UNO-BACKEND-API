@@ -16,6 +16,9 @@ const getCards = async (req, res) => {
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Get all the cards that compose a game'
+     * /* #swagger.security = [{
+            "apiKeyAuth": []
+    }] 
      */
     const { gameId } = req.params;
     const cards = await gameCardService.getByGameId(gameId);
