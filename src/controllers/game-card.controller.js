@@ -4,6 +4,9 @@ const createDeck = async (req, res) => {
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Initialize the cards that will use a specific game'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      */
     const { gameId } = req.params;
     await gameCardService.createDeck(gameId);
@@ -29,6 +32,9 @@ const updateCard = async (req, res) => {
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Update a specific card in the game'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      * #swagger.parameters['body'] = {
        in: 'body',
        description: 'Update card in a game',

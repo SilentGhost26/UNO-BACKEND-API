@@ -30,7 +30,22 @@ const authenticatePlayer = async (req, res) => {
     });
 }
 
+const logoutPlayer = async (req, res) => {
+    /**
+     * #swagger.tags = ['Auth']
+     * #swagger.description = 'logout a player using its token'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+     */
+    await authService.logoutPlayer(req.player.id);
+    res.status(200).json({
+        message: "User logged out succesfully"
+    });
+}
+
 module.exports = {
     registerPlayer,
-    authenticatePlayer
+    authenticatePlayer,
+    logoutPlayer
 }

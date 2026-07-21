@@ -1,13 +1,16 @@
 const tokenService = require('../services/token.service');
+const playerService = require('../services/player.service');
 
-const validateToken = (req, res, next) => {
+//Validates if the jwt token is a valid token and the owner of the token (player)
+//has not logged out
+const validateToken = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
 
     if (!authHeader) {
         return res.status(401).json({ message: 'No token provided' });
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.replace('Beater', '');
 
     if (!token) {
         const error = new Error('Token not entered');
@@ -17,6 +20,13 @@ const validateToken = (req, res, next) => {
 
     try {
         const decoded = tokenService.decodeValidToken(token);
+        const logOutDate = await playerService.getLoggedOutDateByPlayerId(decoded.id);
+        const iatDate = new Date(decoded.iat * 1000);
+        if (logOutDate && logOutDate > iatDate) {
+            return res.status(401).json({
+                message: 'Invalid token: user session closed'
+            });
+        }
         req.player = decoded;
         next();
     } catch (error) {

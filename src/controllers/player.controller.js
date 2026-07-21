@@ -28,6 +28,9 @@ const updatePlayer = async (req, res) => {
      /**
      * #swagger.tags = ['Players']
      * #swagger.description = 'Update a specific player'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      * #swagger.parameters['body'] = {
        in: 'body',
        description: 'Update a player',
@@ -43,6 +46,9 @@ const deletePlayer = async (req, res) => {
     /**
      * #swagger.tags = ['Players']
      * #swagger.description = 'Remove a specific a player by its ID'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      */
     const { id } = req.params;
     await playerService.deletePlayer(id);

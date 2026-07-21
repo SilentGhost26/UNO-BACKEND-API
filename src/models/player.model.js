@@ -29,6 +29,9 @@ const Player = sequelize.define(
             type: DataTypes.BOOLEAN,
             defaultValue: false,
             allowNull: false
+        },
+        loggedOutAt: {
+            type: DataTypes.DATE,
         }
     }
 );

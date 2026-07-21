@@ -72,10 +72,22 @@ const getByEmail = async (email) => {
     return player;
 }
 
+const getLoggedOutDateById = async (id) => {
+    const { loggedOutAt } = await Player.findByPk(id, {
+        attributes: ['loggedOutAt']
+    });
+
+    if (!loggedOutAt) {
+        return null;
+    }
+    return loggedOutAt;
+}
+
 module.exports = {
     create,
     getById,
     update,
     remove,
-    getByEmail
+    getByEmail,
+    getLoggedOutDateById
 }
