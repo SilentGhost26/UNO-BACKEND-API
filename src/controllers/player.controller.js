@@ -7,7 +7,7 @@ const addPlayer = async (req, res) => {
      * #swagger.parameters['body'] = {
        in: 'body',
        description: 'Add a player',
-       schema: { name: "string", age: 0, email: "string" } 
+       schema: { name: "string", age: 0, email: "string", password: "string" } 
       }
      */
     const player = await playerService.addPlayer(req.body);

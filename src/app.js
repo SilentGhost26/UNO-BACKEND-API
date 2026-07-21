@@ -5,6 +5,7 @@ const gameRoutes = require('./routes/game.routes');
 const cardRoutes = require('./routes/card.routes');
 const scoreRoutes = require('./routes/score.routes');
 const gameCardRoutes = require('./routes/game-card.routes');
+const authRoutes = require('./routes/auth.routes');
 const errorMiddleware = require('./middlewares/error.middleware');
 
 app.use(express.json())
@@ -13,6 +14,7 @@ app.use('/', gameRoutes);
 app.use('/', cardRoutes);
 app.use('/', gameCardRoutes);
 app.use('/', scoreRoutes);
+app.use('/', authRoutes);
 app.use(errorMiddleware);
 
 module.exports = app;

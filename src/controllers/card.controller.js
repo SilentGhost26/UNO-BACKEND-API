@@ -1,4 +1,3 @@
-const { get } = require('../app');
 const cardService = require('../services/card.service');
 
 const createCards = async (req, res) => {
