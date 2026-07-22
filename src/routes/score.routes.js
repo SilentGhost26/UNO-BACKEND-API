@@ -8,8 +8,6 @@ const gamePlayerSchema = require('../schemas/game-player.schema');
 
 router.get('/scores/:id', scoreController.getScoreById);
 router.get('/scores/games/:gameId', scoreController.getScoresByGameId);
-router.post('/scores', authMiddleware, structureMiddleware(gamePlayerSchema), scoreController.addScore);
 router.put('/scores/:id', authMiddleware, structureMiddleware(scoreSchema), scoreController.updateScore);
-router.delete('/scores/:id', authMiddleware, scoreController.deleteScore);
 
 module.exports = router;

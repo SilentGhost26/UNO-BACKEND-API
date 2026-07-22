@@ -1,19 +1,5 @@
 const playerService = require('../services/player.service');
 
-const addPlayer = async (req, res) => {
-    /**
-     * #swagger.tags = ['Players']
-     * #swagger.description = 'Add a new player'
-     * #swagger.parameters['body'] = {
-       in: 'body',
-       description: 'Add a player',
-       schema: { name: "string", age: 0, email: "string", password: "string" } 
-      }
-     */
-    const player = await playerService.addPlayer(req.body);
-    res.status(201).json(player);
-}
-
 const getPlayerById = async (req, res) => {
     /**
      * #swagger.tags = ['Players']
@@ -45,12 +31,12 @@ const updatePlayer = async (req, res) => {
 const deletePlayer = async (req, res) => {
     /**
      * #swagger.tags = ['Players']
-     * #swagger.description = 'Remove a specific a player by its ID'
+     * #swagger.description = 'Remove a specific a player by its jwt token'
      * #swagger.security = [{
             "apiKeyAuth": []
         }] 
      */
-    const { id } = req.params;
+    const { id } = req.player;
   
     await playerService.deletePlayer(id);
     res.status(204).send();

@@ -112,19 +112,15 @@
             "apiKeyAuth": []
           }
         ]
-      },
+      }
+    },
+    "/players": {
       "delete": {
         "tags": [
           "Players"
         ],
-        "description": "Remove a specific a player by its ID",
+        "description": "Remove a specific a player by its jwt token",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "authorization",
             "in": "header",
@@ -144,47 +140,6 @@
             "apiKeyAuth": []
           }
         ]
-      }
-    },
-    "/players": {
-      "post": {
-        "tags": [
-          "Players"
-        ],
-        "description": "Add a new player",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Add a player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "age": {
-                  "type": "number",
-                  "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          }
-        }
       }
     },
     "/games/{id}": {
@@ -402,41 +357,6 @@
             "description": "OK"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Cards"
-        ],
-        "description": "Add a new card",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Add a card",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "color": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "value": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          }
-        }
       }
     },
     "/cards/{id}": {
@@ -456,66 +376,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Cards"
-        ],
-        "description": "Update a specific card",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "update a card",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "color": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "value": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Cards"
-        ],
-        "description": "Remove a specific card",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
           }
         }
       }
@@ -705,38 +565,6 @@
             "apiKeyAuth": []
           }
         ]
-      },
-      "delete": {
-        "tags": [
-          "Scores"
-        ],
-        "description": "Remove a specific a score by its ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
       }
     },
     "/scores/games/{gameId}": {
@@ -758,52 +586,6 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/scores": {
-      "post": {
-        "tags": [
-          "Scores"
-        ],
-        "description": "Add a new score for a player in a game",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Add a score",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "playerId": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "gameId": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
       }
     },
     "/games/{gameId}/players": {

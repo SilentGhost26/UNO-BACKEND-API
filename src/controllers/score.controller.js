@@ -1,22 +1,5 @@
 const gamePlayerService = require('../services/game-player.service');
 
-const addScore = async (req, res) => {
-    /**
-     * #swagger.tags = ['Scores']
-     * #swagger.description = 'Add a new score for a player in a game'
-     * #swagger.security = [{
-            "apiKeyAuth": []
-        }] 
-     * #swagger.parameters['body'] = {
-       in: 'body',
-       description: 'Add a score',
-       schema: { playerId: "string", gameId: "string" } 
-      }
-     */
-    const gamePlayer = await gamePlayerService.addGamePlayer(req.body);
-    res.status(201).json(gamePlayer);
-}
-
 const getScoreById = async (req, res) => {
     /**
      * #swagger.tags = ['Scores']
@@ -45,19 +28,7 @@ const updateScore = async (req, res) => {
     const newScore = await gamePlayerService.updateScore(id, score);
     res.status(200).json(newScore);
 }
-    
-const deleteScore = async (req, res) => {
-    /**
-     * #swagger.tags = ['Scores']
-     * #swagger.description = 'Remove a specific a score by its ID'
-     * #swagger.security = [{
-            "apiKeyAuth": []
-        }] 
-     */
-    const { id } = req.params;
-    await gamePlayerService.deleteGamePlayer(id);
-    res.status(204).send();
-}
+
 
 const getScoresByGameId = async (req, res) => {
     /**
@@ -70,9 +41,7 @@ const getScoresByGameId = async (req, res) => {
 }
 
 module.exports = {
-    addScore,
     updateScore,
-    deleteScore,
     getScoreById,
     getScoresByGameId
 }
