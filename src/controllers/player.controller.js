@@ -23,7 +23,7 @@ const updatePlayer = async (req, res) => {
        schema: { name: "string", age: 0, email: "string" } 
       }
      */
-    const { id } = req.params;
+    const { id } = req.player;
     const player = await playerService.updatePlayer(id, req.body);
     res.status(200).json(player);
 }
@@ -56,7 +56,6 @@ const getProfile = async (req, res) => {
 }
 
 module.exports = {
-    addPlayer,
     getPlayerById,
     updatePlayer,
     deletePlayer,

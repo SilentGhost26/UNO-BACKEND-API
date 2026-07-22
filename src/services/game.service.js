@@ -97,10 +97,39 @@ const startGame = async (gameId, playerId) => {
     await gameRepository.update(gameId, { status: 'PLAYING' });
 }
 
+/**
+ * Finish a game that is playing
+ * @param gameId : id of the game
+ * @param playerId : id of the player that wants to finish the game
+ */
+const finishGame = async (gameId, playerId) => {
+    const game = await gameRepository.getById(gameId);
+    if (!game) {
+        notFoundHelper.throwError404(gameId, 'game');
+    }
+    if (game.status == 'WAITING') {
+        conflictHelper.throwError409(`game with ID ${gameId} it's not playing`);
+    }
+    if (game.status == 'FINISHED') {
+        conflictHelper.throwError409(`game with ID ${gameId} already finished`);
+    }
+
+    const player = await playerRepository.getById(playerId);
+    if (!player) {
+        notFoundHelper.throwError404(gameId, 'player');
+    }
+    if (game.ownerId != player.id) {
+        conflictHelper.throwError409(`player with ID ${playerId} is not the owner`);
+    }
+
+    await gameRepository.update(gameId, { status: 'FINISHED' });
+}
+
 module.exports = {
     addGame,
     findGameById,
     updateGame,
     deleteGame,
     startGame,
+    finishGame
 }

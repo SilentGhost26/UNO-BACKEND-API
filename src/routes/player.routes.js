@@ -7,7 +7,7 @@ const playerSchema = require('../schemas/player.schema');
 
 router.get('/players/me', authMiddleware, playerController.getProfile);
 router.get('/players/:id', playerController.getPlayerById);
-router.put('/players/:id', authMiddleware, structureMiddleware(playerSchema), playerController.updatePlayer);
+router.put('/players', authMiddleware, structureMiddleware(playerSchema), playerController.updatePlayer);
 router.delete('/players', authMiddleware, playerController.deletePlayer);
 
 module.exports = router;

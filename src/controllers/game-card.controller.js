@@ -46,8 +46,22 @@ const updateCard = async (req, res) => {
     res.status(200).json(card);
 }
 
+const getTopCardFromDeck = async (req, res) => {
+    /**
+     * #swagger.tags = ['GameCards']
+     * #swagger.description = 'Get the top card of the deck from a specific game'
+     */
+    const { gameId } = req.params;
+    const card = await gameCardService.getTopCardFromDeck(gameId);
+    res.status(200).json({
+        gameId: gameId,
+        topCard: card
+    });
+}
+
 module.exports = {
     createDeck,
     getCards,
-    updateCard
+    updateCard,
+    getTopCardFromDeck
 }

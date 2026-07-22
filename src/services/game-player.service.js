@@ -104,10 +104,20 @@ const findScoreById = async (id) => {
     return gamePlayerDto.toScoreResponseDto(gamePlayer);
 }
 
+const getPlayersByGameId = async (gameId) => {
+    console.log(gameId)
+    const players = await gamePlayerRepository.getByGameId(gameId);
+    if (!players) {
+        notFoundHelper.throwError404(gameId, 'players in game');
+    }
+    return players.map(gamePlayerDto.toGamePlayerInfoDto);
+}
+
 module.exports = {
     addGamePlayer,
     findScoresBygameId,
     updateScore,
     deleteGamePlayer,
-    findScoreById
+    findScoreById,
+    getPlayersByGameId
 }

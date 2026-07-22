@@ -37,7 +37,9 @@ const getScoresByGameId = async (req, res) => {
      */
     const { gameId } = req.params;
     const scores = await gamePlayerService.findScoresBygameId(gameId);
-    res.status(200).json(scores);
+    res.status(200).json({
+        gameId: gameId,
+        scores: scores});
 }
 
 module.exports = {

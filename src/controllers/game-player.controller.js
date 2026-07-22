@@ -30,7 +30,22 @@ const removeGamePlayer = async (req, res) => {
     });
 }
 
+const getPlayersInGame = async (req, res) => {
+    /**
+     * #swagger.tags = ['GamePlayers']
+     * #swagger.description = 'Get the players that are in a game'
+     */
+
+    const { gameId } = req.params;
+    const players = await gamePlayerService.getPlayersByGameId(gameId);
+    res.status(200).json({
+        gameId: gameId,
+        players: players
+    })
+}
+
 module.exports = {
     addGamePlayer,
-    removeGamePlayer
+    removeGamePlayer,
+    getPlayersInGame
 }

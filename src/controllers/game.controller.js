@@ -74,10 +74,27 @@ const startGame = async (req, res) => {
         message: "Game started succesfully"
     })
 }
+
+const finishGame = async (req, res) => {
+    /**
+     * #swagger.tags = ['Games']
+     * #swagger.description = 'finish a specific a game by its ID'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+     */
+    const gameId = req.params.id;
+    const playerId = req.player.id;
+    await gameService.finishGame(gameId, playerId);
+    res.status(200).json({
+        message: "Game ended succesfully"
+    })
+}
 module.exports = {
     addGame,
     getGameById,
     updateGame,
     deleteGame,
-    startGame
+    startGame,
+    finishGame
 }

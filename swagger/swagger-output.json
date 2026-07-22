@@ -58,19 +58,15 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/players": {
       "put": {
         "tags": [
           "Players"
         ],
         "description": "Update a specific player",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "authorization",
             "in": "header",
@@ -112,9 +108,7 @@
             "apiKeyAuth": []
           }
         ]
-      }
-    },
-    "/players": {
+      },
       "delete": {
         "tags": [
           "Players"
@@ -333,6 +327,40 @@
         ]
       }
     },
+    "/games/{id}/end": {
+      "put": {
+        "tags": [
+          "Games"
+        ],
+        "description": "finish a specific a game by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/cards/initialize": {
       "post": {
         "tags": [
@@ -436,6 +464,27 @@
             "apiKeyAuth": []
           }
         ]
+      }
+    },
+    "/games/{gameId}/cards/top-card": {
+      "get": {
+        "tags": [
+          "GameCards"
+        ],
+        "description": "Get the top card of the deck from a specific game",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/games/{gameId}/cards/{cardId}": {
@@ -652,6 +701,25 @@
             "apiKeyAuth": []
           }
         ]
+      },
+      "get": {
+        "tags": [
+          "GamePlayers"
+        ],
+        "description": "Get the players that are in a game",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/auth/register": {

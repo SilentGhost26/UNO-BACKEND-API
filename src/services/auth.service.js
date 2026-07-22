@@ -61,7 +61,7 @@ const authenticatePlayer = async (email, password) => {
 const logoutPlayer = async (playerId) => {
     const player = await playerRepository.getById(playerId);
     if (!player) {
-        notFoundHelper.throwError404(id, 'player');
+        notFoundHelper.throwError404(playerId, 'player');
     }
 
     await playerRepository.update(playerId, { loggedOutAt: Date.now() });

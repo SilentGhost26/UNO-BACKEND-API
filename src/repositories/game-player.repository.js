@@ -13,16 +13,22 @@ const getByGameId = async (gameId) => {
             gameId: gameId,
             isDeleted: false
         },
-        include: {
+        include: [
+        {
             model: Game,
             where: { isDeleted: false }
+        },
+        {
+            model: Player,
+            where: { isDeleted: false }
         }
+        ]
     });
 
     if (!players) {
         return null;
     }
-
+    
     return players;
 }
 

@@ -7,6 +7,7 @@ const gameCardSchema = require('../schemas/game-card.schema');
 
 router.post('/games/:gameId/cards', authMiddleware, gameCardController.createDeck);
 router.get('/games/:gameId/cards', gameCardController.getCards);
+router.get('/games/:gameId/cards/top-card', gameCardController.getTopCardFromDeck);
 router.put('/games/:gameId/cards/:cardId', authMiddleware, structureMiddleware(gameCardSchema), gameCardController.updateCard);
 
 module.exports = router;
