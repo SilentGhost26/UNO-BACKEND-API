@@ -13,7 +13,8 @@ const addGame = async (req, res) => {
             "apiKeyAuth": []
     }] 
      */
-    const game = await gameService.addGame(req.body);
+    const gameData = {...req.body, ownerId: req.player.id};
+    const game = await gameService.addGame(gameData);
     res.status(201).json(game);
 }
 
@@ -57,9 +58,26 @@ const deleteGame = async (req, res) => {
     await gameService.deleteGame(id);
     res.status(204).send();
 }
+
+const startGame = async (req, res) => {
+    /**
+     * #swagger.tags = ['Games']
+     * #swagger.description = 'Start a specific a game by its ID'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+     */
+    const gameId = req.params.id;
+    const playerId = req.player.id;
+    await gameService.startGame(gameId, playerId);
+    res.status(200).json({
+        message: "Game started succesfully"
+    })
+}
 module.exports = {
     addGame,
     getGameById,
     updateGame,
-    deleteGame
+    deleteGame,
+    startGame
 }

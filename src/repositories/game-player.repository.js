@@ -101,6 +101,37 @@ const getById = async (id) => {
 }
 
 /**
+ * Get a specific gamePlayer through its game id and player id
+ * @param gameId : id of the game
+ * @param playerId : id of the player
+ * @returns the found gamePlayer`
+ */
+const getByGameIdPlayerId = async (gameId, playerId) => {
+    const gamePlayer = await GamePlayer.findOne({
+        where: {
+            gameId: gameId,
+            playerId: playerId,
+            isDeleted: false
+        },
+        include: [
+        {
+            model: Game,
+            where: { isDeleted: false }
+        },
+        {
+            model: Player,
+            where: { isDeleted: false }
+        }
+        ]
+    });
+    if(!gamePlayer) {
+        return null;
+    }
+
+    return gamePlayer;
+}
+
+/**
  * Remove a specific gamePlayer from the database
  * @param id : id of the gamePlayer
  * @returns a boolean that indicates if the gamePlayer was deleted
@@ -151,5 +182,6 @@ module.exports = {
     getByGameId,
     getById,
     update,
-    getTotalPlayersInGame
+    getTotalPlayersInGame,
+    getByGameIdPlayerId,
 }
