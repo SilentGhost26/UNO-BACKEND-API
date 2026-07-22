@@ -51,13 +51,28 @@ const deletePlayer = async (req, res) => {
         }] 
      */
     const { id } = req.params;
+  
     await playerService.deletePlayer(id);
     res.status(204).send();
+}
+
+const getProfile = async (req, res) => {
+    /**
+     * #swagger.tags = ['Players']
+     * #swagger.description = 'Get a the profile of a player by its jwt token'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+     */
+    const { id } = req.player;
+    const player = await playerService.findPlayerById(id);
+    res.status(200).json(player);
 }
 
 module.exports = {
     addPlayer,
     getPlayerById,
     updatePlayer,
-    deletePlayer
+    deletePlayer,
+    getProfile
 }
