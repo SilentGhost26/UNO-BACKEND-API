@@ -8,6 +8,10 @@ const GamePlayer = sequelize.define(
             defaultValue: 0,
             allowNull: false
         },
+        position: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         isDeleted: {
             type: DataTypes.BOOLEAN(),
             defaultValue: false,

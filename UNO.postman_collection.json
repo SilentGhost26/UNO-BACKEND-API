@@ -627,6 +627,28 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "current player with the turn",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/players/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"players",
+								"current"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

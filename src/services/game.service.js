@@ -4,7 +4,6 @@ const gamePlayerRepository = require('../repositories/game-player.repository');
 const gameDto = require('../dto/game.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
 const conflictHelper = require('../helpers/conflict.helper');
-const Game = require('../models/game.model');
 
 /**
  * create a new game
@@ -21,7 +20,7 @@ const addGame = async (gameData) => {
     } 
     
     const newGame = await gameRepository.create(game);
-    await gamePlayerRepository.create({ gameId: newGame.id, playerId: newGame.ownerId });
+    await gamePlayerRepository.create({ gameId: newGame.id, playerId: newGame.ownerId, position: 1 });
     return gameDto.toResponseDto(newGame);
 }
 

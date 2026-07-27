@@ -31,10 +31,12 @@ const addGamePlayer = async (gamePlayerData) => {
     if (game.status != 'WAITING') {
         conflictHelper.throwError409(`Game swith ID ${game.id} is not in waiting state`);
     }
-    const totalCurrentPlayers = await gamePlayerRepository.getTotalPlayersInGame(game.id);
+    const currentPlayers = await gamePlayerRepository.getByGameId(game.id);
+    const totalCurrentPlayers = currentPlayers.length;
     if (game.maxPlayers == totalCurrentPlayers) {
         conflictHelper.throwError409(`The game with ID ${game.id} is full`);
     }
+    gamePlayer.position = currentPlayers[totalCurrentPlayers - 1].position + 1;
 
     const newGamePlayer = await gamePlayerRepository.create(gamePlayer);
     return gamePlayerDto.toResponseDto(newGamePlayer);
@@ -104,13 +106,30 @@ const findScoreById = async (id) => {
     return gamePlayerDto.toScoreResponseDto(gamePlayer);
 }
 
+/**
+ * Get the list of players that are part of a specific game
+ * @param gameId : id of the game
+ * @returns the list of players
+ */
 const getPlayersByGameId = async (gameId) => {
-    console.log(gameId)
     const players = await gamePlayerRepository.getByGameId(gameId);
     if (!players) {
         notFoundHelper.throwError404(gameId, 'players in game');
     }
     return players.map(gamePlayerDto.toGamePlayerInfoDto);
+}
+
+const getCurrentPlayerToPlay = async (gameId) => {
+    const game = await gameRepository.getById(gameId);
+    if (!game) {
+        notFoundHelper.throwError404(gameId, 'game');
+    }
+    
+    if (game.status != 'PLAYING') {
+        conflictHelper.throwError409(`game with ID $${gameId} is not in playing state`);
+    }
+    const player = await gamePlayerRepository.getCurrentPlayerToPlay(gameId);
+    return gamePlayerDto.toGamePlayerInfoDto(player);
 }
 
 module.exports = {
@@ -119,5 +138,6 @@ module.exports = {
     updateScore,
     deleteGamePlayer,
     findScoreById,
-    getPlayersByGameId
+    getPlayersByGameId,
+    getCurrentPlayerToPlay
 }

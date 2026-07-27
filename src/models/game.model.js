@@ -19,7 +19,17 @@ const Game = sequelize.define(
         },
         status: {
             type: DataTypes.ENUM('WAITING', 'PLAYING', 'FINISHED'),
-            defaultValue: 'waiting',
+            defaultValue: 'WAITING',
+            allowNull: false
+        },
+        direction: {
+            type: DataTypes.ENUM('LEFT', 'RIGHT'),
+            defaultValue: 'RIGHT',
+            allowNull: false,
+        },
+        currentPlayerIndex: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
             allowNull: false
         },
         isDeleted: {

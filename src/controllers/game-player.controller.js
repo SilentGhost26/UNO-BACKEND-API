@@ -44,8 +44,21 @@ const getPlayersInGame = async (req, res) => {
     })
 }
 
+const getCurrentPlayerToPlay = async (req, res) => {
+    /**
+     * #swagger.tags = ['GamePlayers']
+     * #swagger.description = 'Get the current player in the turn to play'
+     */
+    const { gameId } = req.params;
+    const player = await gamePlayerService.getCurrentPlayerToPlay(gameId);
+    res.status(200).json({
+        gameId: gameId,
+        player: player
+    });
+}
 module.exports = {
     addGamePlayer,
     removeGamePlayer,
-    getPlayersInGame
+    getPlayersInGame,
+    getCurrentPlayerToPlay
 }

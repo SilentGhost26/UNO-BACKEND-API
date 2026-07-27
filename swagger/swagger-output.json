@@ -722,6 +722,27 @@
         }
       }
     },
+    "/games/{gameId}/players/current": {
+      "get": {
+        "tags": [
+          "GamePlayers"
+        ],
+        "description": "Get the current player in the turn to play",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "tags": [

@@ -14,15 +14,16 @@ const getByGameId = async (gameId) => {
             isDeleted: false
         },
         include: [
-        {
-            model: Game,
-            where: { isDeleted: false }
-        },
-        {
-            model: Player,
-            where: { isDeleted: false }
-        }
-        ]
+            {
+                model: Game,
+                where: { isDeleted: false }
+            },
+            {
+                model: Player,
+                where: { isDeleted: false }
+            }
+        ],
+        order: [['position', 'ASC']]
     });
 
     if (!players) {
@@ -182,6 +183,35 @@ const getTotalPlayersInGame = async (gameId) => {
     });
 }
 
+/**
+ * get the current player that must do something in a game
+ * @param gameId : id of the game
+ * @returns the current player  
+ */
+const getCurrentPlayerToPlay = async (gameId) => {
+    const game = await Game.findOne({
+        where: {
+            id: gameId,
+            isDeleted: false
+        }
+    });
+    const currentPlayer = await GamePlayer.findOne({
+        where: {
+            gameId: game.id,
+            position: game.currentPlayerIndex,
+            isDeleted: false
+        },
+        include: {
+            model: Player
+        }
+    });
+
+    if (!currentPlayer) {
+        return null;
+    }
+    return currentPlayer;
+}
+
 module.exports = {
     remove,
     create,
@@ -190,4 +220,5 @@ module.exports = {
     update,
     getTotalPlayersInGame,
     getByGameIdPlayerId,
+    getCurrentPlayerToPlay,
 }
