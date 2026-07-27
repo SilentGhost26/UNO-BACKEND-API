@@ -11,34 +11,6 @@
 			"name": "Players",
 			"item": [
 				{
-					"name": "new Player (POST)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/players",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"players"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "specific player by ID (GET)",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -51,7 +23,7 @@
 							"raw": "{\n    \"name\": \"\",\n    \"email\": \"\",\n    \"age\": 6\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/players/ID",
+							"raw": "http://localhost:3000/players/{{playerId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -59,7 +31,37 @@
 							"port": "3000",
 							"path": [
 								"players",
-								"ID"
+								"{{playerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "own information (GET)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/players/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"players",
+								"me"
 							]
 						}
 					},
@@ -129,7 +131,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/games/e81d6794-127a-45ee-9c35-87060e93de7d",
+							"raw": "http://localhost:3000/games/{{gameId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -137,7 +139,7 @@
 							"port": "3000",
 							"path": [
 								"games",
-								"e81d6794-127a-45ee-9c35-87060e93de7d"
+								"{{gameId}}"
 							]
 						}
 					},
@@ -146,6 +148,16 @@
 				{
 					"name": "new Game (POST)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -178,7 +190,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"color\": \"RED\",\n    \"value\": null,\n    \"type\": \"+2\"\n}",
+							"raw": "{\n  \"title\": \"string\",\n  \"maxPlayers\": 2,\n  \"status\": \"string\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -186,7 +198,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/games/ID",
+							"raw": "http://localhost:3000/games/{{gameId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -194,7 +206,7 @@
 							"port": "3000",
 							"path": [
 								"games",
-								"ID"
+								"{{gameId}}"
 							]
 						}
 					},
@@ -205,12 +217,8 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
-						},
 						"url": {
-							"raw": "http://localhost:3000/games/ID",
+							"raw": "http://localhost:3000/games/{{gameId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -218,7 +226,59 @@
 							"port": "3000",
 							"path": [
 								"games",
-								"ID"
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start a game (PUT)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/start",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "end a game (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/end",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"end"
 							]
 						}
 					},
@@ -229,34 +289,6 @@
 		{
 			"name": "Cards",
 			"item": [
-				{
-					"name": "new Card (POST)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"color\": \"RED\",\n    \"value\": null,\n    \"type\": \"+2\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/cards",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"cards"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "initialize Cards (POST)",
 					"request": {
@@ -315,7 +347,7 @@
 							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/cards/ID",
+							"raw": "http://localhost:3000/cards/{{cardId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -323,194 +355,7 @@
 							"port": "3000",
 							"path": [
 								"cards",
-								"ID"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update Card (PUT)",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/cards/ID",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"cards",
-								"ID"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "remove Card (DELETE)",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/cards/ID",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"cards",
-								"ID"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Scores",
-			"item": [
-				{
-					"name": "update Score (PUT)",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"score\": 10\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/scores/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"scores",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "new Score (POST)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"gameId\": \"0a4623e8-a7a1-48f8-a6ab-4ac84874d2c0\", \n    \"playerId\": \"ee63ebe0-ed3e-4d2d-ac9d-c7e90f405866\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/scores",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"scores"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "all scores from specific game (GET)",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/scores/games/0a4623e8-a7a1-48f8-a6ab-4ac84874d2c0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"scores",
-								"games",
-								"0a4623e8-a7a1-48f8-a6ab-4ac84874d2c0"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "specific Score (GET)",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/scores/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"scores",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "remove Score (DELETE)",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"score\": 10\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/scores/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"scores",
-								"1"
+								"{{cardId}}"
 							]
 						}
 					},
@@ -521,6 +366,83 @@
 		{
 			"name": "GameCards",
 			"item": [
+				{
+					"name": "create Deck in specific Game (POST)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Cards from specific Game (GET)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"zone\" : \"HAND\",\n    \"playerId\" : \"e81d6794-127a-45ee-9c35-87060e93de7d\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "top card of deck (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/cards/top-card",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"cards",
+								"top-card"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "update Card from specific Game (PUT)",
 					"request": {
@@ -554,48 +476,144 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Scores",
+			"item": [
 				{
-					"name": "create Deck in specific Game (POST)",
+					"name": "update Score (PUT)",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"score\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3000/games/71a4bdce-fc45-4d95-b1fe-d83dce87407d/cards",
+							"raw": "http://localhost:3000/scores/{{playterGameId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"games",
-								"71a4bdce-fc45-4d95-b1fe-d83dce87407d",
-								"cards"
+								"scores",
+								"{{playterGameId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get Cards from specific Game (GET)",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "all scores from specific game (GET)",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"zone\" : \"HAND\",\n    \"playerId\" : \"e81d6794-127a-45ee-9c35-87060e93de7d\"\n}"
-						},
 						"url": {
-							"raw": "http://localhost:3000/games/71a4bdce-fc45-4d95-b1fe-d83dce87407d/cards",
+							"raw": "http://localhost:3000/scores/games/{{gameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"scores",
+								"games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "specific Score (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/scores/{{gamePlayerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"scores",
+								"{{gamePlayerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GamePlayers",
+			"item": [
+				{
+					"name": "Add player to game (POST)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games{{gameId}}/players",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games{{gameId}}",
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "players in a game (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games{{gameId}}/players",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games{{gameId}}",
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "go out of game (DELETE)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/start",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -603,8 +621,101 @@
 							"port": "3000",
 							"path": [
 								"games",
-								"71a4bdce-fc45-4d95-b1fe-d83dce87407d",
-								"cards"
+								"{{gameId}}",
+								"start"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login (POST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"e@mail.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register (POST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"string\",\n    \"age\": 10,\n    \"email\": \"e@mail.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout (POST)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"logout"
 							]
 						}
 					},
