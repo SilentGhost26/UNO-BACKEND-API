@@ -87,7 +87,7 @@ const startGame = async (gameId, playerId) => {
 
     const player = await playerRepository.getById(playerId);
     if (!player) {
-        notFoundHelper.throwError404(gameId, 'player');
+        notFoundHelper.throwError404(playerId, 'player');
     }
     if (game.ownerId != player.id) {
         conflictHelper.throwError409(`player with ID ${playerId} is not the owner`);
@@ -115,7 +115,7 @@ const finishGame = async (gameId, playerId) => {
 
     const player = await playerRepository.getById(playerId);
     if (!player) {
-        notFoundHelper.throwError404(gameId, 'player');
+        notFoundHelper.throwError404(playerId, 'player');
     }
     if (game.ownerId != player.id) {
         conflictHelper.throwError409(`player with ID ${playerId} is not the owner`);

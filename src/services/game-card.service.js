@@ -2,6 +2,7 @@ const gameCardRepository = require('../repositories/game-card.repository');
 const gameRepository = require('../repositories/game.repository');
 const cardRepository = require('../repositories/card.repository');
 const playerRepository = require('../repositories/player.repository');
+const gamePlayerRepository = require('../repositories/game-player.repository');
 const gameCardDto = require('../dto/game-card.dto');
 const cardDto = require('../dto/card.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
@@ -34,7 +35,7 @@ const createDeck = async (gameId) => {
     
     const positions = getRandomNumbers(1, cards.length);
     
-    for (i = 0; i < deck.length; i++) {
+    for (let i = 0; i < deck.length; i++) {
         deck[i].position = positions[i];
     }
 
@@ -68,13 +69,13 @@ const updateGameCard = async (gameId, cardId, gameCardData) => {
         notFoundHelper.throwError404(cardId, 'card');
     }
 
-    const playerId = gameCardData.playerId || null;
+    let playerId = gameCardData.playerId || null;
 
     if(playerId) {
         if (gameCardData.zone != 'HAND') {
             playerId = null;
         } else {
-            const player = await playerRepository.getFromSpecificGame(playerId, gameId);
+            const player = await gamePlayerRepository.getByGameIdPlayerId(gameId, playerId);
             if (!player) {
                 notFoundHelper.throwError404(playerId, 'player in game');
             }

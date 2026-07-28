@@ -50,7 +50,7 @@ const addGamePlayer = async (gamePlayerData) => {
 const findScoresBygameId = async (gameId) => {
     const scores = await gamePlayerRepository.getByGameId(gameId);
     if(!scores) {
-        notFoundHelper.throwError404(id, 'scores in game');
+        notFoundHelper.throwError404(gameId, 'scores in game');
     }
     return scores.map(s => gamePlayerDto.toScoreResponseDto(s));
 }

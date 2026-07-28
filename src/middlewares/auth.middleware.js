@@ -10,7 +10,7 @@ const validateToken = async (req, res, next) => {
         return res.status(401).json({ message: 'No token provided' });
     }
 
-    const token = authHeader.replace('Beater', '');
+    const token = authHeader.replace('Bearer', '');
 
     if (!token) {
         const error = new Error('Token not entered');
