@@ -80,12 +80,20 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/players/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Players"
+        ],
+        "description": "Get a specific a player by its ID",
         "parameters": [
           {
             "name": "id",
@@ -103,7 +111,10 @@
     },
     "/players": {
       "put": {
-        "description": "",
+        "tags": [
+          "Players"
+        ],
+        "description": "Update a specific player",
         "parameters": [
           {
             "name": "authorization",
@@ -133,10 +144,18 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Players"
+        ],
+        "description": "Remove a specific a player by its jwt token",
         "parameters": [
           {
             "name": "authorization",
@@ -148,7 +167,12 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/games": {
@@ -394,7 +418,12 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/games/{id}/end": {
@@ -420,12 +449,20 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/cards/initialize": {
       "post": {
-        "description": "",
+        "tags": [
+          "Cards"
+        ],
+        "description": "Initialize the cards of the original game",
         "responses": {
           "default": {
             "description": ""
@@ -435,7 +472,10 @@
     },
     "/cards": {
       "get": {
-        "description": "",
+        "tags": [
+          "Cards"
+        ],
+        "description": "Get all cards",
         "responses": {
           "default": {
             "description": ""
@@ -445,7 +485,10 @@
     },
     "/cards/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Cards"
+        ],
+        "description": "Get a specific card based on the ID",
         "parameters": [
           {
             "name": "id",
@@ -463,7 +506,10 @@
     },
     "/games/{gameId}/cards": {
       "post": {
-        "description": "",
+        "tags": [
+          "GameCards"
+        ],
+        "description": "Initialize the cards that will use a specific game",
         "parameters": [
           {
             "name": "gameId",
@@ -481,10 +527,18 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       },
       "get": {
-        "description": "",
+        "tags": [
+          "GameCards"
+        ],
+        "description": "Get all the cards that compose a game",
         "parameters": [
           {
             "name": "gameId",
@@ -497,7 +551,12 @@
           "default": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/games/{gameId}/cards/top-card": {
@@ -570,18 +629,48 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update card in a game",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "zone": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "position": {
+                  "type": "number",
+                  "example": 0
+                },
+                "playerId": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/scores/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Scores"
+        ],
+        "description": "Get a specific a score by its ID",
         "parameters": [
           {
             "name": "id",
@@ -597,7 +686,10 @@
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Scores"
+        ],
+        "description": "Update a specific a score by its ID",
         "parameters": [
           {
             "name": "id",
@@ -609,18 +701,40 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update a score",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
           }
         ],
         "responses": {
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/scores/games/{gameId}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Scores"
+        ],
+        "description": "Get a the scores of the players in a specific game",
         "parameters": [
           {
             "name": "gameId",
@@ -638,7 +752,10 @@
     },
     "/games/{gameId}/players": {
       "post": {
-        "description": "",
+        "tags": [
+          "GamePlayers"
+        ],
+        "description": "Add a new player in a game",
         "parameters": [
           {
             "name": "gameId",
@@ -656,10 +773,18 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "GamePlayers"
+        ],
+        "description": "Remove player from a game",
         "parameters": [
           {
             "name": "gameId",
@@ -677,10 +802,18 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       },
       "get": {
-        "description": "",
+        "tags": [
+          "GamePlayers"
+        ],
+        "description": "Get the players that are in a game",
         "parameters": [
           {
             "name": "gameId",
@@ -698,7 +831,10 @@
     },
     "/games/{gameId}/players/current": {
       "get": {
-        "description": "",
+        "tags": [
+          "GamePlayers"
+        ],
+        "description": "Get the current player in the turn to play",
         "parameters": [
           {
             "name": "gameId",
@@ -716,7 +852,38 @@
     },
     "/auth/register": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Register a new player",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "add a player",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "age": {
+                  "type": "number",
+                  "example": 0
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": ""
@@ -726,7 +893,30 @@
     },
     "/auth/login": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "authenticate a player using its email and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "authenticate player",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": ""
@@ -736,7 +926,10 @@
     },
     "/auth/logout": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "logout a player using its token",
         "parameters": [
           {
             "name": "authorization",
@@ -748,7 +941,12 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/games/{gameId}/distribute": {
