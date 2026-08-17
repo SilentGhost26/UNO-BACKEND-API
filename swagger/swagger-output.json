@@ -1314,6 +1314,10 @@
                 "cardId": {
                   "type": "string",
                   "example": "string"
+                },
+                "color": {
+                  "type": "string",
+                  "example": "string"
                 }
               }
             }
