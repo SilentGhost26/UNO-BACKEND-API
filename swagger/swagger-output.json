@@ -1355,6 +1355,37 @@
           }
         }
       }
+    },
+    "/games/{gameId}/say-uno": {
+      "patch": {
+        "tags": [
+          "GameEngine"
+        ],
+        "description": "Say uno.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
     }
   }
 }
