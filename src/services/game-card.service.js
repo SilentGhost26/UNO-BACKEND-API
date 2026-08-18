@@ -2,7 +2,9 @@ const gameCardRepository = require('../repositories/game-card.repository');
 const gameRepository = require('../repositories/game.repository');
 const cardRepository = require('../repositories/card.repository');
 const playerRepository = require('../repositories/player.repository');
+const gamePlayerRepository = require('../repositories/game-player.repository');
 const gameCardDto = require('../dto/game-card.dto');
+const cardDto = require('../dto/card.dto');
 const notFoundHelper = require('../helpers/not-found.helper');
 const conflictHelper = require('../helpers/conflict.helper')
 
@@ -16,12 +18,16 @@ const createDeck = async (gameId) => {
         notFoundHelper.throwError404(gameId, 'game');
     }
     const createdDeck = await gameCardRepository.getByGameId(gameId);
-    console.log(createdDeck)
     if (createdDeck.length !== 0) {
         conflictHelper.throwError409(`Game with ID ${gameId} already has a deck`);
     }
 
     const cards = await cardRepository.findAll();
+    if (!cards || cards.length === 0) {
+        const error = new Error('Cards are not already initialized');
+        error.statusCode = 503;
+        throw error;
+    }
     const deck = [];
     cards.forEach(c => {
         deck.push({ zone: 'DECK', gameId: gameId, cardId: c.id})
@@ -29,7 +35,7 @@ const createDeck = async (gameId) => {
     
     const positions = getRandomNumbers(1, cards.length);
     
-    for (i = 0; i < deck.length; i++) {
+    for (let i = 0; i < deck.length; i++) {
         deck[i].position = positions[i];
     }
 
@@ -63,13 +69,13 @@ const updateGameCard = async (gameId, cardId, gameCardData) => {
         notFoundHelper.throwError404(cardId, 'card');
     }
 
-    const playerId = gameCardData.playerId || null;
+    let playerId = gameCardData.playerId || null;
 
     if(playerId) {
         if (gameCardData.zone != 'HAND') {
             playerId = null;
         } else {
-            const player = await playerRepository.getFromSpecificGame(playerId, gameId);
+            const player = await gamePlayerRepository.getByGameIdPlayerId(gameId, playerId);
             if (!player) {
                 notFoundHelper.throwError404(playerId, 'player in game');
             }
@@ -106,10 +112,28 @@ function getRandomNumbers(min, max) {
     return results;
 }
 
+/**
+ * Get the top card in the deck of a specific game
+ * @param gameId : id of the card
+ * @returns The top card
+ */
+const getTopCardFromDeck = async (gameId) => {
+    const game = await gameRepository.getById(gameId);
+    if (!game) {
+        notFoundHelper.throwError404(gameId, 'game');
+    }
+    
+    const gameCard = await gameCardRepository.getTopCardFromDeck(gameId);
+    if (!gameCard) {
+        notFoundHelper.throwError404(gameId, 'card of the deck from game');
+    }
 
+    return cardDto.toResponseDto(gameCard.Card);
+}
 
 module.exports = {
     createDeck,
     getByGameId,
-    updateGameCard
+    updateGameCard,
+    getTopCardFromDeck
 }

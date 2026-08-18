@@ -16,7 +16,7 @@ const GameCard = sequelize.define(
             allowNull: false
         },
         position: {
-            type: DataTypes.STRING
+            type: DataTypes.INTEGER
         }
     }
 );

@@ -9,8 +9,12 @@ const addGame = async (req, res) => {
        description: 'Add a game',
        schema: { title: "string", maxPlayers: 2, status: "string" } 
       }
+     * /* #swagger.security = [{
+            "apiKeyAuth": []
+    }] 
      */
-    const game = await gameService.addGame(req.body);
+    const gameData = {...req.body, ownerId: req.player.id};
+    const game = await gameService.addGame(gameData);
     res.status(201).json(game);
 }
 
@@ -28,6 +32,9 @@ const updateGame = async (req, res) => {
     /**
      * #swagger.tags = ['Games']
      * #swagger.description = 'Update a specific game'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      * #swagger.parameters['body'] = {
        in: 'body',
        description: 'Update a game',
@@ -43,14 +50,51 @@ const deleteGame = async (req, res) => {
     /**
      * #swagger.tags = ['Games']
      * #swagger.description = 'Remove a specific a game by its ID'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      */
     const { id } = req.params;
     await gameService.deleteGame(id);
     res.status(204).send();
 }
+
+const startGame = async (req, res) => {
+    /**
+     * #swagger.tags = ['Games']
+     * #swagger.description = 'Start a specific a game by its ID'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+     */
+    const gameId = req.params.id;
+    const playerId = req.player.id;
+    await gameService.startGame(gameId, playerId);
+    res.status(200).json({
+        message: "Game started succesfully"
+    })
+}
+
+const finishGame = async (req, res) => {
+    /**
+     * #swagger.tags = ['Games']
+     * #swagger.description = 'finish a specific a game by its ID'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+     */
+    const gameId = req.params.id;
+    const playerId = req.player.id;
+    await gameService.finishGame(gameId, playerId);
+    res.status(200).json({
+        message: "Game ended succesfully"
+    })
+}
 module.exports = {
     addGame,
     getGameById,
     updateGame,
-    deleteGame
+    deleteGame,
+    startGame,
+    finishGame
 }

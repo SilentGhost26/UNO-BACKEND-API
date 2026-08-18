@@ -17,14 +17,22 @@ const toResponseDto = (data) => {
 const toScoreResponseDto = (data) => {
     return {
         id: data.id,
-        gameId: data.gameId,
-        playerId: data.playerId,
+        name: data.Player.name,
         score: data.score
+    }
+}
+
+const toGamePlayerInfoDto = (data) => {
+    return {
+        id: data.id,
+        playerId: data.playerId,
+        name: data.Player.name
     }
 }
 
 module.exports = {
     fromCreate,
     toResponseDto,
-    toScoreResponseDto
+    toScoreResponseDto,
+    toGamePlayerInfoDto,
 }

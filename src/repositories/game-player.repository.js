@@ -13,16 +13,23 @@ const getByGameId = async (gameId) => {
             gameId: gameId,
             isDeleted: false
         },
-        include: {
-            model: Game,
-            where: { isDeleted: false }
-        }
+        include: [
+            {
+                model: Game,
+                where: { isDeleted: false }
+            },
+            {
+                model: Player,
+                where: { isDeleted: false }
+            }
+        ],
+        order: [['position', 'ASC']]
     });
 
     if (!players) {
         return null;
     }
-
+    
     return players;
 }
 
@@ -101,6 +108,37 @@ const getById = async (id) => {
 }
 
 /**
+ * Get a specific gamePlayer through its game id and player id
+ * @param gameId : id of the game
+ * @param playerId : id of the player
+ * @returns the found gamePlayer`
+ */
+const getByGameIdPlayerId = async (gameId, playerId) => {
+    const gamePlayer = await GamePlayer.findOne({
+        where: {
+            gameId: gameId,
+            playerId: playerId,
+            isDeleted: false
+        },
+        include: [
+        {
+            model: Game,
+            where: { isDeleted: false }
+        },
+        {
+            model: Player,
+            where: { isDeleted: false }
+        }
+        ]
+    });
+    if(!gamePlayer) {
+        return null;
+    }
+
+    return gamePlayer;
+}
+
+/**
  * Remove a specific gamePlayer from the database
  * @param id : id of the gamePlayer
  * @returns a boolean that indicates if the gamePlayer was deleted
@@ -145,11 +183,42 @@ const getTotalPlayersInGame = async (gameId) => {
     });
 }
 
+/**
+ * get the current player that must do something in a game
+ * @param gameId : id of the game
+ * @returns the current player  
+ */
+const getCurrentPlayerToPlay = async (gameId) => {
+    const game = await Game.findOne({
+        where: {
+            id: gameId,
+            isDeleted: false
+        }
+    });
+    const currentPlayer = await GamePlayer.findOne({
+        where: {
+            gameId: game.id,
+            position: game.currentPlayerIndex,
+            isDeleted: false
+        },
+        include: {
+            model: Player
+        }
+    });
+
+    if (!currentPlayer) {
+        return null;
+    }
+    return currentPlayer;
+}
+
 module.exports = {
     remove,
     create,
     getByGameId,
     getById,
     update,
-    getTotalPlayersInGame
+    getTotalPlayersInGame,
+    getByGameIdPlayerId,
+    getCurrentPlayerToPlay,
 }

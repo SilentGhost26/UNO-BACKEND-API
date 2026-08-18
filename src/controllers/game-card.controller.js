@@ -4,6 +4,9 @@ const createDeck = async (req, res) => {
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Initialize the cards that will use a specific game'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      */
     const { gameId } = req.params;
     await gameCardService.createDeck(gameId);
@@ -16,6 +19,9 @@ const getCards = async (req, res) => {
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Get all the cards that compose a game'
+     * /* #swagger.security = [{
+            "apiKeyAuth": []
+    }] 
      */
     const { gameId } = req.params;
     const cards = await gameCardService.getByGameId(gameId);
@@ -26,6 +32,9 @@ const updateCard = async (req, res) => {
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Update a specific card in the game'
+     * #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
      * #swagger.parameters['body'] = {
        in: 'body',
        description: 'Update card in a game',
@@ -37,8 +46,22 @@ const updateCard = async (req, res) => {
     res.status(200).json(card);
 }
 
+const getTopCardFromDeck = async (req, res) => {
+    /**
+     * #swagger.tags = ['GameCards']
+     * #swagger.description = 'Get the top card of the deck from a specific game'
+     */
+    const { gameId } = req.params;
+    const card = await gameCardService.getTopCardFromDeck(gameId);
+    res.status(200).json({
+        gameId: gameId,
+        topCard: card
+    });
+}
+
 module.exports = {
     createDeck,
     getCards,
-    updateCard
+    updateCard,
+    getTopCardFromDeck
 }

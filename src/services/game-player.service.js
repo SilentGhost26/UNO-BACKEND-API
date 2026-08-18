@@ -6,35 +6,37 @@ const notFoundHelper = require('../helpers/not-found.helper');
 const conflictHelper = require('../helpers/conflict.helper')
 
 /**
- * Add a player to a specific game, initializing its score
+ * Add a playingPlayer to a specific game, initializing its score
  * @param gamePlayerData : data of the gamePlayer
  * @returns the created gamePlayer
  */
 const addGamePlayer = async (gamePlayerData) => {
     const gamePlayer = gamePlayerDto.fromCreate(gamePlayerData);
-    const game = await gameRepository.getById(gamePlayerData.gameId);
+    const game = await gameRepository.getById(gamePlayer.gameId);
     if (!game) {
-        notFoundHelper.throwError404(gamePlayerData.gameId, 'game');
+        notFoundHelper.throwError404(gamePlayer.gameId, 'game');
     }
 
-    const player = await playerRepository.getById(gamePlayerData.playerId);
+    const player = await playerRepository.getById(gamePlayer.playerId);
     if (!player) {
-        notFoundHelper.throwError404(gamePlayerData.playerId, 'player');
+        notFoundHelper.throwError404(gamePlayer.playerId, 'player');
     }
 
-    const currentPlayers = await gamePlayerRepository.getByGameId(gamePlayerData.gameId);
-    if (currentPlayers.some(p => p.playerId === gamePlayerData.playerId)) {
-        conflictHelper.throwError409(`player with ID ${gamePlayerData.playerId} already registered ` +
-             `in game with ID ${gamePlayerData.gameId}`);
+    const playingPlayer = await gamePlayerRepository.getByGameIdPlayerId(gamePlayer.gameId, gamePlayer.playerId);
+    if (playingPlayer) {
+        conflictHelper.throwError409(`player with ID ${gamePlayer.playerId} already registered ` +
+             `in game with ID ${gamePlayer.gameId}`);
     }
 
     if (game.status != 'WAITING') {
         conflictHelper.throwError409(`Game swith ID ${game.id} is not in waiting state`);
     }
-    const totalCurrentPlayers = await gamePlayerRepository.getTotalPlayersInGame(game.id);
+    const currentPlayers = await gamePlayerRepository.getByGameId(game.id);
+    const totalCurrentPlayers = currentPlayers.length;
     if (game.maxPlayers == totalCurrentPlayers) {
         conflictHelper.throwError409(`The game with ID ${game.id} is full`);
     }
+    gamePlayer.position = currentPlayers[totalCurrentPlayers - 1].position + 1;
 
     const newGamePlayer = await gamePlayerRepository.create(gamePlayer);
     return gamePlayerDto.toResponseDto(newGamePlayer);
@@ -48,7 +50,7 @@ const addGamePlayer = async (gamePlayerData) => {
 const findScoresBygameId = async (gameId) => {
     const scores = await gamePlayerRepository.getByGameId(gameId);
     if(!scores) {
-        notFoundHelper.throwError404(id, 'scores in game');
+        notFoundHelper.throwError404(gameId, 'scores in game');
     }
     return scores.map(s => gamePlayerDto.toScoreResponseDto(s));
 }
@@ -68,14 +70,26 @@ const updateScore = async (id, score) => {
 }
 
 /**
- * Remove a specific gamePlayer by its id
- * @param id : id of the gamePlayer
+ * Remove a specific gamePlayer by its game and player ids
+ * @param gameId : id of the game
+ * @param playerId : id of the player
  */
-const deleteGamePlayer = async (id) => {
-    const deleted = await gamePlayerRepository.remove(id);
-    if(!deleted) {
-        notFoundHelper.throwError404(id, 'gamePlayer');
+const deleteGamePlayer = async (gameId, playerId) => {
+
+    const game = await gameRepository.getById(gameId);
+    if (!game) {
+        notFoundHelper.throwError404(gameId, 'game');
     }
+    if (game.status == 'FINISHED') {
+        conflictHelper.throwError409(`game with ID ${gameId} already finished`);
+    }
+
+    const gamePlayer = await gamePlayerRepository.getByGameIdPlayerId(gameId, playerId);
+    if (!gamePlayer) {
+        notFoundHelper.throwError404(playerId, 'player in game');
+    }
+
+    await gamePlayerRepository.remove(gamePlayer.id);
 }
 
 /**
@@ -92,10 +106,38 @@ const findScoreById = async (id) => {
     return gamePlayerDto.toScoreResponseDto(gamePlayer);
 }
 
+/**
+ * Get the list of players that are part of a specific game
+ * @param gameId : id of the game
+ * @returns the list of players
+ */
+const getPlayersByGameId = async (gameId) => {
+    const players = await gamePlayerRepository.getByGameId(gameId);
+    if (!players) {
+        notFoundHelper.throwError404(gameId, 'players in game');
+    }
+    return players.map(gamePlayerDto.toGamePlayerInfoDto);
+}
+
+const getCurrentPlayerToPlay = async (gameId) => {
+    const game = await gameRepository.getById(gameId);
+    if (!game) {
+        notFoundHelper.throwError404(gameId, 'game');
+    }
+    
+    if (game.status != 'PLAYING') {
+        conflictHelper.throwError409(`game with ID $${gameId} is not in playing state`);
+    }
+    const player = await gamePlayerRepository.getCurrentPlayerToPlay(gameId);
+    return gamePlayerDto.toGamePlayerInfoDto(player);
+}
+
 module.exports = {
     addGamePlayer,
     findScoresBygameId,
     updateScore,
     deleteGamePlayer,
-    findScoreById
+    findScoreById,
+    getPlayersByGameId,
+    getCurrentPlayerToPlay
 }

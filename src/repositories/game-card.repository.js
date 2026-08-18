@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const GameCard = require('../models/game-card.model');
 const Game = require('../models/game.model');
 const Card = require('../models/card.model');
@@ -129,11 +130,40 @@ const getByGameId = async (gameId) => {
     });
 }
 
+/**
+ * Get the top card in the deck of a specific game
+ * @param gameId : id of the game
+ * @returns the top card
+ */
+const getTopCardFromDeck = async (gameId) => {
+    const card = await GameCard.findOne({
+        where: {
+            gameId: gameId,
+            position: {
+                [Op.not]: null
+            }
+        },
+        limit: 1,
+        order: [['position', 'DESC']],
+        include: [
+            {
+                model: Card
+            }
+        ]
+    });
+    if (!card) {
+        return null;
+    }
+
+    return card;
+}
+
 module.exports = {
     create,
     getByIds,
     update,
     findAll,
     bulkCreate,
-    getByGameId
+    getByGameId,
+    getTopCardFromDeck
 }

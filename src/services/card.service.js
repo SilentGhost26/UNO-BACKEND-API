@@ -74,10 +74,6 @@ const createCard = async (cardData) => {
     const card = cardDto.fromCreate(cardData);
     const newCard = await cardRepository.create(card);
 
-    if(!newCard) {
-        notFoundHelper.throwError404(id, 'card');
-    }
-
     return cardDto.toResponseDto(newCard);
 }
 
@@ -89,7 +85,7 @@ const createCard = async (cardData) => {
  */
 const updateCard = async (id, cardData) => { 
     const card = cardDto.fromUpdate(cardData);
-    const updatedCard = await cardRepository.update(card);
+    const updatedCard = await cardRepository.update(id, card);
     if (!updatedCard) {
             notFoundHelper.throwError404(id, 'card');
         }

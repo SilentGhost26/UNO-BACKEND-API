@@ -12,7 +12,8 @@ const fromCreateDto = (data) => {
     return {
         name: data.name,
         age: data.age,
-        email: data.email
+        email: data.email,
+        password: data.password
     }
 }
 

@@ -5,7 +5,7 @@ const validate = (schema) => {
             const newError = new Error('Validation failed');
             newError.statusCode = 400;
             newError.details = error.details.map((e) => e.message);
-            next(newError);
+            return next(newError);
         }
         req.body = value;
         next();

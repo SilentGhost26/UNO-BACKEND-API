@@ -61,9 +61,24 @@ const deletePlayer = async (id) => {
     }
 }
 
+/**
+ * Get the date of log out of a specific player
+ * @param id : id of the player
+ * @returns the date of log out
+ */
+const getLoggedOutDateByPlayerId = async (id) => {
+    const date = await playerRepository.getLoggedOutDateById(id);
+
+    if (!date) {
+        return null;
+    }
+    return date;
+}
+
 module.exports = {
     addPlayer,
     findPlayerById,
     updatePlayer,
-    deletePlayer
+    deletePlayer,
+    getLoggedOutDateByPlayerId
 }
