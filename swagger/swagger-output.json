@@ -1315,7 +1315,7 @@
                   "type": "string",
                   "example": "string"
                 },
-                "color": {
+                "newColor": {
                   "type": "string",
                   "example": "string"
                 }
