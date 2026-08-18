@@ -1431,6 +1431,27 @@
           }
         ]
       }
+    },
+    "/games/{gameId}/history": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "description": "get the history of a game",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   }
 }
