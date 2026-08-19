@@ -310,6 +310,9 @@ const createGameEngineService = (
      */
     const sayUno = async (gameId, playerId) => {
         const game = await gameRepository.getById(gameId);
+        if (!game) {
+            return notFoundHelper.throwError404(gameId, 'game');
+        }
         if (game.status !== 'PLAYING') {
             return conflictHelper.throwError409(`game with ID ${gameId} is not playing`);
         }
@@ -338,8 +341,10 @@ const createGameEngineService = (
         if (challengedPlayerId === playerIdChallenging) {
             return conflictHelper.throwError409('player cannot challenge himself');
         }
-
         const game = await gameRepository.getById(gameId);
+        if (!game) {
+            return notFoundHelper.throwError404(gameId, 'game');
+        }
         if (game.status !== 'PLAYING') {
             return conflictHelper.throwError409(`game with ID ${gameId} is not playing`);
         }
