@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const scoreController = require('../controllers/score.controller');
+const { scoreController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const authMiddleware = require('../middlewares/auth.middleware');
 const scoreSchema = require('../schemas/score.schema');

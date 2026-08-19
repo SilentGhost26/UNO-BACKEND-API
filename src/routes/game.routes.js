@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const gameController = require('../controllers/game.controller');
+const { gameController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const authMiddleware = require('../middlewares/auth.middleware');
 const gameSchema = require('../schemas/game.schema');

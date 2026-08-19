@@ -45,7 +45,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ0ZTA4ODExLTc2ZGQtNDY3OS04NGEwLWQ1OTdmYWRlNjkyNyIsImlhdCI6MTc4NjExMTE4MiwiZXhwIjoxNzg2MTk3NTgyfQ.R80bxef8FPG4k2dxw-pFs993bD-DKeYDxaEfLW487Uo",
 									"type": "string"
 								}
 							]
@@ -82,7 +82,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/players/ID",
+							"raw": "http://localhost:3000/players/{{id}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -90,7 +90,7 @@
 							"port": "3000",
 							"path": [
 								"players",
-								"ID"
+								"{{id}}"
 							]
 						}
 					},
@@ -106,7 +106,7 @@
 							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/players/ID",
+							"raw": "http://localhost:3000/players/{{id}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -114,7 +114,7 @@
 							"port": "3000",
 							"path": [
 								"players",
-								"ID"
+								"{{id}}"
 							]
 						}
 					},
@@ -148,16 +148,6 @@
 				{
 					"name": "new Game (POST)",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -235,16 +225,6 @@
 				{
 					"name": "start a game (PUT)",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [],
 						"url": {
@@ -295,14 +275,15 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/cards",
+							"raw": "http://localhost:3000/cards/initialize",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"cards"
+								"cards",
+								"initialize"
 							]
 						}
 					},
@@ -310,16 +291,9 @@
 				},
 				{
 					"name": "all Cards (GET)",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
-						},
 						"url": {
 							"raw": "http://localhost:3000/cards",
 							"protocol": "http",
@@ -336,16 +310,9 @@
 				},
 				{
 					"name": "specific Card by ID (GET)",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}"
-						},
 						"url": {
 							"raw": "http://localhost:3000/cards/{{cardId}}",
 							"protocol": "http",
@@ -369,9 +336,6 @@
 				{
 					"name": "create Deck in specific Game (POST)",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [],
 						"url": {
@@ -461,7 +425,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/games/GAMEID/cards/CARDID",
+							"raw": "http://localhost:3000/games/{{gameId}}/cards/{{cardId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -469,9 +433,9 @@
 							"port": "3000",
 							"path": [
 								"games",
-								"GAMEID",
+								"{{gameId}}",
 								"cards",
-								"CARDID"
+								"{{cardId}}"
 							]
 						}
 					},
@@ -565,7 +529,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYTIwNTczLTFkYzYtNDg5OS04YmI5LTg0YjUzOGJjMTAyMCIsImlhdCI6MTc4NjExMTMzNiwiZXhwIjoxNzg2MTk3NzM2fQ.gqOUw6jbYeNbEBOP-0EPINwDdMbXiGT0TAycOxp1OkU",
 									"type": "string"
 								}
 							]
@@ -573,14 +537,15 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/games{{gameId}}/players",
+							"raw": "http://localhost:3000/games/{{gameId}}/players",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"games{{gameId}}",
+								"games",
+								"{{gameId}}",
 								"players"
 							]
 						}
@@ -593,14 +558,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/games{{gameId}}/players",
+							"raw": "http://localhost:3000/games/{{gameId}}/players",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"games{{gameId}}",
+								"games",
+								"{{gameId}}",
 								"players"
 							]
 						}
@@ -610,10 +576,20 @@
 				{
 					"name": "go out of game (DELETE)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYTIwNTczLTFkYzYtNDg5OS04YmI5LTg0YjUzOGJjMTAyMCIsImlhdCI6MTc4NjExMTMzNiwiZXhwIjoxNzg2MTk3NzM2fQ.gqOUw6jbYeNbEBOP-0EPINwDdMbXiGT0TAycOxp1OkU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/games/{{gameId}}/start",
+							"raw": "http://localhost:3000/games/{{gameId}}/players",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -622,7 +598,7 @@
 							"path": [
 								"games",
 								"{{gameId}}",
-								"start"
+								"players"
 							]
 						}
 					},
@@ -662,7 +638,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"e@mail.com\",\n    \"password\": \"12345678\"\n}",
+							"raw": "{\n    \"email\": \"carlos@mail.com\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -691,7 +667,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"string\",\n    \"age\": 10,\n    \"email\": \"e@mail.com\",\n    \"password\": \"12345678\"\n}",
+							"raw": "{\n    \"name\": \"Carlos\",\n    \"age\": 18,\n    \"email\": \"carlos@mail.com\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -721,7 +697,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZmOThiNTE5LTJjNzQtNDgxMy1iNDE4LTg0N2YzOTc2ODQ4ZSIsImlhdCI6MTc4NDY3MDM2MywiZXhwIjoxNzg0NzU2NzYzfQ.4CIVKn34Jqug0cXKs2M05IDC_7EcSo0cLFjaUvCXYjg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyZTMyNzcxLTA3MWMtNDAyZi1hMzgzLTQxNWVhNDQ3OTIyOSIsImlhdCI6MTc4NjExMTAwNCwiZXhwIjoxNzg2MTk3NDA0fQ.N6oyp3l9W0As40a6ngHwmptCsYaXHCWTxWNqVLfbSpQ",
 									"type": "string"
 								}
 							]
@@ -744,6 +720,40 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ0ZTA4ODExLTc2ZGQtNDY3OS04NGEwLWQ1OTdmYWRlNjkyNyIsImlhdCI6MTc4NjExMTE4MiwiZXhwIjoxNzg2MTk3NTgyfQ.R80bxef8FPG4k2dxw-pFs993bD-DKeYDxaEfLW487Uo",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
