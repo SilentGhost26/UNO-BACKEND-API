@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const gameCardController = require('../controllers/game-card.controller');
+const { gameCardController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const authMiddleware = require('../middlewares/auth.middleware');
 const gameCardSchema = require('../schemas/game-card.schema');

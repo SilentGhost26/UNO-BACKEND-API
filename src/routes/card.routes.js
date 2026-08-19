@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const cardController = require('../controllers/card.controller');
+const { cardController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const cardSchema = require('../schemas/card.schema');
 

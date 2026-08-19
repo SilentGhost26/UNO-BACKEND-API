@@ -1,5 +1,4 @@
-const tokenService = require('../services/token.service');
-const playerService = require('../services/player.service');
+const { tokenService, playerService } = require('../compositions');
 
 //Validates if the jwt token is a valid token and the owner of the token (player)
 //has not logged out
