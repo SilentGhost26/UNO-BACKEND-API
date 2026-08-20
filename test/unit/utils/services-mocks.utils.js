@@ -1,6 +1,3 @@
-const { getPlayerHand } = require("../../../src/repositories/game-card.repository");
-const challenge = require("../../../src/schemas/challenge.schema");
-
 const authService = {
     registerPlayer: jest.fn(),
     authenticatePlayer: jest.fn(),
