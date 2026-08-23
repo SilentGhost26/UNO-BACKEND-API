@@ -68,7 +68,7 @@ const createGameEngineService = (
      * @param playerId : id of the player
      * @param gameId : id of the game
      * @param cardId : id of the card
-     * @returns The next player that must play and the drawn card if applies
+     * @returns The next player that must play
      */
     const playCard = async (playerId, gameId, cardId, newColor) => {
         const currentPlayer = await gamePlayerRepository.getCurrentPlayerToPlay(gameId);
