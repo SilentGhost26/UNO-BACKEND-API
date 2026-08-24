@@ -152,6 +152,7 @@ const createGameEngineService = (
         const currentPlayer = await gamePlayerRepository.getCurrentPlayerToPlay(gameId);
         let direction = game.direction;
         let color = game.currentColor;
+        let skip = false;
         if (card) {
             if (card.Card.type === 'REVERSE') {
                 direction = game.direction === 'RIGHT'? 'LEFT' : 'RIGHT';
@@ -161,17 +162,21 @@ const createGameEngineService = (
             if (color !== card.Card.color) {
                 color = !newColor? game.currentColor : newColor;
             }
+            if (card.Card.type === 'BLOCK') {
+                skip = true;
+            }
         }   
 
-        const getNextPlayer = (players, currentPlayer, direction) => {
+        const getNextPlayer = (players, currentPlayer, direction, skip) => {
+            const movement = skip? 2 : 1;
             const idx = players.findIndex(p => p.playerId === currentPlayer.playerId);
             const nextIdx = direction === 'RIGHT'
-                ? (idx + 1) % players.length
-                : (idx - 1 + players.length) % players.length;
+                ? (idx + movement) % players.length
+                : (idx - movement + players.length) % players.length;
             return players[nextIdx];
         }
         
-        const nextPlayer = getNextPlayer(players, currentPlayer, direction);
+        const nextPlayer = getNextPlayer(players, currentPlayer, direction, skip);
         await gameRepository.update(gameId, { 
             direction: direction, 
             currentPlayerIndex: nextPlayer.position, 
