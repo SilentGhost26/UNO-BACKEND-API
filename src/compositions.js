@@ -34,10 +34,6 @@ const rulesCreateDeckValidators = require('./services/validators/rules-create-de
 const rulesPlayCardValidators = require('./services/validators/rules-play-card.validator');
 const hasValidCardValidators = require('./services/validators/has-valid-card.validator');
 
-const gameStartValidators = require('./services/validators/game-start.validator');
-const gameFinishValidators = require('./services/validators/game-finish.validator');
-const addGamePlayervalidators = require('./services/validators/add-game-player.validator');
-
 const tokenService = createTokenService();
 const gameService = createGameService(gameRepository, playerRepository, gamePlayerRepository, gameCardRepository, historyRepository, gameDto, cardDto, gamePlayerDto, gameCardDto, notFoundHelper, conflictHelper, resultHelper, gameStartValidators, gameFinishValidators);
 const authService = createAuthService(tokenService, playerRepository, notFoundHelper, conflictHelper, resultHelper, playerDto);
