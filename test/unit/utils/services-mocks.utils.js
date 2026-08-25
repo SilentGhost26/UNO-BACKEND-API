@@ -17,7 +17,7 @@ const gameCardService = {
     createDeck: jest.fn(), 
     getByGameId: jest.fn(), 
     updateGameCard: jest.fn(), 
-    getTopCardFromDeck: jest.fn(),
+    getTopCardFromDiscard: jest.fn(),
 };
 
 const gamePlayerService = {

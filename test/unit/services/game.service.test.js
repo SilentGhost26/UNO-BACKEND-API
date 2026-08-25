@@ -1,8 +1,11 @@
 const createGameService = require('../../../src/services/game.service');
+const { runValidators, ok } = require('../../../src/helpers/result.helper');
 const { gameRepository, playerRepository, gamePlayerRepository } = require('../utils/repository-mocks.utils');
 const gameDto = require('../../../src/dto/game.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
 const conflictHelper = require('../../../src/helpers/conflict.helper');
+const startGameValidators = require('../../../src/services/validators/game-start.validator');
+const finishGameValidators = require('../../../src/services/validators/game-finish.validator');
 let gameService;
 
 describe('test for game service', () => {
@@ -13,7 +16,10 @@ describe('test for game service', () => {
             gamePlayerRepository,
             gameDto,
             notFoundHelper,
-            conflictHelper
+            conflictHelper,
+            { runValidators, ok },
+            startGameValidators,
+            finishGameValidators
         )
     });
 
@@ -42,23 +48,24 @@ describe('test for game service', () => {
                 playerId: 'owner-1',
                 position: 1,
             });
-            expect(result.id).toBe('game-1');
-            expect(result.title).toBe('UNO');
+            expect(result.result.id).toBe('game-1');
+            expect(result.result.title).toBe('UNO');
         });
 
-        test('throw error 404 when the owner does not exist', async () => {
+        test('return an error result when the owner does not exist', async () => {
             playerRepository.getById.mockResolvedValue(null);
 
-            await expect(gameService.addGame({
+            const result = await gameService.addGame({
                 title: 'UNO',
                 maxPlayers: 4,
                 ownerId: 'nonexistent-player',
-            }))
-            .rejects.toMatchObject({
+            });
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });
-
             expect(playerRepository.create).not.toHaveBeenCalled();
         });
     });
@@ -77,14 +84,16 @@ describe('test for game service', () => {
 
             const result = await gameService.findGameById('game-1');
 
-            expect(result.id).toStrictEqual('game-1');
+            expect(result.result.id).toStrictEqual('game-1');
         });
 
-        test('throw error 404 when the game does not exist', async () => {
+        test('return an error result when the game does not exist', async () => {
             gameRepository.getById.mockResolvedValue(null);
 
-            await expect(gameService.findGameById('nonexistent-game'))
-            .rejects.toMatchObject({
+            const result = await gameService.findGameById('nonexistent-game');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID nonexistent-game not found',
                 statusCode: 404,
             });
@@ -105,14 +114,16 @@ describe('test for game service', () => {
 
             const result = await gameService.updateGame('game-1', {title: 'UPDATED GAME', maxPlayers: 4});
 
-            expect(result.title).toBe('UPDATED GAME');
-            expect(result.maxPlayers).toBe(4);
+            expect(result.result.title).toBe('UPDATED GAME');
+            expect(result.result.maxPlayers).toBe(4);
         });
 
-        test('throw error 404 when the game does not exist', async () => {
+        test('return an error result when the game does not exist', async () => {
             gameRepository.update.mockResolvedValue(null);
-            await expect(gameService.updateGame('nonexistent-game', {title: 'UPDATED GAME', maxPlayers: 4}))
-            .rejects.toMatchObject({
+            const result = await gameService.updateGame('nonexistent-game', {title: 'UPDATED GAME', maxPlayers: 4});
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID nonexistent-game not found',
                 statusCode: 404,
             });
@@ -123,13 +134,15 @@ describe('test for game service', () => {
         test('delete succesfully a game', async () => {
             gameRepository.remove.mockResolvedValue(true);
             await expect(gameService.deleteGame('game-1'))
-            .resolves.toBeUndefined();
+            .resolves.toEqual({ ok: true, result: undefined });
         });
 
-        test('throw error 404 when the game does not exist', async () => {
+        test('return an error result when the game does not exist', async () => {
             gameRepository.remove.mockResolvedValue(false);
-            await expect(gameService.deleteGame('nonexistent-game'))
-            .rejects.toMatchObject({
+            const result = await gameService.deleteGame('nonexistent-game');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID nonexistent-game not found',
                 statusCode: 404,
             });
@@ -153,10 +166,10 @@ describe('test for game service', () => {
             gameRepository.update.mockResolvedValue({ ...waitingGame, status: 'PLAYING' });
 
             await expect(gameService.startGame('game-1', 'owner-1'))
-            .resolves.toBeUndefined();
+            .resolves.toEqual({ ok: true, result: undefined });
         });
 
-        test('throw error 404 when the game does not exist', async () => {
+        test('return an error result when the game does not exist', async () => {
             gameRepository.getById.mockResolvedValue(null);
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -168,15 +181,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.startGame('nonexistent-game', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.startGame('nonexistent-game', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID nonexistent-game not found',
                 statusCode: 404,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when the game is already playing', async () => {
+        test('return an error result when the game is already playing', async () => {
             gameRepository.getById.mockResolvedValue({...waitingGame, status: 'PLAYING'});
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -188,15 +203,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.startGame('game-1', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.startGame('game-1', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID game-1 already playing',
                 statusCode: 409,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when the game is already finished', async () => {
+        test('return an error result when the game is already finished', async () => {
             gameRepository.getById.mockResolvedValue({...waitingGame, status: 'FINISHED'});
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -208,15 +225,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.startGame('game-1', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.startGame('game-1', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID game-1 already finished',
                 statusCode: 409,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when there is not enough players in the game', async () => {
+        test('return an error result when there is not enough players in the game', async () => {
             gameRepository.getById.mockResolvedValue(waitingGame);
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -225,15 +244,17 @@ describe('test for game service', () => {
                 },
             ]);
 
-            await expect(gameService.startGame('game-1', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.startGame('game-1', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID game-1 doesn\'t have enough players',
                 statusCode: 409,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 404 when the player does not exist', async () => {
+        test('return an error result when the player does not exist', async () => {
             gameRepository.getById.mockResolvedValue(waitingGame);
             playerRepository.getById.mockResolvedValue(null);
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -245,15 +266,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.startGame('game-1', 'nonexistent-player'))
-            .rejects.toMatchObject({
+            const result = await gameService.startGame('game-1', 'nonexistent-player');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when the player is not the owner', async () => {
+        test('return an error result when the player is not the owner', async () => {
             gameRepository.getById.mockResolvedValue(waitingGame);
             playerRepository.getById.mockResolvedValue({ id: 'another-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -265,8 +288,10 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.startGame('game-1', 'another-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.startGame('game-1', 'another-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID another-1 is not the owner',
                 statusCode: 409,
             });
@@ -283,10 +308,10 @@ describe('test for game service', () => {
             gameRepository.update.mockResolvedValue({ ...playingGame, status: 'PLAYING' });
 
             await expect(gameService.finishGame('game-1', 'owner-1'))
-            .resolves.toBeUndefined();
+            .resolves.toEqual({ ok: true, result: undefined });
         });
 
-        test('throw error 404 when the game does not exist', async () => {
+        test('return an error result when the game does not exist', async () => {
             gameRepository.getById.mockResolvedValue(null);
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -298,15 +323,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.finishGame('nonexistent-game', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.finishGame('nonexistent-game', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID nonexistent-game not found',
                 statusCode: 404,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when the game is not playing', async () => {
+        test('return an error result when the game is not playing', async () => {
             gameRepository.getById.mockResolvedValue({...playingGame, status: 'WAITING'});
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -318,15 +345,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.finishGame('game-1', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.finishGame('game-1', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID game-1 it\'s not playing',
                 statusCode: 409,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when the game is already finished', async () => {
+        test('return an error result when the game is already finished', async () => {
             gameRepository.getById.mockResolvedValue({...playingGame, status: 'FINISHED'});
             playerRepository.getById.mockResolvedValue({ id: 'owner-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -338,15 +367,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.finishGame('game-1', 'owner-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.finishGame('game-1', 'owner-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'game with ID game-1 already finished',
                 statusCode: 409,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 404 when the player does not exist', async () => {
+        test('return an error result when the player does not exist', async () => {
             gameRepository.getById.mockResolvedValue(playingGame);
             playerRepository.getById.mockResolvedValue(null);
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -358,15 +389,17 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.finishGame('game-1', 'nonexistent-player'))
-            .rejects.toMatchObject({
+            const result = await gameService.finishGame('game-1', 'nonexistent-player');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
         });
 
-        test('throw error 409 when the player is not the owner', async () => {
+        test('return an error result when the player is not the owner', async () => {
             gameRepository.getById.mockResolvedValue(playingGame);
             playerRepository.getById.mockResolvedValue({ id: 'another-1' });
             gamePlayerRepository.getByGameId.mockResolvedValue([
@@ -378,8 +411,10 @@ describe('test for game service', () => {
                 }
             ]);
 
-            await expect(gameService.finishGame('game-1', 'another-1'))
-            .rejects.toMatchObject({
+            const result = await gameService.finishGame('game-1', 'another-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID another-1 is not the owner',
                 statusCode: 409,
             });

@@ -135,13 +135,11 @@ const getByGameId = async (gameId) => {
  * @param gameId : id of the game
  * @returns the top card
  */
-const getTopCardFromDeck = async (gameId) => {
+const getTopCardFromDiscard = async (gameId) => {
     const card = await GameCard.findOne({
         where: {
             gameId: gameId,
-            position: {
-                [Op.not]: null
-            }
+            zone: 'DISCARD',
         },
         limit: 1,
         order: [['position', 'DESC']],
@@ -165,5 +163,5 @@ module.exports = {
     findAll,
     bulkCreate,
     getByGameId,
-    getTopCardFromDeck
+    getTopCardFromDiscard
 }

@@ -10,7 +10,8 @@ const createPlayerService = (
     playerRepository,
     playerDto,
     notFoundHelper,
-    conflictHelper
+    conflictHelper,
+    { ok }
 ) => {
 
     /**
@@ -21,10 +22,10 @@ const createPlayerService = (
    const findPlayerById = async (id) => {
        const player = await playerRepository.getById(id);
        if(!player) {
-           notFoundHelper.throwError404(id, 'player');
+           return notFoundHelper.throwError404(id, 'player');
         }
         
-        return playerDto.toResponseDto(player);
+        return ok(playerDto.toResponseDto(player));
     }
     
     /**
@@ -37,10 +38,10 @@ const createPlayerService = (
        const player = playerDto.fromUpdateDto(playerData);
        const updatedPlayer = await playerRepository.update(id, player);
        if (!updatedPlayer) {
-           notFoundHelper.throwError404(id, 'player');
+           return notFoundHelper.throwError404(id, 'player');
         }
         
-        return playerDto.toResponseDto(updatedPlayer);
+        return ok(playerDto.toResponseDto(updatedPlayer));
     }
     
     /**
@@ -50,8 +51,9 @@ const createPlayerService = (
    const deletePlayer = async (id) => {
        const deleted = await playerRepository.remove(id);
        if(!deleted) {
-           notFoundHelper.throwError404(id, 'player');
+           return notFoundHelper.throwError404(id, 'player');
         }
+        return ok();
     }
     
     /**

@@ -25,9 +25,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -54,8 +51,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -86,19 +83,12 @@
                 "age": {
                   "type": "number",
                   "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -122,9 +112,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -141,7 +128,7 @@
         "tags": [
           "Games"
         ],
-        "description": "Get a specific a game by its ID",
+        "description": "Get a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -151,8 +138,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -197,9 +184,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -214,7 +198,7 @@
         "tags": [
           "Games"
         ],
-        "description": "Remove a specific a game by its ID",
+        "description": "Remove a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -229,9 +213,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -279,9 +260,6 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -298,7 +276,7 @@
         "tags": [
           "Games"
         ],
-        "description": "Start a specific a game by its ID",
+        "description": "Start a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -313,9 +291,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -332,7 +307,7 @@
         "tags": [
           "Games"
         ],
-        "description": "finish a specific a game by its ID",
+        "description": "finish a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -347,9 +322,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -368,8 +340,8 @@
         ],
         "description": "Initialize the cards of the original game",
         "responses": {
-          "201": {
-            "description": "Created"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -381,8 +353,8 @@
         ],
         "description": "Get all cards",
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -402,8 +374,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -428,9 +400,6 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -455,8 +424,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         },
         "security": [
@@ -471,7 +440,7 @@
         "tags": [
           "GameCards"
         ],
-        "description": "Get the top card of the deck from a specific game",
+        "description": "Get the top card of the discard from a specific game",
         "parameters": [
           {
             "name": "gameId",
@@ -481,8 +450,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -535,9 +504,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -564,8 +530,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -602,9 +568,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -631,8 +594,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -657,9 +620,6 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -689,9 +649,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -716,8 +673,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -737,8 +694,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -778,8 +735,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -811,8 +768,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -831,9 +788,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }

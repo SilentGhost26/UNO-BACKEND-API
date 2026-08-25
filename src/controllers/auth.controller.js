@@ -5,7 +5,7 @@
  */
 const createAuthController = (authService) => {
 
-    const registerPlayer = async (req, res) => {
+    const registerPlayer = async (req, res, next) => {
         /**
          * #swagger.tags = ['Auth']
          * #swagger.description = 'Register a new player'
@@ -16,10 +16,13 @@ const createAuthController = (authService) => {
         }
         */
        const player = await authService.registerPlayer(req.body);
-       res.status(201).json(player);
+       if (!player.ok) {
+           return next(player.error);
+       }
+       res.status(201).json(player.result);
     }
     
-    const authenticatePlayer = async (req, res) => {
+    const authenticatePlayer = async (req, res, next) => {
         /**
          * #swagger.tags = ['Auth']
          * #swagger.description = 'authenticate a player using its email and password'
@@ -30,12 +33,15 @@ const createAuthController = (authService) => {
         }
         */
        const token = await authService.authenticatePlayer(req.body.email, req.body.password);
+       if (!token.ok) {
+           return next(token.error);
+       }
        res.status(200).json({
-           access_token: token
+           access_token: token.result
         });
     }
     
-    const logoutPlayer = async (req, res) => {
+    const logoutPlayer = async (req, res, next) => {
         /**
          * #swagger.tags = ['Auth']
          * #swagger.description = 'logout a player using its token'
@@ -43,7 +49,10 @@ const createAuthController = (authService) => {
         "apiKeyAuth": []
         }] 
         */
-       await authService.logoutPlayer(req.player.id);
+       const result = await authService.logoutPlayer(req.player.id);
+       if (!result.ok) {
+           return next(result.error);
+       }
        res.status(200).json({
            message: "User logged out succesfully"
         });

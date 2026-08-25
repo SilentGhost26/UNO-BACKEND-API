@@ -16,7 +16,8 @@ const createCardService = (
     cardRepository,
     cardDto,
     notFoundHelper,
-    conflictHelper
+    conflictHelper,
+    { ok },
 ) => {
     /**
      * Initialize the main cards of the original game (108 cards in total)
@@ -25,7 +26,7 @@ const createCardService = (
    const initializeCards = async () => {
        const cards = await cardRepository.findAll();
        if (cards.length == CARDS_AMOUNT) {
-           conflictHelper.throwError409('Cards already initialized');
+           return conflictHelper.throwError409('Cards already initialized');
         }
         await cardRepository.removeAll();
         const newCards = [];
@@ -50,6 +51,7 @@ const createCardService = (
         });
         
         await cardDto.toResponseDto(cardRepository.bulkCreate(newCards));
+        return ok();
     }
     
     /**
@@ -58,7 +60,7 @@ const createCardService = (
     */
    const getAllCards = async () => {
        const cards = await cardRepository.findAll();
-       return cards.map(c => cardDto.toResponseDto(c));
+       return ok(cards.map(c => cardDto.toResponseDto(c)));
     }
     
     /**
@@ -69,9 +71,9 @@ const createCardService = (
    const findCardById = async (id) => {
        const card = await cardRepository.getById(id);
        if(!card) {
-           notFoundHelper.throwError404(id, 'card');
+           return notFoundHelper.throwError404(id, 'card');
         }
-        return cardDto.toResponseDto(card);
+        return ok(cardDto.toResponseDto(card));
     }
     
     /**
@@ -83,7 +85,7 @@ const createCardService = (
        const card = cardDto.fromCreate(cardData);
        const newCard = await cardRepository.create(card);
        
-       return cardDto.toResponseDto(newCard);
+       return ok(cardDto.toResponseDto(newCard));
     }
     
     /**
@@ -96,10 +98,10 @@ const createCardService = (
        const card = cardDto.fromUpdate(cardData);
        const updatedCard = await cardRepository.update(id, card);
        if (!updatedCard) {
-           notFoundHelper.throwError404(id, 'card');
+           return notFoundHelper.throwError404(id, 'card');
         }
         
-        return cardDto.toResponseDto(updatedCard);
+        return ok(cardDto.toResponseDto(updatedCard));
     }
     
     /**
@@ -109,8 +111,9 @@ const createCardService = (
    const deleteCard = async (id) => {
        const deleted = await cardRepository.remove(id);
        if(!deleted) {
-           notFoundHelper.throwError404(id, 'card');
+           return notFoundHelper.throwError404(id, 'card');
         }
+        return ok();
     }
     
     return { initializeCards, getAllCards, findCardById, createCard, updateCard, deleteCard }   

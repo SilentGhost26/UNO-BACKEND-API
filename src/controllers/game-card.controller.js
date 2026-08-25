@@ -5,7 +5,7 @@
  */
 const createGameCardController = (gameCardService) => {
 
-    const createDeck = async (req, res) => {
+    const createDeck = async (req, res, next) => {
         /**
          * #swagger.tags = ['GameCards']
          * #swagger.description = 'Initialize the cards that will use a specific game'
@@ -14,13 +14,16 @@ const createGameCardController = (gameCardService) => {
             }] 
          */
         const { gameId } = req.params;
-        await gameCardService.createDeck(gameId);
+        const result = await gameCardService.createDeck(gameId);
+        if (!result.ok) {
+            return next(result.error);
+        }
         res.status(201).json({
             message: "Deck created succesfully"
         })
     }
 
-    const getCards = async (req, res) => {
+    const getCards = async (req, res, next) => {
         /**
          * #swagger.tags = ['GameCards']
          * #swagger.description = 'Get all the cards that compose a game'
@@ -30,10 +33,13 @@ const createGameCardController = (gameCardService) => {
          */
         const { gameId } = req.params;
         const cards = await gameCardService.getByGameId(gameId);
-        res.status(200).json(cards);
+        if (!cards.ok) {
+            return next(cards.error);
+        }
+        res.status(200).json(cards.result);
     }
 
-    const updateCard = async (req, res) => {
+    const updateCard = async (req, res, next) => {
         /**
          * #swagger.tags = ['GameCards']
          * #swagger.description = 'Update a specific card in the game'
@@ -48,19 +54,25 @@ const createGameCardController = (gameCardService) => {
          */
         const {gameId, cardId} = req.params;
         const card = await gameCardService.updateGameCard(gameId, cardId, req.body);
-        res.status(200).json(card);
+        if (!card.ok) {
+            return next(card.error);
+        }
+        res.status(200).json(card.result);
     }
 
-    const getTopCardFromDeck = async (req, res) => {
+    const getTopCardFromDiscard = async (req, res, next) => {
         /**
          * #swagger.tags = ['GameCards']
-         * #swagger.description = 'Get the top card of the deck from a specific game'
+         * #swagger.description = 'Get the top card of the discard from a specific game'
          */
         const { gameId } = req.params;
-        const card = await gameCardService.getTopCardFromDeck(gameId);
+        const card = await gameCardService.getTopCardFromDiscard(gameId);
+        if (!card.ok) {
+            return next(card.error);
+        }
         res.status(200).json({
             gameId: gameId,
-            topCard: card
+            topCard: card.result
         });
     }
 
@@ -68,7 +80,7 @@ const createGameCardController = (gameCardService) => {
         createDeck,
         getCards,
         updateCard,
-        getTopCardFromDeck
+        getTopCardFromDiscard
     }
 }
 

@@ -13,7 +13,7 @@ describe('test for game player controller', () => {
         test('add a player to a game and responds 201', async () => {
             const req = { params: { gameId: 'game-1' }, player: { id: 'player-1' } };
             const res = createRes();
-            gamePlayerService.addGamePlayer.mockResolvedValue({ id: 'gp-1' });
+            gamePlayerService.addGamePlayer.mockResolvedValue({ ok: true, result: { id: 'gp-1' } });
 
             await gamePlayerController.addGamePlayer(req, res);
 
@@ -27,7 +27,7 @@ describe('test for game player controller', () => {
         test('remove a player from a game and responds 204', async () => {
             const req = { params: { gameId: 'game-1' }, player: { id: 'player-1' } };
             const res = createRes();
-            gamePlayerService.deleteGamePlayer.mockResolvedValue();
+            gamePlayerService.deleteGamePlayer.mockResolvedValue({ ok: true, result: undefined });
 
             await gamePlayerController.removeGamePlayer(req, res);
 
@@ -41,7 +41,7 @@ describe('test for game player controller', () => {
         test('get players in a game and responds 200', async () => {
             const req = { params: { gameId: 'game-1' } };
             const res = createRes();
-            gamePlayerService.getPlayersByGameId.mockResolvedValue([{ id: 'gp-1' }]);
+            gamePlayerService.getPlayersByGameId.mockResolvedValue({ ok: true, result: [{ id: 'gp-1' }] });
 
             await gamePlayerController.getPlayersInGame(req, res);
 
@@ -55,7 +55,7 @@ describe('test for game player controller', () => {
         test('get the current player to play and responds 200', async () => {
             const req = { params: { gameId: 'game-1' } };
             const res = createRes();
-            gamePlayerService.getCurrentPlayerToPlay.mockResolvedValue({ id: 'player-1' });
+            gamePlayerService.getCurrentPlayerToPlay.mockResolvedValue({ ok: true, result: { id: 'player-1' } });
 
             await gamePlayerController.getCurrentPlayerToPlay(req, res);
 

@@ -1,4 +1,5 @@
 const createPlayerService = require('../../../src/services/player.service');
+const { ok } = require('../../../src/helpers/result.helper');
 const { playerRepository } = require('../utils/repository-mocks.utils');
 const playerDto = require('../../../src/dto/player.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
@@ -12,7 +13,8 @@ describe('test for player service', () => {
             playerRepository,
             playerDto,
             notFoundHelper,
-            conflictHelper
+            conflictHelper,
+            { ok }
         );
     });
 
@@ -28,14 +30,17 @@ describe('test for player service', () => {
 
             const result = await playerService.findPlayerById('player-1');
 
-            expect(result.id).toBe('player-1');
-            expect(result.email).toBe('ana@test.com');
+            expect(result.result.id).toBe('player-1');
+            expect(result.result.email).toBe('ana@test.com');
         });
 
-        test('throw error 404 when the player does not exist', async () => {
+        test('return an error result when the player does not exist', async () => {
             playerRepository.getById.mockResolvedValue(null);
 
-            await expect(playerService.findPlayerById('nonexistent-player')).rejects.toMatchObject({
+            const result = await playerService.findPlayerById('nonexistent-player');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });
@@ -58,14 +63,17 @@ describe('test for player service', () => {
                 email: 'ana.updated@test.com',
             });
 
-            expect(result.name).toBe('Ana Updated');
-            expect(result.email).toBe('ana.updated@test.com');
+            expect(result.result.name).toBe('Ana Updated');
+            expect(result.result.email).toBe('ana.updated@test.com');
         });
 
-        test('throw error 404 when the player does not exist', async () => {
+        test('return an error result when the player does not exist', async () => {
             playerRepository.update.mockResolvedValue(null);
 
-            await expect(playerService.updatePlayer('nonexistent-player', { name: 'Ana' })).rejects.toMatchObject({
+            const result = await playerService.updatePlayer('nonexistent-player', { name: 'Ana' });
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });
@@ -76,13 +84,16 @@ describe('test for player service', () => {
         test('delete a player successfully', async () => {
             playerRepository.remove.mockResolvedValue(true);
 
-            await expect(playerService.deletePlayer('player-1')).resolves.toBeUndefined();
+            await expect(playerService.deletePlayer('player-1')).resolves.toEqual({ ok: true, result: undefined });
         });
 
-        test('throw error 404 when the player does not exist', async () => {
+        test('return an error result when the player does not exist', async () => {
             playerRepository.remove.mockResolvedValue(false);
 
-            await expect(playerService.deletePlayer('nonexistent-player')).rejects.toMatchObject({
+            const result = await playerService.deletePlayer('nonexistent-player');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });

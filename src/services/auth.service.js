@@ -15,6 +15,7 @@ const createAuthService = (
     playerRepository,
     notFoundHelper,
     conflictHelper,
+    { ok, err },
     playerDto
 ) => {
     /**
@@ -28,19 +29,19 @@ const createAuthService = (
        let hash;
        try {
            hash = await bcrypt.hash(playerPassword, saltRounds);
-        } catch (err) {
-            throw new Error('Error encripting the password');
+        } catch (error) {
+            return err(new Error('Error encripting the password'));
         }
         
         player.password = hash;
         
         const existingPlayer = await playerRepository.getByEmail(player.email)
         if (existingPlayer) {
-            conflictHelper.throwError409('The email is already registered');
+            return conflictHelper.throwError409('The email is already registered');
         }
         
         const newPlayer = await playerRepository.create(player);
-        return playerDto.toResponseDto(newPlayer);
+        return ok(playerDto.toResponseDto(newPlayer));
     }
     /**
      * Verify if the email and password of a player matches with the database
@@ -53,22 +54,22 @@ const createAuthService = (
        if (!player) {
            const error = new Error('player not registered');
            error.statusCode = 401;
-           throw error;
+           return err(error);
         }
         
         let result;
         try {
             result = await bcrypt.compare(password, player.password);
-        } catch (err) {
-            throw new Error('Error comparing the password');
+        } catch (error) {
+            return err(new Error('Error comparing the password'));
         }
         
         if (result) {
-            return tokenService.createUserToken(player);
+            return ok(tokenService.createUserToken(player));
         } else {
             const error = new Error('incorrect email or password');
             error.statusCode = 401;
-            throw error;
+            return err(error);
         }
     }
     
@@ -79,10 +80,11 @@ const createAuthService = (
    const logoutPlayer = async (playerId) => {
        const player = await playerRepository.getById(playerId);
        if (!player) {
-           notFoundHelper.throwError404(playerId, 'player');
+           return notFoundHelper.throwError404(playerId, 'player');
         }
         
         await playerRepository.update(playerId, { loggedOutAt: Date.now() });
+        return ok();
     }
 
     return { registerPlayer, authenticatePlayer, logoutPlayer }

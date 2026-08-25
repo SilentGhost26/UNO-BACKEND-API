@@ -5,7 +5,7 @@
  */
 const createGameController = (gameService) => {
 
-    const addGame = async (req, res) => {
+    const addGame = async (req, res, next) => {
         /**
          * #swagger.tags = ['Games']
          * #swagger.description = 'Add a new game'
@@ -20,20 +20,26 @@ const createGameController = (gameService) => {
          */
         const gameData = {...req.body, ownerId: req.player.id};
         const game = await gameService.addGame(gameData);
-        res.status(201).json(game);
+        if (!game.ok) {
+            return next(game.error);
+        }
+        res.status(201).json(game.result);
     }
 
-    const getGameById = async (req, res) => {
+    const getGameById = async (req, res, next) => {
          /**
          * #swagger.tags = ['Games']
          * #swagger.description = 'Get a specific a game by its ID'
          */
         const { id } = req.params;
         const game = await gameService.findGameById(id);
-        res.status(200).json(game);
+        if (!game.ok) {
+            return next(game.error);
+        }
+        res.status(200).json(game.result);
     }
 
-    const updateGame = async (req, res) => {
+    const updateGame = async (req, res, next) => {
         /**
          * #swagger.tags = ['Games']
          * #swagger.description = 'Update a specific game'
@@ -48,10 +54,13 @@ const createGameController = (gameService) => {
          */
         const { id } = req.params;
         const game = await gameService.updateGame(id, req.body);
-        res.status(200).json(game);
+        if (!game.ok) {
+            return next(game.error);
+        }
+        res.status(200).json(game.result);
     }
         
-    const deleteGame = async (req, res) => {
+    const deleteGame = async (req, res, next) => {
         /**
          * #swagger.tags = ['Games']
          * #swagger.description = 'Remove a specific a game by its ID'
@@ -60,11 +69,14 @@ const createGameController = (gameService) => {
             }] 
          */
         const { id } = req.params;
-        await gameService.deleteGame(id);
+        const result = await gameService.deleteGame(id);
+        if (!result.ok) {
+            return next(result.error);
+        }
         res.status(204).send();
     }
 
-    const startGame = async (req, res) => {
+    const startGame = async (req, res, next) => {
         /**
          * #swagger.tags = ['Games']
          * #swagger.description = 'Start a specific a game by its ID'
@@ -74,13 +86,16 @@ const createGameController = (gameService) => {
          */
         const gameId = req.params.id;
         const playerId = req.player.id;
-        await gameService.startGame(gameId, playerId);
+        const result = await gameService.startGame(gameId, playerId);
+        if (!result.ok) {
+            return next(result.error);
+        }
         res.status(200).json({
             message: "Game started succesfully"
         })
     }
 
-    const finishGame = async (req, res) => {
+    const finishGame = async (req, res, next) => {
         /**
          * #swagger.tags = ['Games']
          * #swagger.description = 'finish a specific a game by its ID'
@@ -90,7 +105,10 @@ const createGameController = (gameService) => {
          */
         const gameId = req.params.id;
         const playerId = req.player.id;
-        await gameService.finishGame(gameId, playerId);
+        const result = await gameService.finishGame(gameId, playerId);
+        if (!result.ok) {
+            return next(result.error);
+        }
         res.status(200).json({
             message: "Game ended succesfully"
         })
