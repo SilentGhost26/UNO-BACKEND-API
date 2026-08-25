@@ -1,4 +1,5 @@
 const createCardService = require('../../../src/services/card.service');
+const { ok } = require('../../../src/helpers/result.helper');
 const { cardRepository } = require('../utils/repository-mocks.utils');
 const cardDto = require('../../../src/dto/card.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
@@ -12,7 +13,8 @@ describe('test for card service', () => {
             cardRepository,
             cardDto,
             notFoundHelper,
-            conflictHelper
+            conflictHelper,
+            { ok }
         );
     });
 
@@ -22,15 +24,19 @@ describe('test for card service', () => {
             cardRepository.removeAll.mockResolvedValue(true);
             cardRepository.bulkCreate.mockResolvedValue([{ id: 'card-1' }]);
 
-            await expect(cardService.initializeCards()).resolves.toBeUndefined();
+            const result = await cardService.initializeCards();
+            expect(result).toEqual({ ok: true, result: undefined });
             expect(cardRepository.removeAll).toHaveBeenCalled();
             expect(cardRepository.bulkCreate).toHaveBeenCalled();
         });
 
-        test('throw error 409 when cards are already initialized', async () => {
+        test('return an error result when cards are already initialized', async () => {
             cardRepository.findAll.mockResolvedValue(Array(108).fill({}));
 
-            await expect(cardService.initializeCards()).rejects.toMatchObject({
+            const result = await cardService.initializeCards();
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'Cards already initialized',
                 statusCode: 409,
             });
@@ -46,8 +52,8 @@ describe('test for card service', () => {
 
             const result = await cardService.getAllCards();
 
-            expect(result).toHaveLength(2);
-            expect(result[0].color).toBe('RED');
+            expect(result.result).toHaveLength(2);
+            expect(result.result[0].color).toBe('RED');
         });
     });
 
@@ -57,13 +63,16 @@ describe('test for card service', () => {
 
             const result = await cardService.findCardById('card-1');
 
-            expect(result.id).toBe('card-1');
+            expect(result.result.id).toBe('card-1');
         });
 
-        test('throw error 404 when the card does not exist', async () => {
+        test('return an error result when the card does not exist', async () => {
             cardRepository.getById.mockResolvedValue(null);
 
-            await expect(cardService.findCardById('nonexistent-card')).rejects.toMatchObject({
+            const result = await cardService.findCardById('nonexistent-card');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'card with ID nonexistent-card not found',
                 statusCode: 404,
             });
@@ -76,8 +85,8 @@ describe('test for card service', () => {
 
             const result = await cardService.createCard({ color: 'GREEN', value: '3', type: 'NUMBER' });
 
-            expect(result.color).toBe('GREEN');
-            expect(result.value).toBe('3');
+            expect(result.result.color).toBe('GREEN');
+            expect(result.result.value).toBe('3');
         });
     });
 
@@ -87,13 +96,16 @@ describe('test for card service', () => {
 
             const result = await cardService.updateCard('card-1', { color: 'YELLOW', value: '4', type: 'NUMBER' });
 
-            expect(result.color).toBe('YELLOW');
+            expect(result.result.color).toBe('YELLOW');
         });
 
-        test('throw error 404 when the card does not exist', async () => {
+        test('return an error result when the card does not exist', async () => {
             cardRepository.update.mockResolvedValue(null);
 
-            await expect(cardService.updateCard('nonexistent-card', { color: 'RED', value: '1', type: 'NUMBER' })).rejects.toMatchObject({
+            const result = await cardService.updateCard('nonexistent-card', { color: 'RED', value: '1', type: 'NUMBER' });
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'card with ID nonexistent-card not found',
                 statusCode: 404,
             });
@@ -104,13 +116,16 @@ describe('test for card service', () => {
         test('delete a card successfully', async () => {
             cardRepository.remove.mockResolvedValue(true);
 
-            await expect(cardService.deleteCard('card-1')).resolves.toBeUndefined();
+            await expect(cardService.deleteCard('card-1')).resolves.toEqual({ ok: true, result: undefined });
         });
 
-        test('throw error 404 when the card does not exist', async () => {
+        test('return an error result when the card does not exist', async () => {
             cardRepository.remove.mockResolvedValue(false);
 
-            await expect(cardService.deleteCard('nonexistent-card')).rejects.toMatchObject({
+            const result = await cardService.deleteCard('nonexistent-card');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'card with ID nonexistent-card not found',
                 statusCode: 404,
             });

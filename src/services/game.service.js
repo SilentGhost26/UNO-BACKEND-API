@@ -13,7 +13,10 @@ const createGameService = (
     gamePlayerRepository,
     gameDto,
     notFoundHelper,
-    conflictHelper
+    conflictHelper,
+    { runValidators, ok },
+    gameStartValidators = [],
+    gameFinishValidators = []
 ) => {
 
     /**
@@ -27,12 +30,12 @@ const createGameService = (
        
        const player = await playerRepository.getById(game.ownerId);
        if (!player) {
-           notFoundHelper.throwError404(game.ownerId, 'player');
+           return notFoundHelper.throwError404(game.ownerId, 'player');
         } 
         
         const newGame = await gameRepository.create(game);
         await gamePlayerRepository.create({ gameId: newGame.id, playerId: newGame.ownerId, position: 1 });
-        return gameDto.toResponseDto(newGame);
+        return ok(gameDto.toResponseDto(newGame));
     }
     
     /**
@@ -43,10 +46,10 @@ const createGameService = (
    const findGameById = async (id) => {
        const game = await gameRepository.getById(id);
        if(!game) {
-           notFoundHelper.throwError404(id, 'game');
+           return notFoundHelper.throwError404(id, 'game');
         }
         
-        return gameDto.toResponseDto(game);
+        return ok(gameDto.toResponseDto(game));
     }
     
     /**
@@ -59,9 +62,9 @@ const createGameService = (
        const game = gameDto.fromUpdateDto(gameData);
        const updatedGame = await gameRepository.update(id, game);
        if (!updatedGame) {
-           notFoundHelper.throwError404(id, 'game');
+           return notFoundHelper.throwError404(id, 'game');
         }
-        return gameDto.toResponseDto(updatedGame);
+        return ok(gameDto.toResponseDto(updatedGame));
     }
     
     /**
@@ -71,8 +74,9 @@ const createGameService = (
    const deleteGame = async (id) => {
        const deleted = await gameRepository.remove(id);
        if(!deleted) {
-           notFoundHelper.throwError404(id, 'game');
+           return notFoundHelper.throwError404(id, 'game');
         }
+        return ok();
     }
     
     /**
@@ -82,29 +86,16 @@ const createGameService = (
     */
    const startGame = async (gameId, playerId) => {
        const game = await gameRepository.getById(gameId);
-       if (!game) {
-           notFoundHelper.throwError404(gameId, 'game');
-        }
-        if (game.status == 'PLAYING') {
-            conflictHelper.throwError409(`game with ID ${gameId} already playing`);
-        }
-        if (game.status == 'FINISHED') {
-            conflictHelper.throwError409(`game with ID ${gameId} already finished`);
-        }
         const currentPlayers = await gamePlayerRepository.getByGameId(gameId);
-        if (currentPlayers.length < 2) {
-            conflictHelper.throwError409(`game with ID ${gameId} doesn't have enough players`);
-        }
-        
         const player = await playerRepository.getById(playerId);
-        if (!player) {
-            notFoundHelper.throwError404(playerId, 'player');
+        const context = { game, gameId, currentPlayers, player, playerId };
+        const result = runValidators(gameStartValidators, context);
+        if (!result.ok) {
+            return result;
         }
-        if (game.ownerId != player.id) {
-            conflictHelper.throwError409(`player with ID ${playerId} is not the owner`);
-        }
-        
+
         await gameRepository.update(gameId, { status: 'PLAYING' });
+        return ok();
     }
     
     /**
@@ -113,26 +104,15 @@ const createGameService = (
      * @param playerId : id of the player that wants to finish the game
     */
    const finishGame = async (gameId, playerId) => {
-       const game = await gameRepository.getById(gameId);
-       if (!game) {
-           notFoundHelper.throwError404(gameId, 'game');
-        }
-        if (game.status == 'WAITING') {
-            conflictHelper.throwError409(`game with ID ${gameId} it's not playing`);
-        }
-        if (game.status == 'FINISHED') {
-            conflictHelper.throwError409(`game with ID ${gameId} already finished`);
-        }
-        
+        const game = await gameRepository.getById(gameId);
         const player = await playerRepository.getById(playerId);
-        if (!player) {
-            notFoundHelper.throwError404(playerId, 'player');
+        const context = { game, gameId, player, playerId };
+        const result = runValidators(gameFinishValidators, context);
+        if (!result.ok) {
+            return result;
         }
-        if (game.ownerId != player.id) {
-            conflictHelper.throwError409(`player with ID ${playerId} is not the owner`);
-        }
-        
         await gameRepository.update(gameId, { status: 'FINISHED' });
+        return ok();
     }
     return { addGame, findGameById, updateGame, deleteGame, startGame, finishGame };
 }

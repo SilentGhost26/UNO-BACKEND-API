@@ -1,5 +1,6 @@
 const { gameService } = require('../utils/services-mocks.utils');
 const { createRes } = require('../utils/express-mocks.utils');
+const { ok } = require('../../../src/helpers/result.helper');
 const createGameController = require('../../../src/controllers/game.controller');
 
 let gameController;
@@ -13,7 +14,7 @@ describe('test for game controller', () => {
         test('create a game from the request body and responds 201', async () => {
             const req = { body: { title: 'UNO', maxPlayers: 4 }, player: { id: 'player-1' } };
             const res = createRes();
-            gameService.addGame.mockResolvedValue({ id: 'game-1', title: 'UNO' });
+            gameService.addGame.mockResolvedValue({ ok: true, result: { id: 'game-1', title: 'UNO' } });
 
             await gameController.addGame(req, res);
 
@@ -27,7 +28,7 @@ describe('test for game controller', () => {
         test('get a game by id and responds 200', async () => {
             const req = { params: { id: 'game-1' } };
             const res = createRes();
-            gameService.findGameById.mockResolvedValue({ id: 'game-1', title: 'UNO' });
+            gameService.findGameById.mockResolvedValue({ ok: true, result: { id: 'game-1', title: 'UNO' } });
 
             await gameController.getGameById(req, res);
 
@@ -41,7 +42,7 @@ describe('test for game controller', () => {
         test('update a game and responds 200', async () => {
             const req = { params: { id: 'game-1' }, body: { title: 'Updated' } };
             const res = createRes();
-            gameService.updateGame.mockResolvedValue({ id: 'game-1', title: 'Updated' });
+            gameService.updateGame.mockResolvedValue({ ok: true, result: { id: 'game-1', title: 'Updated' } });
 
             await gameController.updateGame(req, res);
 
@@ -55,7 +56,7 @@ describe('test for game controller', () => {
         test('delete a game and responds 204', async () => {
             const req = { params: { id: 'game-1' } };
             const res = createRes();
-            gameService.deleteGame.mockResolvedValue();
+            gameService.deleteGame.mockResolvedValue({ ok: true });
 
             await gameController.deleteGame(req, res);
 
@@ -69,7 +70,7 @@ describe('test for game controller', () => {
         test('start a game and responds 200', async () => {
             const req = { params: { id: 'game-1' }, player: { id: 'player-1' } };
             const res = createRes();
-            gameService.startGame.mockResolvedValue();
+            gameService.startGame.mockResolvedValue({ ok: true });
 
             await gameController.startGame(req, res);
 
@@ -83,7 +84,7 @@ describe('test for game controller', () => {
         test('finish a game and responds 200', async () => {
             const req = { params: { id: 'game-1' }, player: { id: 'player-1' } };
             const res = createRes();
-            gameService.finishGame.mockResolvedValue();
+            gameService.finishGame.mockResolvedValue({ ok: true });
 
             await gameController.finishGame(req, res);
 

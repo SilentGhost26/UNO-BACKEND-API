@@ -11,6 +11,7 @@ const gameCardDto = require('./dto/game-card.dto');
 const gamePlayerDto = require('./dto/game-player.dto');
 const notFoundHelper = require('./helpers/not-found.helper');
 const conflictHelper = require('./helpers/conflict.helper');
+const resultHelper = require('./helpers/result.helper');
 
 const createGameService = require('./services/game.service');
 const createTokenService = require('./services/token.service');
@@ -20,13 +21,17 @@ const createCardService = require('./services/card.service');
 const createGameCardService = require('./services/game-card.service');
 const createPlayerService = require('./services/player.service');
 
+const gameStartValidators = require('./services/validators/game-start.validator');
+const gameFinishValidators = require('./services/validators/game-finish.validator');
+const addGamePlayervalidators = require('./services/validators/add-game-player.validator');
+
 const tokenService = createTokenService();
-const gameService = createGameService(gameRepository, playerRepository, gamePlayerRepository, gameDto, notFoundHelper, conflictHelper);
-const authService = createAuthService(tokenService, playerRepository, notFoundHelper, conflictHelper, playerDto);
-const gamePlayerService = createGamePlayerService(gamePlayerRepository, gameRepository, playerRepository, gamePlayerDto, notFoundHelper, conflictHelper);
-const cardService = createCardService(cardRepository, cardDto, notFoundHelper, conflictHelper);
-const gameCardService = createGameCardService(gameCardRepository, gameRepository, cardRepository, playerRepository, gamePlayerRepository, gameCardDto, cardDto, notFoundHelper, conflictHelper);
-const playerService = createPlayerService(playerRepository, playerDto, notFoundHelper, conflictHelper);
+const gameService = createGameService(gameRepository, playerRepository, gamePlayerRepository, gameDto, notFoundHelper, conflictHelper, resultHelper, gameStartValidators, gameFinishValidators);
+const authService = createAuthService(tokenService, playerRepository, notFoundHelper, conflictHelper, resultHelper, playerDto);
+const gamePlayerService = createGamePlayerService(gamePlayerRepository, gameRepository, playerRepository, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, addGamePlayervalidators);
+const cardService = createCardService(cardRepository, cardDto, notFoundHelper, conflictHelper, resultHelper);
+const gameCardService = createGameCardService(gameCardRepository, gameRepository, cardRepository, playerRepository, gamePlayerRepository, gameCardDto, cardDto, notFoundHelper, conflictHelper, resultHelper);
+const playerService = createPlayerService(playerRepository, playerDto, notFoundHelper, conflictHelper, resultHelper);
 
 const createAuthController = require('./controllers/auth.controller');
 const createCardController = require('./controllers/card.controller');

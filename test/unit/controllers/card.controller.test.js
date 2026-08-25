@@ -13,7 +13,7 @@ describe('test for card controller', () => {
         test('initialize cards and responds 201', async () => {
             const req = {};
             const res = createRes();
-            cardService.initializeCards.mockResolvedValue();
+            cardService.initializeCards.mockResolvedValue({ ok: true });
 
             await cardController.createCards(req, res);
 
@@ -26,7 +26,7 @@ describe('test for card controller', () => {
         test('get all cards and responds 200', async () => {
             const req = {};
             const res = createRes();
-            cardService.getAllCards.mockResolvedValue([{ id: 'card-1' }]);
+            cardService.getAllCards.mockResolvedValue({ ok: true, result: [{ id: 'card-1' }] });
 
             await cardController.getAllCards(req, res);
 
@@ -39,7 +39,7 @@ describe('test for card controller', () => {
         test('get a card by id and responds 200', async () => {
             const req = { params: { id: 'card-1' } };
             const res = createRes();
-            cardService.findCardById.mockResolvedValue({ id: 'card-1', color: 'RED' });
+            cardService.findCardById.mockResolvedValue({ ok: true, result: { id: 'card-1', color: 'RED' } });
 
             await cardController.getCardById(req, res);
 

@@ -13,7 +13,7 @@ describe('test for game card controller', () => {
         test('create a deck and responds 201', async () => {
             const req = { params: { gameId: 'game-1' } };
             const res = createRes();
-            gameCardService.createDeck.mockResolvedValue();
+            gameCardService.createDeck.mockResolvedValue({ ok: true });
 
             await gameCardController.createDeck(req, res);
 
@@ -27,7 +27,7 @@ describe('test for game card controller', () => {
         test('get cards for a game and responds 200', async () => {
             const req = { params: { gameId: 'game-1' } };
             const res = createRes();
-            gameCardService.getByGameId.mockResolvedValue([{ id: 'gc-1' }]);
+            gameCardService.getByGameId.mockResolvedValue({ ok: true, result: [{ id: 'gc-1' }] });
 
             await gameCardController.getCards(req, res);
 
@@ -41,7 +41,7 @@ describe('test for game card controller', () => {
         test('update a card in a game and responds 200', async () => {
             const req = { params: { gameId: 'game-1', cardId: 'card-1' }, body: { zone: 'HAND' } };
             const res = createRes();
-            gameCardService.updateGameCard.mockResolvedValue({ id: 'gc-1' });
+            gameCardService.updateGameCard.mockResolvedValue({ ok: true, result: { id: 'gc-1' } });
 
             await gameCardController.updateCard(req, res);
 
@@ -55,11 +55,11 @@ describe('test for game card controller', () => {
         test('get the top card from the deck and responds 200', async () => {
             const req = { params: { gameId: 'game-1' } };
             const res = createRes();
-            gameCardService.getTopCardFromDeck.mockResolvedValue({ id: 'card-1' });
+            gameCardService.getTopCardFromDiscard.mockResolvedValue({ ok: true, result: { id: 'card-1' } });
 
-            await gameCardController.getTopCardFromDeck(req, res);
+            await gameCardController.getTopCardFromDiscard(req, res);
 
-            expect(gameCardService.getTopCardFromDeck).toHaveBeenCalledWith('game-1');
+            expect(gameCardService.getTopCardFromDiscard).toHaveBeenCalledWith('game-1');
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({ gameId: 'game-1', topCard: { id: 'card-1' } });
         });

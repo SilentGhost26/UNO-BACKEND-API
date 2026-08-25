@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const createAuthService = require('../../../src/services/auth.service');
+const { ok, err } = require('../../../src/helpers/result.helper');
 const { playerRepository } = require('../utils/repository-mocks.utils');
 const playerDto = require('../../../src/dto/player.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
@@ -21,6 +22,7 @@ describe('test for auth service', () => {
             playerRepository,
             notFoundHelper,
             conflictHelper,
+            { ok, err },
             playerDto
         );
     });
@@ -50,33 +52,40 @@ describe('test for auth service', () => {
                 password: 'hashed-password',
                 email: 'ana@test.com',
             }));
-            expect(result.email).toBe('ana@test.com');
+            expect(result.ok).toBe(true);
+            expect(result.result.email).toBe('ana@test.com');
         });
 
-        test('throw error 409 when the email is already registered', async () => {
+        test('return an error result when the email is already registered', async () => {
             bcrypt.hash.mockResolvedValue('hashed-password');
             playerRepository.getByEmail.mockResolvedValue({ id: 'player-1' });
 
-            await expect(authService.registerPlayer({
+            const result = await authService.registerPlayer({
                 name: 'Ana',
                 age: 22,
                 email: 'ana@test.com',
                 password: 'secret',
-            })).rejects.toMatchObject({
+            });
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'The email is already registered',
                 statusCode: 409,
             });
         });
 
-        test('throw an error when bcrypt hash fails', async () => {
+        test('return an error result when bcrypt hash fails', async () => {
             bcrypt.hash.mockRejectedValue(new Error('hash failed'));
 
-            await expect(authService.registerPlayer({
+            const result = await authService.registerPlayer({
                 name: 'Ana',
                 age: 22,
                 email: 'ana@test.com',
                 password: 'secret',
-            })).rejects.toThrow('Error encripting the password');
+            });
+
+            expect(result.ok).toBe(false);
+            expect(result.error.message).toBe('Error encripting the password');
         });
     });
 
@@ -91,32 +100,37 @@ describe('test for auth service', () => {
 
             const result = await authService.authenticatePlayer('ana@test.com', 'secret');
 
-            expect(result).toBe('jwt-token');
+            expect(result.ok).toBe(true);
+            expect(result.result).toBe('jwt-token');
             expect(tokenService.createUserToken).toHaveBeenCalledWith(expect.objectContaining({ id: 'player-1' }));
         });
 
-        test('throw error 401 when the player is not registered', async () => {
+        test('return an error result when the player is not registered', async () => {
             playerRepository.getByEmail.mockResolvedValue(null);
 
-            await expect(authService.authenticatePlayer('unknown@test.com', 'secret'))
-                .rejects.toMatchObject({
-                    message: 'player not registered',
-                    statusCode: 401,
-                });
+            const result = await authService.authenticatePlayer('unknown@test.com', 'secret');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
+                message: 'player not registered',
+                statusCode: 401,
+            });
         });
 
-        test('throw error 401 when the password is incorrect', async () => {
+        test('return an error result when the password is incorrect', async () => {
             playerRepository.getByEmail.mockResolvedValue({
                 id: 'player-1',
                 password: 'hashed-password',
             });
             bcrypt.compare.mockResolvedValue(false);
 
-            await expect(authService.authenticatePlayer('ana@test.com', 'secret'))
-                .rejects.toMatchObject({
-                    message: 'incorrect email or password',
-                    statusCode: 401,
-                });
+            const result = await authService.authenticatePlayer('ana@test.com', 'secret');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
+                message: 'incorrect email or password',
+                statusCode: 401,
+            });
         });
     });
 
@@ -124,14 +138,18 @@ describe('test for auth service', () => {
         test('logout a player successfully', async () => {
             playerRepository.getById.mockResolvedValue({ id: 'player-1' });
 
-            await expect(authService.logoutPlayer('player-1')).resolves.toBeUndefined();
+            const result = await authService.logoutPlayer('player-1');
+            expect(result).toEqual({ ok: true, result: undefined });
             expect(playerRepository.update).toHaveBeenCalledWith('player-1', expect.objectContaining({ loggedOutAt: expect.any(Number) }));
         });
 
-        test('throw error 404 when the player does not exist', async () => {
+        test('return an error result when the player does not exist', async () => {
             playerRepository.getById.mockResolvedValue(null);
 
-            await expect(authService.logoutPlayer('nonexistent-player')).rejects.toMatchObject({
+            const result = await authService.logoutPlayer('nonexistent-player');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
                 message: 'player with ID nonexistent-player not found',
                 statusCode: 404,
             });

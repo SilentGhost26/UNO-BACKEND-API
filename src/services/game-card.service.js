@@ -21,6 +21,7 @@ const creategameCardService = (
     cardDto,
     notFoundHelper,
     conflictHelper,
+    { ok, err },
 ) => {
 
     /**
@@ -30,18 +31,18 @@ const creategameCardService = (
    const createDeck = async (gameId) => {
        const game = await gameRepository.getById(gameId);
        if (!game) {
-           notFoundHelper.throwError404(gameId, 'game');
+           return notFoundHelper.throwError404(gameId, 'game');
         }
         const createdDeck = await gameCardRepository.getByGameId(gameId);
         if (createdDeck.length !== 0) {
-            conflictHelper.throwError409(`Game with ID ${gameId} already has a deck`);
+            return conflictHelper.throwError409(`Game with ID ${gameId} already has a deck`);
         }
         
         const cards = await cardRepository.findAll();
         if (!cards || cards.length === 0) {
             const error = new Error('Cards are not already initialized');
             error.statusCode = 503;
-            throw error;
+            return err(error);
         }
         const deck = [];
         cards.forEach(c => {
@@ -55,6 +56,7 @@ const creategameCardService = (
         }
         
         await gameCardRepository.bulkCreate(deck);
+        return ok();
     }
     
     /**
@@ -65,23 +67,24 @@ const creategameCardService = (
    const getByGameId = async (gameId) => {
        const game = await gameRepository.getById(gameId);
        if (!game) {
-           notFoundHelper.throwError404(gameId, 'game');
+           return notFoundHelper.throwError404(gameId, 'game');
         }
         
         const gameCards = await gameCardRepository.getByGameId(gameId);
-        return gameCards.toSorted((a, b) => a.position - b.position)
+        const result = gameCards.toSorted((a, b) => a.position - b.position)
         .map(g => gameCardDto.toGameCardResponseDto(g));
+        return ok(result);
     }
     
     const updateGameCard = async (gameId, cardId, gameCardData) => {
         const game = await gameRepository.getById(gameId);
         if (!game) {
-            notFoundHelper.throwError404(gameId, 'game');
+            return notFoundHelper.throwError404(gameId, 'game');
         }
         
         const card = await cardRepository.getById(cardId) 
         if (!card) {
-            notFoundHelper.throwError404(cardId, 'card');
+            return notFoundHelper.throwError404(cardId, 'card');
         }
         
         let playerId = gameCardData.playerId || null;
@@ -92,13 +95,13 @@ const creategameCardService = (
             } else {
                 const player = await gamePlayerRepository.getByGameIdPlayerId(gameId, playerId);
                 if (!player) {
-                    notFoundHelper.throwError404(playerId, 'player in game');
+                    return notFoundHelper.throwError404(playerId, 'player in game');
                 }
             }
         }
         
         if (game.status != 'PLAYING') {
-            conflictHelper.throwError409(`game with ID ${gameId} is not playing`);
+            return conflictHelper.throwError409(`game with ID ${gameId} is not playing`);
         }
         
         const newData = {...gameCardData, playerId: playerId};
@@ -107,7 +110,7 @@ const creategameCardService = (
         }
         
         const updatedGameCard = await gameCardRepository.update(gameId, cardId, newData);
-        return gameCardDto.toGameCardResponseDto(updatedGameCard);
+        return ok(gameCardDto.toGameCardResponseDto(updatedGameCard));
     }
     
     /**
@@ -132,21 +135,20 @@ const creategameCardService = (
      * @param gameId : id of the card
      * @returns The top card
     */
-   const getTopCardFromDeck = async (gameId) => {
+   const getTopCardFromDiscard = async (gameId) => {
        const game = await gameRepository.getById(gameId);
        if (!game) {
-           notFoundHelper.throwError404(gameId, 'game');
+           return notFoundHelper.throwError404(gameId, 'game');
         }
         
-        const gameCard = await gameCardRepository.getTopCardFromDeck(gameId);
+        const gameCard = await gameCardRepository.getTopCardFromDiscard(gameId);
         if (!gameCard) {
-            notFoundHelper.throwError404(gameId, 'card of the deck from game');
+            return ok(null);
         }
-        
-        return cardDto.toResponseDto(gameCard.Card);
+        return ok(cardDto.toResponseDto(gameCard.Card));
     }
     
-    return { createDeck, getByGameId, updateGameCard, getTopCardFromDeck };   
+    return { createDeck, getByGameId, updateGameCard, getTopCardFromDiscard };   
 }
 
 module.exports = creategameCardService;

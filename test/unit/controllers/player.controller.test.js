@@ -13,7 +13,7 @@ describe('test for player controller', () => {
         test('get a player from the request params and responds 200', async () => {
             const req = { params: { id: 'player-1' } };
             const res = createRes();
-            playerService.findPlayerById.mockResolvedValue({ id: 'player-1', name: 'Ada' });
+            playerService.findPlayerById.mockResolvedValue({ ok: true, result: { id: 'player-1', name: 'Ada' } });
 
             await playerController.getPlayerById(req, res);
 
@@ -26,7 +26,7 @@ describe('test for player controller', () => {
         test('update a player from the request body and responds 200', async () => {
             const req = { player: { id: 'player-1' }, body: { name: 'Ada Updated' } };
             const res = createRes();
-            playerService.updatePlayer.mockResolvedValue({ id: 'player-1', name: 'Ada Updated' });
+            playerService.updatePlayer.mockResolvedValue({ ok: true, result: { id: 'player-1', name: 'Ada Updated' } });
 
             await playerController.updatePlayer(req, res);
 
@@ -40,7 +40,7 @@ describe('test for player controller', () => {
         test('delete a player from the request player and responds 204', async () => {
             const req = { player: { id: 'player-1' } };
             const res = createRes();
-            playerService.deletePlayer.mockResolvedValue();
+            playerService.deletePlayer.mockResolvedValue({ ok: true });
 
             await playerController.deletePlayer(req, res);
 
@@ -54,7 +54,7 @@ describe('test for player controller', () => {
         test('get the profile of the authenticated player and responds 200', async () => {
             const req = { player: { id: 'player-1' } };
             const res = createRes();
-            playerService.findPlayerById.mockResolvedValue({ id: 'player-1', name: 'Ada' });
+            playerService.findPlayerById.mockResolvedValue({ ok: true, result: { id: 'player-1', name: 'Ada' } });
 
             await playerController.getProfile(req, res);
 

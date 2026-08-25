@@ -13,7 +13,7 @@ describe('test for auth controller', () => {
         test('register the player from the request body and responds 201 with the created player', async () => {
             const req = { body: { name: 'Ada', age: 30, email: 'ada@example.com', password: 'secret123' } };
             const res = createRes();
-            authService.registerPlayer.mockResolvedValue({ id: 'player-1', name: 'Ada' });
+            authService.registerPlayer.mockResolvedValue({ ok: true, result: { id: 'player-1', name: 'Ada' } });
 
             await authController.registerPlayer(req, res);
             expect(res.status).toHaveBeenCalledWith(201);
@@ -26,7 +26,7 @@ describe('test for auth controller', () => {
         test('authenticate a player from the request body and responds 200 with a token', async () => {
             const req = { body: { email: 'ada@example.com', password: 'secret123' } };
             const res = createRes();
-            authService.authenticatePlayer.mockResolvedValue('secret-token');
+            authService.authenticatePlayer.mockResolvedValue({ ok: true, result: 'secret-token' });
             
             await authController.authenticatePlayer(req, res);
             expect(res.status).toHaveBeenCalledWith(200);
@@ -39,7 +39,7 @@ describe('test for auth controller', () => {
         test('logout a player from the request player and responds 200', async () => {
             const req = { player: { id: 'player-1' } };
             const res = createRes();
-            authService.logoutPlayer.mockResolvedValue();
+            authService.logoutPlayer.mockResolvedValue({ ok: true });
             
             await authController.logoutPlayer(req, res);
             expect(res.status).toHaveBeenCalledWith(200);

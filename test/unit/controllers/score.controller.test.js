@@ -13,7 +13,7 @@ describe('test for score controller', () => {
         test('get a score by id and responds 200', async () => {
             const req = { params: { id: 'score-1' } };
             const res = createRes();
-            gamePlayerService.findScoreById.mockResolvedValue({ id: 'score-1', score: 10 });
+            gamePlayerService.findScoreById.mockResolvedValue({ ok: true, result: { id: 'score-1', score: 10 } });
 
             await scoreController.getScoreById(req, res);
 
@@ -27,7 +27,7 @@ describe('test for score controller', () => {
         test('update a score and responds 200', async () => {
             const req = { params: { id: 'score-1' }, body: { score: 20 } };
             const res = createRes();
-            gamePlayerService.updateScore.mockResolvedValue({ id: 'score-1', score: 20 });
+            gamePlayerService.updateScore.mockResolvedValue({ ok: true, result: { id: 'score-1', score: 20 } });
 
             await scoreController.updateScore(req, res);
 
@@ -41,7 +41,7 @@ describe('test for score controller', () => {
         test('get scores for a game and responds 200', async () => {
             const req = { params: { gameId: 'game-1' } };
             const res = createRes();
-            gamePlayerService.findScoresBygameId.mockResolvedValue([{ id: 'score-1', score: 10 }]);
+            gamePlayerService.findScoresBygameId.mockResolvedValue({ ok: true, result: [{ id: 'score-1', score: 10 }] });
 
             await scoreController.getScoresByGameId(req, res);
 

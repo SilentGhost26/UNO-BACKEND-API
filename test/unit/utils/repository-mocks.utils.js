@@ -42,7 +42,7 @@ const gameCardRepository = {
     findAll: jest.fn(),
     bulkCreate: jest.fn(),
     getByGameId: jest.fn(),
-    getTopCardFromDeck: jest.fn(),
+    getTopCardFromDiscard: jest.fn(),
 }
 
 module.exports = {

@@ -15,7 +15,9 @@ const createGamePlayerService = (
     playerRepository,
     gamePlayerDto,
     notFoundHelper,
-    conflictHelper
+    conflictHelper,
+    { runValidators, ok },
+    addGamePlayervalidators = [],
 ) => {
     /**
      * Add a playingPlayer to a specific game, initializing its score
@@ -25,33 +27,19 @@ const createGamePlayerService = (
    const addGamePlayer = async (gamePlayerData) => {
        const gamePlayer = gamePlayerDto.fromCreate(gamePlayerData);
        const game = await gameRepository.getById(gamePlayer.gameId);
-       if (!game) {
-           notFoundHelper.throwError404(gamePlayer.gameId, 'game');
-        }
-        
         const player = await playerRepository.getById(gamePlayer.playerId);
-        if (!player) {
-            notFoundHelper.throwError404(gamePlayer.playerId, 'player');
-        }
-        
         const playingPlayer = await gamePlayerRepository.getByGameIdPlayerId(gamePlayer.gameId, gamePlayer.playerId);
-        if (playingPlayer) {
-            conflictHelper.throwError409(`player with ID ${gamePlayer.playerId} already registered ` +
-                `in game with ID ${gamePlayer.gameId}`);
+        const currentPlayers = await gamePlayerRepository.getByGameId(gamePlayer.gameId);
+        const context = {game, gameId: gamePlayer.gameId, player, playerId: gamePlayer.playerId, playingPlayer, currentPlayers };
+
+        const result = runValidators(addGamePlayervalidators, context);
+        if (!result.ok) {
+            return result;
         }
-            
-        if (game.status != 'WAITING') {
-            conflictHelper.throwError409(`Game swith ID ${game.id} is not in waiting state`);
-        }
-        const currentPlayers = await gamePlayerRepository.getByGameId(game.id);
-        const totalCurrentPlayers = currentPlayers.length;
-        if (game.maxPlayers == totalCurrentPlayers) {
-            conflictHelper.throwError409(`The game with ID ${game.id} is full`);
-        }
-        gamePlayer.position = currentPlayers[totalCurrentPlayers - 1].position + 1;
+        gamePlayer.position = currentPlayers[currentPlayers.length - 1].position + 1;
         
         const newGamePlayer = await gamePlayerRepository.create(gamePlayer);
-        return gamePlayerDto.toResponseDto(newGamePlayer);
+        return ok(gamePlayerDto.toResponseDto(newGamePlayer));
     }
         
     /**
@@ -62,9 +50,9 @@ const createGamePlayerService = (
     const findScoresBygameId = async (gameId) => {
         const scores = await gamePlayerRepository.getByGameId(gameId);
         if(!scores) {
-            notFoundHelper.throwError404(gameId, 'scores in game');
+            return notFoundHelper.throwError404(gameId, 'scores in game');
         }
-        return scores.map(s => gamePlayerDto.toScoreResponseDto(s));
+        return ok(scores.map(s => gamePlayerDto.toScoreResponseDto(s)));
     }
         
     /**
@@ -76,9 +64,9 @@ const createGamePlayerService = (
     const updateScore = async (id, score) => {
        const updatedGamePlayer = await gamePlayerRepository.update(id, { score: score });
        if (!updatedGamePlayer) {
-           notFoundHelper.throwError404(id, 'gamePlayer');
+           return notFoundHelper.throwError404(id, 'gamePlayer');
         }
-        return gamePlayerDto.toScoreResponseDto(updatedGamePlayer);
+        return ok(gamePlayerDto.toScoreResponseDto(updatedGamePlayer));
     }
         
     /**
@@ -89,18 +77,19 @@ const createGamePlayerService = (
     const deleteGamePlayer = async (gameId, playerId) => {   
        const game = await gameRepository.getById(gameId);
        if (!game) {
-           notFoundHelper.throwError404(gameId, 'game');
+           return notFoundHelper.throwError404(gameId, 'game');
         }
         if (game.status == 'FINISHED') {
-            conflictHelper.throwError409(`game with ID ${gameId} already finished`);
+            return conflictHelper.throwError409(`game with ID ${gameId} already finished`);
         }
         
         const gamePlayer = await gamePlayerRepository.getByGameIdPlayerId(gameId, playerId);
         if (!gamePlayer) {
-            notFoundHelper.throwError404(playerId, 'player in game');
+            return notFoundHelper.throwError404(playerId, 'player in game');
         }
         
         await gamePlayerRepository.remove(gamePlayer.id);
+        return ok();
     }
         
     /**
@@ -111,10 +100,10 @@ const createGamePlayerService = (
     const findScoreById = async (id) => {
        const gamePlayer = await gamePlayerRepository.getById(id);
        if(!gamePlayer) {
-           notFoundHelper.throwError404(id, 'score');
+           return notFoundHelper.throwError404(id, 'score');
         }
         
-        return gamePlayerDto.toScoreResponseDto(gamePlayer);
+        return ok(gamePlayerDto.toScoreResponseDto(gamePlayer));
     }
         
     /**
@@ -125,9 +114,9 @@ const createGamePlayerService = (
     const getPlayersByGameId = async (gameId) => {
        const players = await gamePlayerRepository.getByGameId(gameId);
        if (!players) {
-           notFoundHelper.throwError404(gameId, 'players in game');
+           return notFoundHelper.throwError404(gameId, 'players in game');
         }
-        return players.map(gamePlayerDto.toGamePlayerInfoDto);
+        return ok(players.map(gamePlayerDto.toGamePlayerInfoDto));
     }
         
     /**
@@ -138,14 +127,14 @@ const createGamePlayerService = (
     const getCurrentPlayerToPlay = async (gameId) => {
         const game = await gameRepository.getById(gameId);
         if (!game) {
-            notFoundHelper.throwError404(gameId, 'game');
+            return notFoundHelper.throwError404(gameId, 'game');
         }
         
         if (game.status != 'PLAYING') {
-            conflictHelper.throwError409(`game with ID $${gameId} is not in playing state`);
+            return conflictHelper.throwError409(`game with ID $${gameId} is not in playing state`);
         }
         const player = await gamePlayerRepository.getCurrentPlayerToPlay(gameId);
-        return gamePlayerDto.toGamePlayerInfoDto(player);
+        return ok(gamePlayerDto.toGamePlayerInfoDto(player));
     }
         
     return { addGamePlayer, findScoresBygameId, updateScore, deleteGamePlayer, findScoreById, getPlayersByGameId, getCurrentPlayerToPlay }
