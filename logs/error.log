@@ -522,3 +522,29 @@ ERROR: 2026-08-25 16:07:11:711 - statusCode: 404 - source: API-CALL - message: E
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
     at async getPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/player.controller.js:14:24) 
  details: 
+ERROR: 2026-08-26 14:01:03:13 - statusCode: 409 - source: API-CALL - message: Error: game with ID $16489fca-9b4a-4162-b694-e354182f763d is not in playing state
+    at Object.throwError409 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/conflict.helper.js:4:19)
+    at Object.getCurrentPlayerToPlay (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-player.service.js:134:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getCurrentPlayerToPlay (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game-player.controller.js:67:24) 
+ details: 
+ERROR: 2026-08-26 14:06:53:653 - statusCode: 409 - source: API-CALL - message: Error: Player with ID 2b4bbae8-f065-4a15-be82-af56d36dfa34 has a valid card in his hand
+    at Object.throwError409 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/conflict.helper.js:4:19)
+    at Object.drawCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-engine.service.js:265:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async drawCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game-engine.controller.js:35:24) 
+ details: 
+ERROR: 2026-08-26 14:09:11:911 - statusCode: 500 - source: API-CALL - message: TypeError: Cannot read properties of null (reading 'id')
+    at toScoreResponseDto (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/dto/game-player.dto.js:19:18)
+    at Array.map (<anonymous>)
+    at Object.playCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-engine.service.js:154:39)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async playCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game-engine.controller.js:23:24) 
+ details: 
+ERROR: 2026-08-26 14:15:32:1532 - statusCode: 500 - source: API-CALL - message: TypeError: Cannot read properties of null (reading 'id')
+    at toScoreResponseDto (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/dto/game-player.dto.js:19:18)
+    at Array.map (<anonymous>)
+    at Object.playCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-engine.service.js:154:39)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async playCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game-engine.controller.js:23:24) 
+ details: 

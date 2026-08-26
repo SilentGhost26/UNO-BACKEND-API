@@ -123,7 +123,7 @@ const createGameEngineService = (
 
         if (cuantityCardsInHand === 0) {
             await gameRepository.update(gameId, { status: 'FINISHED', winnerId: playerId });
-            const playersInGame = await gamePlayerRepository.getByGameId(gameId);
+            const playersInGame = await calculateScores(gameId);
             return ok({
                 action: 'Player won the game',
                 played: cardDto.toResponseDto(card.Card),
@@ -184,6 +184,33 @@ const createGameEngineService = (
             mustDraw: mustDraw, 
             accumulatedCardsToDraw: cardsToDraw });
         return nextPlayer;
+    }
+
+    /**
+     * Function to calculate the scores of the players in a game based on the cards in their hand
+     * @param gameId : id of the game
+     * @returns The list of the players with their updated scores
+     */
+    const calculateScores = async (gameId) => {
+        const players = await gamePlayerRepository.getByGameId(gameId);
+        const udpatedScores = await Promise.all(players.map(async p => {
+            const cardsInHand = await gameCardRepository.getPlayerHand(gameId, p.playerId);
+            let score = cardsInHand.reduce((acc, curr) => {
+                switch(curr.Card.type) {
+                    case 'NUMBER':
+                        return parseInt(curr.Card.value) + acc;
+                    case 'REVERSE':
+                    case 'BLOCK':
+                    case '+2': 
+                        return 20 + acc;
+                    case 'WILD':
+                    case '+4':
+                        return 50 + acc;
+                }
+            }, 0);
+            return gamePlayerRepository.update(p.id, { score });
+        }));
+        return udpatedScores;
     }
 
     /**
