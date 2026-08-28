@@ -37,7 +37,8 @@ const createAuthController = (authService) => {
            return next(token.error);
        }
        res.status(200).json({
-           access_token: token.result
+           access_token: token.result.token,
+           playerId: token.result.playerId,
         });
     }
     
