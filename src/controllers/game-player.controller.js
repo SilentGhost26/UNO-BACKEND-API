@@ -37,7 +37,8 @@ const createGamePlayerController = (gamePlayerService) => {
             return next(result.error);
         }
         res.status(204).json({
-            message: "Player left the game succesfully"
+            message: "Player left the game succesfully",
+            player: result.result,
         });
     }
 

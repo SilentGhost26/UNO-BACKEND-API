@@ -88,8 +88,12 @@ const createGamePlayerService = (
             return notFoundHelper.throwError404(playerId, 'player in game');
         }
         
+        if (game.status === 'WAITING' && playerId === game.ownerId) {
+            await gameRepository.remove(gameId);
+        }
+
         await gamePlayerRepository.remove(gamePlayer.id);
-        return ok();
+        return ok(gamePlayerDto.toGamePlayerInfoDto(gamePlayer));
     }
         
     /**

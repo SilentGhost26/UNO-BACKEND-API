@@ -147,10 +147,10 @@ describe('test for game player service', () => {
     describe('Tests for deleteGamePlayer', () => {
         test('delete a player from a game successfully', async () => {
             gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'WAITING' });
-            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue({ id: 'gp-1' });
+            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue({ id: 'gp-1', playerId: 'player-1', Player: { name: 'luis'} });
 
             const result = await gamePlayerService.deleteGamePlayer('game-1', 'player-1');
-            expect(result).toEqual({ ok: true, result: undefined });
+            expect(result).toEqual({ ok: true, result: { id: 'gp-1', playerId: 'player-1', name: 'luis' }});
             expect(gamePlayerRepository.remove).toHaveBeenCalledWith('gp-1');
         });
 
