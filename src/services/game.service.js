@@ -184,7 +184,7 @@ const createGameService = (
             return err(error);
         }
 
-        const games = await gameRepository.getWithPagination(numberPage, numberLimit);
+        const games = await gameRepository.getWithPagination(numberPage, numberLimit, 'WAITING');
         return ok(games.map(g => gameDto.toResponseDto(g)));
     }
 

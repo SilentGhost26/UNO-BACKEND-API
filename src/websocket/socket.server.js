@@ -7,8 +7,11 @@ const createGameEngineSocketCallbacks = require('./callbacks/game-engine.callbac
 const { gamePlayerService, gameService, gameEngineService, gameCardService } = require('../compositions');
 
 const initializeSocket = (server) => {
-    const io = new Server(server);
-
+    const io = new Server(server, {
+        cors: {
+            origin: process.env.FRONT_END_URL,
+        }
+    });
     io.use(authMiddleware);
     io.on('connection', (socket) => {
         const gameEngineSocketCallbacks = createGameEngineSocketCallbacks(io,socket, errorWrapper, gamePlayerService, gameService, gameEngineService, gameCardService);

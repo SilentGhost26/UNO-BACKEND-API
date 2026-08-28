@@ -137,11 +137,10 @@ const createGameEngineSocketCallbacks = (
         const playerId = socket.player.id;
         socket.rooms.forEach(async room => {
             const result = await gamePlayerService.deleteGamePlayer(room, playerId);
-            if (!result.ok) {
-                throw result.error;
+            if (result.ok) {
+                roomHandler.leaveRoom(socket, room);
+                roomHandler.broadcast(socket, room, 'player-left', result.result);
             }
-            roomHandler.leaveRoom(socket, room);
-            roomHandler.broadcast(socket, room, 'player-left', result.result);
         });
     });
 
