@@ -41,7 +41,7 @@ const createGamePlayerService = (
         const newGamePlayer = await gamePlayerRepository.create(gamePlayer);
         return ok(gamePlayerDto.toResponseDto(newGamePlayer));
     }
-        
+            
     /**
      * Find the scores of all players that are part of a specific game
      * @param gameId : id of game

@@ -9,10 +9,10 @@ const Rules = require('../models/rules.model');
  */
 const create = async (gameData) => {
     const data = {...gameData};
-    const result = sequelize.transaction(async () => {
-        const game = await Game.create(data);
+    const result = await sequelize.transaction(async (t) => {
+        const game = await Game.create(data, { transaction: t });
         data.rules.gameId = game.id;
-        const rules = await Rules.create(data.rules);
+        const rules = await Rules.create(data.rules, { transaction: t });
         game.rules = rules;
         return game;
     });
@@ -40,12 +40,29 @@ const getById = async (id) => {
  * @returns The game updated
  */
 const update = async (id, gameData) => {
-    const game = await Game.findByPk(id);
+    const game = await Game.findByPk(id, {
+        include: { model: Rules, as: 'rules' }
+    });
+
     if (!game || game.isDeleted) {
         return null;
     }
 
-    return await game.update(gameData);
+    const { rules: rulesData, ...gameFields } = gameData;
+
+    const result = await sequelize.transaction(async (t) => {
+        const updatedGame = await game.update(gameFields, { transaction: t });
+
+        if (rulesData && game.rules) {
+            const rules = await Rules.findByPk(game.rules.id, { transaction: t });
+            const updatedRules = await rules.update(rulesData, { transaction: t });
+            updatedGame.rules = updatedRules;
+        }
+
+        return updatedGame;
+    });
+
+    return result;
 }
 
 /**

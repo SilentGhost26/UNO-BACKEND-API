@@ -44,6 +44,7 @@ const fromUpdateDto = (data) => {
         title: data.title,
         maxPlayers: data.maxPlayers,
         status: data.status,
+        rules: data.rules,
     }
 }
 

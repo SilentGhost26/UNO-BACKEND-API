@@ -144,6 +144,21 @@ const createGameEngineSocketCallbacks = (
         });
     });
 
+    const updateGame = (gameSchema) => wrapError(socket, async ({ gameId,   gameData }) => {
+        validateSchema(gameSchema, gameData);
+        const playerId = socket.player.id;
+        if (!isInRoom(socket, gameId)) {
+            return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
+        }
+
+        const updated = await gameService.updateGame(gameId, gameData);
+        if (!updated.ok) {
+            throw updated.error;
+        }
+
+        roomHandler.broadcast(io, gameId, 'game-udpated', updated.result);
+    });
+
     function isInRoom(socket, room) {
         return socket.rooms.has(room);
     }
@@ -158,7 +173,7 @@ const createGameEngineSocketCallbacks = (
         }
     }
 
-    return { createGame, enterGame, leaveGame, startGame, distributeCards, sayUno, challenge, playCard, draw, leaveByError };
+    return { createGame, enterGame, leaveGame, startGame, distributeCards, sayUno, challenge, playCard, draw, leaveByError, updateGame };
 }
 
 module.exports = createGameEngineSocketCallbacks;
