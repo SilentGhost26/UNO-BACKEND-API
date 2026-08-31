@@ -22,6 +22,11 @@ const Game = sequelize.define(
             defaultValue: 'WAITING',
             allowNull: false
         },
+        distributedCards: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false
+        },
         direction: {
             type: DataTypes.ENUM('LEFT', 'RIGHT'),
             defaultValue: 'RIGHT',
@@ -30,6 +35,20 @@ const Game = sequelize.define(
         currentPlayerIndex: {
             type: DataTypes.INTEGER,
             defaultValue: 1,
+            allowNull: false
+        },
+        currentColor: {
+            type: DataTypes.ENUM('YELLOW', 'RED', 'GREEN', 'BLUE'),
+            allowNull: true
+        },
+        mustDraw: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false    
+        },
+        accumulatedCardsToDraw: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: false
         },
         isDeleted: {

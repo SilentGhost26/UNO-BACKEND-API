@@ -195,6 +195,10 @@ const getCurrentPlayerToPlay = async (gameId) => {
             isDeleted: false
         }
     });
+
+    if (!game) {
+        return null;
+    }
     const currentPlayer = await GamePlayer.findOne({
         where: {
             gameId: game.id,

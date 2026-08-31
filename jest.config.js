@@ -6,7 +6,11 @@ const config = {
         'src/services/*.js',
         'src/controllers/*.js',
         'src/middlewares/*.js',
-        'src/dto/*.js',],
+        'src/dto/*.js',
+        'src/websocket/middlewares/**.js',
+        'src/websocket/callbacks/**.js',
+        'src/websocket/handlers/**.js',
+        'src/websocket/sockets/**.js'],
     coverageDirectory: 'coverage',
     clearMocks: true,
     resetMocks: true

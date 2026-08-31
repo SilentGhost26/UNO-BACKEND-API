@@ -64,4 +64,18 @@ describe('test for game card controller', () => {
             expect(res.json).toHaveBeenCalledWith({ gameId: 'game-1', topCard: { id: 'card-1' } });
         });
     });
+
+    describe('Tests for getPlayerHand', () => {
+        test('get the top the player hand and responds 200', async () => {
+            const req = { params: { gameId: 'game-1' }, player: { id: 'player-1' } };
+            const res = createRes();
+            gameCardService.getPlayerHand.mockResolvedValue({ ok: true, result: [{ id: '1', color: 'RED', value: '0', type: 'NUMBER' }] });
+
+            await gameCardController.getPlayerHand(req, res);
+
+            expect(gameCardService.getPlayerHand).toHaveBeenCalledWith('game-1', 'player-1');
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({ playerId: 'player-1', hand: [{ id: '1', color: 'RED', value: '0', type: 'NUMBER' }] });
+        });
+    });
 });

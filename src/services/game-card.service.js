@@ -21,7 +21,8 @@ const creategameCardService = (
     cardDto,
     notFoundHelper,
     conflictHelper,
-    { ok, err },
+    { ok, err, runValidators },
+    rulesCreateDeckValidators = [],
 ) => {
 
     /**
@@ -29,7 +30,7 @@ const creategameCardService = (
      * @param gameId : id of the game
     */
    const createDeck = async (gameId) => {
-       const game = await gameRepository.getById(gameId);
+       const game = await gameRepository.getByIdWithRules(gameId);
        if (!game) {
            return notFoundHelper.throwError404(gameId, 'game');
         }
@@ -46,10 +47,13 @@ const creategameCardService = (
         }
         const deck = [];
         cards.forEach(c => {
-            deck.push({ zone: 'DECK', gameId: gameId, cardId: c.id})
+            const validated = runValidators(rulesCreateDeckValidators, { card: c, rules: game.rules });
+            if (validated.ok) {
+                deck.push({ zone: 'DECK', gameId: gameId, cardId: c.id})
+            }
         });
         
-        const positions = getRandomNumbers(1, cards.length);
+        const positions = getRandomNumbers(1, deck.length);
         
         for (let i = 0; i < deck.length; i++) {
             deck[i].position = positions[i];
@@ -147,8 +151,34 @@ const creategameCardService = (
         }
         return ok(cardDto.toResponseDto(gameCard.Card));
     }
+
+    /**
+     * function to get the cards that a player has in his hand
+     * @param gameId : id of the game where the player is playing
+     * @param playerId : id of the player
+     * @returns a list of cards
+     */
+    const getPlayerHand = async (gameId, playerId) => {
+        const game = await gameRepository.getById(gameId);
+        if (!game) {
+            return notFoundHelper.throwError404(gameId, 'game');
+        }
+
+        if (game.status !== 'PLAYING') {
+            return conflictHelper.throwError409(`game with ID ${gameId} is not playing`);
+        }
+
+        const gamePlayer = await gamePlayerRepository.getByGameIdPlayerId(gameId, playerId);
+        if (!gamePlayer) {
+            return notFoundHelper.throwError404(playerId, 'player');
+        }
+
+        const hand = await gameCardRepository.getPlayerHand(gameId, playerId);
+
+        return ok(hand.map(c => cardDto.toResponseDto(c.Card)));
+    }
     
-    return { createDeck, getByGameId, updateGameCard, getTopCardFromDiscard };   
+    return { createDeck, getByGameId, updateGameCard, getTopCardFromDiscard, getPlayerHand };   
 }
 
 module.exports = creategameCardService;

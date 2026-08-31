@@ -1,11 +1,12 @@
 const {
     toResponseDto,
     fromCreateDto,
-    fromUpdateDto
+    fromUpdateDto,
+    toStatusResponseDto,
 } = require('../../../src/dto/game.dto');
 
-describe('toResponseDto', () => {
-    test('should get a responseDto', () => {
+describe('toStatusResponseDto', () => {
+    test('should get a statusResponseDto', () => {
         const game = {
             id: 'game-1',
             title: 'UNO',
@@ -13,6 +14,7 @@ describe('toResponseDto', () => {
             status: 'WAITING',
             ownerId: 'owner-1',
             winnerId: 'player-1',
+            currentColor: 'RED',
             createdAt: '2026-07-28T00:00:00.000Z'
         };
         
@@ -23,10 +25,11 @@ describe('toResponseDto', () => {
             status: 'WAITING',
             ownerId: 'owner-1',
             winnerId: 'player-1',
+            currentColor: 'RED',
             createdAt: '2026-07-28T00:00:00.000Z'
         };
         
-        expect(toResponseDto(game)).toStrictEqual(dto);
+        expect(toStatusResponseDto(game)).toStrictEqual(dto);
     });
 
     test('should not mutate the original object', () => {
@@ -42,7 +45,7 @@ describe('toResponseDto', () => {
 
         const copy = { ...game };
 
-        toResponseDto(game);
+        toStatusResponseDto(game);
         expect(game).toEqual(copy);
     });
 });
@@ -60,7 +63,8 @@ describe('fromCreateDto', () => {
             title: 'UNO Match',
             maxPlayers: 4,
             status: 'WAITING',
-            ownerId: 'owner-1'
+            ownerId: 'owner-1',
+            rules: undefined,
         };
         
         expect(fromCreateDto(dto)).toStrictEqual(game);

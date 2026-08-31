@@ -1,4 +1,6 @@
+const { sequelize } = require('../database/mysql.database');
 const Game = require('../models/game.model');
+const Rules = require('../models/rules.model');
 
 /**
  * Create a game in the database
@@ -6,7 +8,15 @@ const Game = require('../models/game.model');
  * @returns the created game
  */
 const create = async (gameData) => {
-    return await Game.create(gameData);
+    const data = {...gameData};
+    const result = sequelize.transaction(async () => {
+        const game = await Game.create(data);
+        data.rules.gameId = game.id;
+        const rules = await Rules.create(data.rules);
+        game.rules = rules;
+        return game;
+    });
+    return result;
 }
 
 /**
@@ -53,9 +63,28 @@ const remove = async (id) => {
     return true;
 }
 
+/**
+ * Get a specific game from the database including its rules
+ * @param  id : id of the game 
+ * @returns the game that was found
+ */
+const getByIdWithRules = async (id) => {
+    const game = await Game.findByPk(id, {
+        include: {
+            model: Rules,
+            as: 'rules'
+        }
+    });
+    if(!game || game.isDeleted) {
+        return null;
+    }
+
+    return game;
+}
 module.exports = {
     create,
     getById,
     update,
-    remove
+    remove,
+    getByIdWithRules,
 }

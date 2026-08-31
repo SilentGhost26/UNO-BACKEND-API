@@ -1,7 +1,10 @@
 const createGameService = require('../../../src/services/game.service');
 const { runValidators, ok } = require('../../../src/helpers/result.helper');
-const { gameRepository, playerRepository, gamePlayerRepository } = require('../utils/repository-mocks.utils');
+const { gameRepository, playerRepository, gamePlayerRepository, historyRepository, gameCardRepository } = require('../utils/repository-mocks.utils');
 const gameDto = require('../../../src/dto/game.dto');
+const cardDto = require('../../../src/dto/card.dto');
+const gamePlayerDto = require('../../../src/dto/game-player.dto');
+const gameCardDto = require('../../../src/dto/game-card.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
 const conflictHelper = require('../../../src/helpers/conflict.helper');
 const startGameValidators = require('../../../src/services/validators/game-start.validator');
@@ -14,7 +17,12 @@ describe('test for game service', () => {
             gameRepository,
             playerRepository,
             gamePlayerRepository,
+            gameCardRepository,
+            historyRepository,
             gameDto,
+            cardDto,
+            gamePlayerDto,
+            gameCardDto,
             notFoundHelper,
             conflictHelper,
             { runValidators, ok },
@@ -34,6 +42,11 @@ describe('test for game service', () => {
                 ownerId: 'owner-1',
                 winnerId: null,
                 createdAt: '2026-01-01T00:00:00.000Z',
+                rules: {
+                    allowDrawFour: true,
+                    allowAccumulateDraw: true,
+                    allowReverse: true,
+                },
             });
             gamePlayerRepository.create.mockResolvedValue({});
 
@@ -110,6 +123,11 @@ describe('test for game service', () => {
                 ownerId: 'owner-1',
                 winnerId: null,
                 createdAt: '2026-01-01T00:00:00.000Z',
+                rules: {
+                    allowDrawFour: true,
+                    allowAccumulateDraw: true,
+                    allowReverse: true,
+                },
             });
 
             const result = await gameService.updateGame('game-1', {title: 'UPDATED GAME', maxPlayers: 4});
@@ -419,6 +437,100 @@ describe('test for game service', () => {
                 statusCode: 409,
             });
             expect(gameRepository.update).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('Tests for getGameStatus', () => {
+        test('return an error result when the game does not exist', async () => {
+            gameRepository.getById.mockResolvedValue(null);
+
+            const result = await gameService.getGameStatus('nonexistent-game');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
+                message: 'game with ID nonexistent-game not found',
+                statusCode: 404,
+            });
+        });
+
+        test('return the game and the list of players when the game is waiting', async () => {
+            gameRepository.getById.mockResolvedValue({
+                id: 'game-1',
+                title: 'UNO',
+                maxPlayers: 4,
+                status: 'WAITING',
+                ownerId: 'owner-1',
+                winnerId: null,
+                createdAt: '2026-01-01T00:00:00.000Z',
+            });
+            gamePlayerRepository.getByGameId.mockResolvedValue([
+                { playerId: 'player-1', Player: { name: 'Ana' } },
+                { playerId: 'player-2', Player: { name: 'Luis' } },
+            ]);
+
+            const result = await gameService.getGameStatus('game-1');
+
+            expect(result.ok).toBe(true);
+            expect(result.result.game).toMatchObject({ id: 'game-1', status: 'WAITING' });
+            expect(result.result.players).toEqual([
+                { id: undefined, playerId: 'player-1', name: 'Ana' },
+                { id: undefined, playerId: 'player-2', name: 'Luis' },
+            ]);
+            expect(gamePlayerRepository.getCurrentPlayerToPlay).not.toHaveBeenCalled();
+            expect(gameCardRepository.getTopCardFromDiscard).not.toHaveBeenCalled();
+            expect(historyRepository.getByGameId).not.toHaveBeenCalled();
+        });
+
+        test('return the full status when the game is playing', async () => {
+            const game = {
+                id: 'game-1',
+                title: 'UNO',
+                maxPlayers: 4,
+                status: 'PLAYING',
+                ownerId: 'owner-1',
+                winnerId: null,
+                createdAt: '2026-01-01T00:00:00.000Z',
+            };
+            const players = [
+                { playerId: 'player-1', Player: { name: 'Ana' } },
+                { playerId: 'player-2', Player: { name: 'Luis' } },
+            ];
+            const currentPlayer = { playerId: 'player-1' };
+            const topCard = { Card: { id: 5, color: 'RED', value: '7', type: 'NUMBER' } };
+            const hand1 = [{ Card: { id: 1, color: 'RED', value: '1', type: 'NUMBER' } }];
+            const hand2 = [{ Card: { id: 2, color: 'BLUE', value: '2', type: 'NUMBER' } }];
+            const history = [
+                { action: 'PLAY_CARD', Player: { name: 'Ana' } },
+                { action: 'DRAW_CARD', Player: { name: 'Luis' } },
+            ];
+
+            gameRepository.getById.mockResolvedValue(game);
+            gamePlayerRepository.getByGameId.mockResolvedValue(players);
+            gamePlayerRepository.getCurrentPlayerToPlay.mockResolvedValue(currentPlayer);
+            playerRepository.getById.mockResolvedValue({ id: 'player-1', name: 'Ana' });
+            gameCardRepository.getTopCardFromDiscard.mockResolvedValue(topCard);
+            gameCardRepository.getPlayerHand
+                .mockResolvedValueOnce(hand1)
+                .mockResolvedValueOnce(hand2);
+            historyRepository.getByGameId.mockResolvedValue(history);
+
+            const result = await gameService.getGameStatus('game-1');
+
+            expect(result.ok).toBe(true);
+            expect(result.result.game).toMatchObject({ id: 'game-1', status: 'PLAYING' });
+            expect(result.result.currentPlayer).toMatchObject({ playerId: 'player-1', name: 'Ana' });
+            expect(result.result.topCard).toMatchObject({ id: 5, color: 'RED', value: '7', type: 'NUMBER' });
+            expect(result.result.hands).toEqual([
+                { playerId: 'player-1', cards: [{ id: 1, color: 'RED', value: '1', type: 'NUMBER' }] },
+                { playerId: 'player-2', cards: [{ id: 2, color: 'BLUE', value: '2', type: 'NUMBER' }] },
+            ]);
+            expect(result.result.history).toEqual([
+                { action: 'PLAY_CARD', player: 'Ana' },
+                { action: 'DRAW_CARD', player: 'Luis' },
+            ]);
+            expect(gameCardRepository.getPlayerHand).toHaveBeenCalledWith('game-1', 'player-1');
+            expect(gameCardRepository.getPlayerHand).toHaveBeenCalledWith('game-1', 'player-2');
+            expect(playerRepository.getById).toHaveBeenCalledWith('player-1');
         });
     });
 });

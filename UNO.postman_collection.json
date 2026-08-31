@@ -126,6 +126,27 @@
 			"name": "Games",
 			"item": [
 				{
+					"name": "status of a specific game (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "specific Game by ID (GET)",
 					"request": {
 						"method": "GET",
@@ -146,41 +167,13 @@
 					"response": []
 				},
 				{
-					"name": "new Game (POST)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"UNO\",\n    \"status\": \"WAITING\",\n    \"maxPlayers\": 2\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/games",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"games"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "update Game (PUT)",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"string\",\n  \"maxPlayers\": 2,\n  \"status\": \"string\"\n}",
+							"raw": "{\n  \"title\": \"string\",\n  \"maxPlayers\": 2,\n  \"rules\": {\n    \"allowDrawFour\": true,\n    \"allowAccumulateDraw\": false,\n    \"allowReverse\": true\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -217,6 +210,34 @@
 							"path": [
 								"games",
 								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new Game (POST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"string\",\n  \"maxPlayers\": 2,\n  \"rules\": {\n    \"allowDrawFour\": true,\n    \"allowAccumulateDraw\": false,\n    \"allowReverse\": true\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games"
 							]
 						}
 					},
@@ -388,6 +409,16 @@
 				{
 					"name": "top card of deck (GET)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyYWQyYTY0LWNmNjItNDc2Ni04NTEwLWMxYjhjYTNmYzcxMyIsImlhdCI6MTc4NjIyNTA5NCwiZXhwIjoxNzg2MzExNDk0fQ.hUHKSa1D4vsATRZxbzGC2m4K3KhzPQhgAectwZ552dQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -402,6 +433,28 @@
 								"{{gameId}}",
 								"cards",
 								"top-card"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hand of a player (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/cards/hand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"cards",
+								"hand"
 							]
 						}
 					},
@@ -529,7 +582,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYTIwNTczLTFkYzYtNDg5OS04YmI5LTg0YjUzOGJjMTAyMCIsImlhdCI6MTc4NjExMTMzNiwiZXhwIjoxNzg2MTk3NzM2fQ.gqOUw6jbYeNbEBOP-0EPINwDdMbXiGT0TAycOxp1OkU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1ODNkZmViLTk5YjktNGVhNS1hNDFlLWEzODk4YTA0YjkyMCIsImlhdCI6MTc4NjYzMTU1MSwiZXhwIjoxNzg2NzE3OTUxfQ.Kpvrmk8QmpOALlBvPoB0cxMdvThthqjfd42RfSiZ3rE",
 									"type": "string"
 								}
 							]
@@ -638,7 +691,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"carlos@mail.com\",\n    \"password\": \"12345678\"\n}",
+							"raw": "{\n    \"email\": \"user1@mail.com\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -667,7 +720,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Carlos\",\n    \"age\": 18,\n    \"email\": \"carlos@mail.com\",\n    \"password\": \"12345678\"\n}",
+							"raw": "{\n    \"name\": \"Carlos\",\n    \"age\": 18,\n    \"email\": \"user1@mail.com\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -720,6 +773,199 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "GameEngine",
+			"item": [
+				{
+					"name": "distribute the cards in a game (POST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cardsPerPlayer\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/distribute",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"distribute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "play a card (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cardId\": \"string\",\n  \"newColor\": \"string\" //optional - use when you use a multicolor card\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/play",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"play"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "draw cards (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/draw",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"draw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "say uno (PATCH)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM2MDE4MDUyLWNjZTYtNDBkYy1iZTcyLTFmYzNjNGQ1NDZkNiIsImlhdCI6MTc4NzA1OTE0OCwiZXhwIjoxNzg3MTQ1NTQ4fQ.69jPGW2NiSCMuWgRqHC3L05V3cN1rdQ4Tmo7IyNJHL0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/say-uno",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"say-uno"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "challenge another player (POST)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM2MDE4MDUyLWNjZTYtNDBkYy1iZTcyLTFmYzNjNGQ1NDZkNiIsImlhdCI6MTc4NzA1OTE0OCwiZXhwIjoxNzg3MTQ1NTQ4fQ.69jPGW2NiSCMuWgRqHC3L05V3cN1rdQ4Tmo7IyNJHL0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"challengedPlayerId\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/challenge",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"challenge"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "History",
+			"item": [
+				{
+					"name": "history of a game (GET)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM2MDE4MDUyLWNjZTYtNDBkYy1iZTcyLTFmYzNjNGQ1NDZkNiIsImlhdCI6MTc4NzA1OTE0OCwiZXhwIjoxNzg3MTQ1NTQ4fQ.69jPGW2NiSCMuWgRqHC3L05V3cN1rdQ4Tmo7IyNJHL0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games/{{gameId}}/history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games",
+								"{{gameId}}",
+								"history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -727,7 +973,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ0ZTA4ODExLTc2ZGQtNDY3OS04NGEwLWQ1OTdmYWRlNjkyNyIsImlhdCI6MTc4NjExMTE4MiwiZXhwIjoxNzg2MTk3NTgyfQ.R80bxef8FPG4k2dxw-pFs993bD-DKeYDxaEfLW487Uo",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1MjY3MGZkLWZmZTUtNDNhYS04MGJmLThjMzM5MWE5MTlkZSIsImlhdCI6MTc4NjYzMTUxMSwiZXhwIjoxNzg2NzE3OTExfQ.8PeqjDrcuGwxd9Ij3zZDAcTAi_upcLl_NgeymNst7Do",
 				"type": "string"
 			}
 		]

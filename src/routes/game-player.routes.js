@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { gamePlayerController } = require('../compositions');
+const memoizeMiddleware = require('../middlewares/memoize.middleware');
 const authMiddleware = require('../middlewares/auth.middleware');
 
 router.post(
@@ -29,6 +30,7 @@ router.delete(
 );
 router.get(
     '/games/:gameId/players', 
+    memoizeMiddleware({ max: 100, maxAge: 5000 }),
     /**
      * #swagger.tags = ['GamePlayers']
      * #swagger.description = 'Get the players that are in a game'
@@ -37,6 +39,7 @@ router.get(
 );
 router.get(
     '/games/:gameId/players/current', 
+    memoizeMiddleware({ max: 100, maxAge: 2000 }),
     /**
      * #swagger.tags = ['GamePlayers']
      * #swagger.description = 'Get the current player in the turn to play'

@@ -76,11 +76,26 @@ const createGameCardController = (gameCardService) => {
         });
     }
 
+    const getPlayerHand = async (req, res, next) => {
+        const { gameId } = req.params;
+        const playerId = req.player.id;
+
+        const hand = await gameCardService.getPlayerHand(gameId, playerId);
+        if (!hand.ok) {
+            return next(hand.error);
+        }
+        res.status(200).json({
+            playerId: playerId,
+            hand: hand.result
+        });
+    }
+
     return {
         createDeck,
         getCards,
         updateCard,
-        getTopCardFromDiscard
+        getTopCardFromDiscard,
+        getPlayerHand,
     }
 }
 

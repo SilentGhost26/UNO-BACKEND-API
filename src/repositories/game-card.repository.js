@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const GameCard = require('../models/game-card.model');
 const Game = require('../models/game.model');
 const Card = require('../models/card.model');
@@ -131,7 +130,7 @@ const getByGameId = async (gameId) => {
 }
 
 /**
- * Get the top card in the deck of a specific game
+ * Get the top card in the discard of a specific game
  * @param gameId : id of the game
  * @returns the top card
  */
@@ -156,6 +155,69 @@ const getTopCardFromDiscard = async (gameId) => {
     return card;
 }
 
+/**
+ * Get the hand of a player
+ * @param gameId : id of the game
+ * @param playerId : id of the player 
+ */
+const getPlayerHand = async (gameId, playerId) => {
+    const cards = await GameCard.findAll({
+        where: {
+            gameId: gameId,
+            playerId: playerId,
+        },
+        include: [
+            {
+                model: Card
+            }
+        ]
+    });
+
+    return cards;
+}
+
+/**
+ * Get the top card in the deck of a specific game
+ * @param gameId : id of the game
+ * @returns the top card
+ */
+const getTopCardFromDeck = async (gameId) => {
+    const card = await GameCard.findOne({
+        where: {
+            gameId: gameId,
+            zone: 'DECK',
+        },
+        limit: 1,
+        order: [['position', 'DESC']],
+        include: [
+            {
+                model: Card
+            }
+        ]
+    });
+    if (!card) {
+        return null;
+    }
+
+    return card;
+}
+
+/**
+ * Gets the cuantity of cards that a player has in his hand
+ * @param gameId : id of game where the player is playing
+ * @param playerId : id of the player
+ * @returns the cuantity of cards in hand
+ */
+const getCuantityCardsInHand = async (gameId, playerId) => {
+    return await GameCard.count({
+        where: {
+            gameId: gameId,
+            playerId: playerId,
+            zone: 'HAND',
+        }
+    });
+}
+
 module.exports = {
     create,
     getByIds,
@@ -163,5 +225,8 @@ module.exports = {
     findAll,
     bulkCreate,
     getByGameId,
-    getTopCardFromDiscard
+    getTopCardFromDiscard,
+    getPlayerHand,
+    getTopCardFromDeck,
+    getCuantityCardsInHand,
 }

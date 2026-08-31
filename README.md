@@ -45,12 +45,41 @@ DATABASE_PORT=3306
 DATABASE_NAME=db
 DATABASE_USER=user
 DATABASE_PASSWORD=user
+
+ERROR_LOG_ROUTE=route/to/error.log
 ```
 ## How to use
 1. To run the system you need to run the following command:
 ```bash
 npm start
 ```
+
+### Authentication
+You can authenticate you in the system using the following endpoints:
+- POST `/auth/register`: Register yourself in the system creating an account.
+- POST `/auth/login`: Login in the system using your email and password.
+- POST `/auth/logout`: Logout from your session using your access token.
+
+### Management of game
+You can handle a game in the system using the following endpoints:
+- POST `/games`: Create a game
+- PUT `/games/{id}`: update a game that is still in waiting state.
+- PUT `/games/start`: Start a game when there are enough players.
+
+### Join to game
+You can join to a game using the following endpoint:
+- POST `/games/{gameId}/players`
+
+### Playing in a game
+There are available different features while you are playing:
+- POST `/games/{gameId}/distribute`:  You can distribute the initial cards between the players in the game from the deck. You can specify the quantity of cards per player in the request body.
+- PUT `/game/{gameId}/play`: You can play a specific from your hand. If the card matches with top card from the discard stack and follow the rules, the card will leave your hand and will go to discard stack.
+- PUT `/games/{gameId}/draw`: If you don't have a valid card to play in your turn, you will need to draw a card from the deck. Use this endpoint if in any case you must draw cards.
+- PATCH `/games/{gameId}/say-uno`: You can say uno when you only have one card in your hand.
+- POST `/games/{gameId}/challenge`: Challenge another player he  has not yet said 'uno'.
+- GET `/games/{gameId}/players/current`: You can get the current player that must play in the game.
+- GET `/games/{gameId}/cards/top-card`: You can get the top card in the discard stack.
+- GET `/games/{gameId}/cards/hand`: You can get the current cards in your hand.
 
 2. The endpoints of the system are available in the postman collection.
 3. The endpoints are documented with Open API / swagger. To use the swagger UI you must run the system and go to `/api-docs`
@@ -79,9 +108,6 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -108,8 +134,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -140,19 +166,12 @@ npm start
                 "age": {
                   "type": "number",
                   "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -176,9 +195,6 @@ npm start
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -190,12 +206,12 @@ npm start
         ]
       }
     },
-    "/games/{id}": {
+    "/games/{id}/status": {
       "get": {
         "tags": [
           "Games"
         ],
-        "description": "Get a specific a game by its ID",
+        "description": "Get the status of a game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -205,8 +221,29 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/games/{id}": {
+      "get": {
+        "tags": [
+          "Games"
+        ],
+        "description": "Get a specific game by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       },
@@ -242,18 +279,28 @@ npm start
                   "type": "number",
                   "example": 2
                 },
-                "status": {
-                  "type": "string",
-                  "example": "string"
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "allowDrawFour": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "allowAccumulateDraw": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "allowReverse": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -268,7 +315,7 @@ npm start
         "tags": [
           "Games"
         ],
-        "description": "Remove a specific a game by its ID",
+        "description": "Remove a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -283,9 +330,6 @@ npm start
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -324,18 +368,28 @@ npm start
                   "type": "number",
                   "example": 2
                 },
-                "status": {
-                  "type": "string",
-                  "example": "string"
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "allowDrawFour": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "allowAccumulateDraw": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "allowReverse": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -352,7 +406,7 @@ npm start
         "tags": [
           "Games"
         ],
-        "description": "Start a specific a game by its ID",
+        "description": "Start a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -367,9 +421,6 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -386,7 +437,7 @@ npm start
         "tags": [
           "Games"
         ],
-        "description": "finish a specific a game by its ID",
+        "description": "finish a specific game by its ID",
         "parameters": [
           {
             "name": "id",
@@ -401,9 +452,6 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -422,8 +470,8 @@ npm start
         ],
         "description": "Initialize the cards of the original game",
         "responses": {
-          "201": {
-            "description": "Created"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -435,8 +483,8 @@ npm start
         ],
         "description": "Get all cards",
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -456,8 +504,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -482,9 +530,6 @@ npm start
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -509,8 +554,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         },
         "security": [
@@ -525,7 +570,7 @@ npm start
         "tags": [
           "GameCards"
         ],
-        "description": "Get the top card of the deck from a specific game",
+        "description": "Get the top card of the discard from a specific game",
         "parameters": [
           {
             "name": "gameId",
@@ -535,8 +580,34 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/games/{gameId}/cards/hand": {
+      "get": {
+        "tags": [
+          "GameCards"
+        ],
+        "description": "Get the hand of a player in a specific game",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -589,9 +660,6 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -618,8 +686,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -656,9 +724,6 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -685,8 +750,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -711,9 +776,6 @@ npm start
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -743,9 +805,6 @@ npm start
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -770,8 +829,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -791,8 +850,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -832,8 +891,8 @@ npm start
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -865,8 +924,8 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -885,9 +944,6 @@ npm start
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -897,6 +953,228 @@ npm start
             "apiKeyAuth": []
           }
         ]
+      }
+    },
+    "/games/{gameId}/distribute": {
+      "post": {
+        "tags": [
+          "GameEngine"
+        ],
+        "description": "Distribute the cards in a game between the players",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "distribute cards",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cardsPerPlayer": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games/{gameId}/play": {
+      "put": {
+        "tags": [
+          "GameEngine"
+        ],
+        "description": "Play a card from the hand. Put a color if the card is multicolor",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Play a card",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cardId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "newColor": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games/{gameId}/draw": {
+      "put": {
+        "tags": [
+          "GameEngine"
+        ],
+        "description": "Draw a card from the deck.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games/{gameId}/say-uno": {
+      "patch": {
+        "tags": [
+          "GameEngine"
+        ],
+        "description": "Say uno.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games/{gameId}/challenge": {
+      "post": {
+        "tags": [
+          "GameEngine"
+        ],
+        "description": "Challenge another player when he has not said uno",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Challenge a player",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "challengedPlayerId": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games/{gameId}/history": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "description": "get the history of a game",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     }
   }

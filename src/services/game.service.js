@@ -11,7 +11,12 @@ const createGameService = (
     gameRepository,
     playerRepository,
     gamePlayerRepository,
+    gameCardRepository,
+    historyRepository,
     gameDto,
+    cardDto,
+    gamePlayerDto,
+    gameCardDto,
     notFoundHelper,
     conflictHelper,
     { runValidators, ok },
@@ -48,7 +53,14 @@ const createGameService = (
        if(!game) {
            return notFoundHelper.throwError404(id, 'game');
         }
-        
+        return ok(gameDto.toStatusResponseDto(game));
+    }
+
+    const findGameByIdWithRules = async (id) => {
+       const game = await gameRepository.getByIdWithRules(id);
+       if(!game) {
+           return notFoundHelper.throwError404(id, 'game');
+        }
         return ok(gameDto.toResponseDto(game));
     }
     
@@ -114,6 +126,48 @@ const createGameService = (
         await gameRepository.update(gameId, { status: 'FINISHED' });
         return ok();
     }
-    return { addGame, findGameById, updateGame, deleteGame, startGame, finishGame };
+
+    const getGameStatus = async (id) => {
+        const game = await gameRepository.getById(id);
+       if(!game) {
+           return notFoundHelper.throwError404(id, 'game');
+        }
+        
+        const players = await gamePlayerRepository.getByGameId(id);
+        if (game.status === 'WAITING') {
+            return ok({
+                game: gameDto.toStatusResponseDto(game),
+                players: players.map(p => gamePlayerDto.toGamePlayerInfoDto(p)),
+            });
+        }
+
+        const currentPlayer = await gamePlayerRepository.getCurrentPlayerToPlay(id); 
+        currentPlayer.Player = await playerRepository.getById(currentPlayer.playerId);
+        const topCard = await gameCardRepository.getTopCardFromDiscard(id);
+        const hands = await Promise.all(
+            players.map(async p => {
+                const hand = (await gameCardRepository.getPlayerHand(id, p.playerId)).map(c => cardDto.toResponseDto(c.Card));
+                p.cardsInHand = hand;
+                return gameCardDto.toHandResponseDto(p); 
+            })
+        );
+        
+        const history = await historyRepository.getByGameId(id);
+        const topCardDiscard = topCard? cardDto.toResponseDto(topCard.Card) : null;
+        return ok({
+            game: gameDto.toStatusResponseDto(game),
+            currentPlayer: gamePlayerDto.toGamePlayerInfoDto(currentPlayer),
+            topCard: topCardDiscard,
+            hands: hands,
+            history: history.map(h => { 
+                return {
+                    action: h.action,
+                    player: h.Player.name,
+                }
+            }),
+        });
+    }
+
+    return { addGame, findGameById, updateGame, deleteGame, startGame, finishGame, findGameByIdWithRules, getGameStatus };
 }
 module.exports = createGameService;

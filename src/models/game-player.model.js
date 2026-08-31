@@ -12,6 +12,11 @@ const GamePlayer = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        saidUno: {
+            type: DataTypes.BOOLEAN(),
+            defaultValue: false,
+            allowNull: false
+        },
         isDeleted: {
             type: DataTypes.BOOLEAN(),
             defaultValue: false,
