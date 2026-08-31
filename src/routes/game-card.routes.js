@@ -3,6 +3,7 @@ const router = express.Router();
 const { gameCardController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const authMiddleware = require('../middlewares/auth.middleware');
+const memoizeMiddleware = require('../middlewares/memoize.middleware');
 const gameCardSchema = require('../schemas/game-card.schema');
 
 router.post(
@@ -19,6 +20,7 @@ router.post(
 );
 router.get(
     '/games/:gameId/cards', 
+    memoizeMiddleware({ max: 100, maxAge: 2000 }),
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Get all the cards that compose a game'
@@ -30,11 +32,21 @@ router.get(
 );
 router.get(
     '/games/:gameId/cards/top-card', 
+    memoizeMiddleware({ max: 100, maxAge: 2000 }),
     /**
      * #swagger.tags = ['GameCards']
      * #swagger.description = 'Get the top card of the discard from a specific game'
      */
     gameCardController.getTopCardFromDiscard
+);
+router.get(
+    '/games/:gameId/cards/hand', 
+    authMiddleware,
+    /**
+     * #swagger.tags = ['GameCards']
+     * #swagger.description = 'Get the hand of a player in a specific game'
+     */
+    gameCardController.getPlayerHand
 );
 router.put(
     '/games/:gameId/cards/:cardId', 

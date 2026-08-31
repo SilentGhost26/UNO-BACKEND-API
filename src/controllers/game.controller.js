@@ -12,7 +12,16 @@ const createGameController = (gameService) => {
          * #swagger.parameters['body'] = {
            in: 'body',
            description: 'Add a game',
-           schema: { title: "string", maxPlayers: 2, status: "string" } 
+           schema: { 
+                title: "string", 
+                maxPlayers: 2, 
+                status: "string",
+                rules: {
+                        allowDrawFour: true,
+                        allowAccumulateDraw: false,
+                        allowReverse: true,
+                    } 
+                } 
           }
          * /* #swagger.security = [{
                 "apiKeyAuth": []
@@ -29,10 +38,23 @@ const createGameController = (gameService) => {
     const getGameById = async (req, res, next) => {
          /**
          * #swagger.tags = ['Games']
-         * #swagger.description = 'Get a specific a game by its ID'
+         * #swagger.description = 'Get the status of a game by its ID'
          */
         const { id } = req.params;
         const game = await gameService.findGameById(id);
+        if (!game.ok) {
+            return next(game.error);
+        }
+        res.status(200).json(game.result);
+    }
+
+    const getGameByIdWithRules = async (req, res, next) => {
+         /**
+         * #swagger.tags = ['Games']
+         * #swagger.description = 'Get a specific a game by its ID'
+         */
+        const { id } = req.params;
+        const game = await gameService.findGameByIdWithRules(id);
         if (!game.ok) {
             return next(game.error);
         }
@@ -114,13 +136,28 @@ const createGameController = (gameService) => {
         })
     }
 
+    const getGameStatus = async (req, res, next) => {
+         /**
+         * #swagger.tags = ['Games']
+         * #swagger.description = 'Get the status of a game by its ID'
+         */
+        const { id } = req.params;
+        const game = await gameService.getGameStatus(id);
+        if (!game.ok) {
+            return next(game.error);
+        }
+        res.status(200).json(game.result);
+    }
+
     return {
         addGame,
         getGameById,
         updateGame,
         deleteGame,
         startGame,
-        finishGame
+        finishGame,
+        getGameByIdWithRules,
+        getGameStatus
     }
 }
 

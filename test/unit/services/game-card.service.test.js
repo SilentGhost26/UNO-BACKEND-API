@@ -1,5 +1,5 @@
 const createGameCardService = require('../../../src/services/game-card.service');
-const { ok, err } = require('../../../src/helpers/result.helper');
+const { ok, err, runValidators } = require('../../../src/helpers/result.helper');
 const { gameCardRepository, gameRepository, cardRepository, playerRepository, gamePlayerRepository, } = require('../utils/repository-mocks.utils');
 const gameCardDto = require('../../../src/dto/game-card.dto');
 const cardDto = require('../../../src/dto/card.dto');
@@ -20,13 +20,13 @@ describe('test for game card service', () => {
             cardDto,
             notFoundHelper,
             conflictHelper,
-            { ok, err }
+            { ok, err, runValidators }
         );
     });
 
     describe('Tests for createDeck', () => {
         test('create a deck successfully', async () => {
-            gameRepository.getById.mockResolvedValue({ id: 'game-1' });
+            gameRepository.getByIdWithRules.mockResolvedValue({ id: 'game-1' });
             gameCardRepository.getByGameId.mockResolvedValue([]);
             cardRepository.findAll.mockResolvedValue([{ id: 'card-1' }, { id: 'card-2' }]);
             gameCardRepository.bulkCreate.mockResolvedValue([{ id: 'gc-1' }]);
@@ -49,7 +49,7 @@ describe('test for game card service', () => {
         });
 
         test('return an error result when the game already has a deck', async () => {
-            gameRepository.getById.mockResolvedValue({ id: 'game-1' });
+            gameRepository.getByIdWithRules.mockResolvedValue({ id: 'game-1' });
             gameCardRepository.getByGameId.mockResolvedValue([{ id: 'existing-deck' }]);
 
             const result = await gameCardService.createDeck('game-1');
@@ -62,7 +62,7 @@ describe('test for game card service', () => {
         });
 
         test('return an error result when there are no cards initialized', async () => {
-            gameRepository.getById.mockResolvedValue({ id: 'game-1' });
+            gameRepository.getByIdWithRules.mockResolvedValue({ id: 'game-1' });
             gameCardRepository.getByGameId.mockResolvedValue([]);
             cardRepository.findAll.mockResolvedValue([]);
 
@@ -185,6 +185,77 @@ describe('test for game card service', () => {
             const result = await gameCardService.getTopCardFromDiscard('game-1');
             expect(result.ok).toBe(true);
             expect(result.result).toBe(null);
+        });
+    });
+
+    describe('Tests for getPlayerHand', () => {
+        test('return an error result when the game does not exist', async () => {
+            gameRepository.getById.mockResolvedValue(null);
+
+            const result = await gameCardService.getPlayerHand('nonexistent-game', 'player-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
+                message: 'game with ID nonexistent-game not found',
+                statusCode: 404,
+            });
+            expect(gamePlayerRepository.getByGameIdPlayerId).not.toHaveBeenCalled();
+        });
+
+        test('return an error result when the game is not playing', async () => {
+            gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'WAITING' });
+
+            const result = await gameCardService.getPlayerHand('game-1', 'player-1');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
+                message: 'game with ID game-1 is not playing',
+                statusCode: 409,
+            });
+            expect(gamePlayerRepository.getByGameIdPlayerId).not.toHaveBeenCalled();
+        });
+
+        test('return an error result when the player is not registered in the game', async () => {
+            gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'PLAYING' });
+            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue(null);
+
+            const result = await gameCardService.getPlayerHand('game-1', 'nonexistent-player');
+
+            expect(result.ok).toBe(false);
+            expect(result.error).toMatchObject({
+                message: 'player with ID nonexistent-player not found',
+                statusCode: 404,
+            });
+            expect(gameCardRepository.getPlayerHand).not.toHaveBeenCalled();
+        });
+
+        test('get the hand of a player successfully', async () => {
+            gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'PLAYING' });
+            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue({ id: 'gp-1' });
+            gameCardRepository.getPlayerHand.mockResolvedValue([
+                { Card: { id: 'card-1', color: 'RED', value: '1', type: 'NUMBER' } },
+                { Card: { id: 'card-2', color: 'BLUE', value: '2', type: 'NUMBER' } },
+            ]);
+
+            const result = await gameCardService.getPlayerHand('game-1', 'player-1');
+
+            expect(result.ok).toBe(true);
+            expect(result.result).toEqual([
+                { id: 'card-1', color: 'RED', value: '1', type: 'NUMBER' },
+                { id: 'card-2', color: 'BLUE', value: '2', type: 'NUMBER' },
+            ]);
+            expect(gameCardRepository.getPlayerHand).toHaveBeenCalledWith('game-1', 'player-1');
+        });
+
+        test('return an empty hand when the player has no cards', async () => {
+            gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'PLAYING' });
+            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue({ id: 'gp-1' });
+            gameCardRepository.getPlayerHand.mockResolvedValue([]);
+
+            const result = await gameCardService.getPlayerHand('game-1', 'player-1');
+
+            expect(result.ok).toBe(true);
+            expect(result.result).toEqual([]);
         });
     });
 });

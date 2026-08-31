@@ -18,6 +18,7 @@ const gameCardService = {
     getByGameId: jest.fn(), 
     updateGameCard: jest.fn(), 
     getTopCardFromDiscard: jest.fn(),
+    getPlayerHand: jest.fn(),
 };
 
 const gamePlayerService = {
@@ -33,10 +34,12 @@ const gamePlayerService = {
 const gameService = {
     addGame: jest.fn(), 
     findGameById: jest.fn(), 
+    findGameByIdWithRules: jest.fn(),
     updateGame: jest.fn(), 
     deleteGame: jest.fn(), 
     startGame: jest.fn(), 
     finishGame: jest.fn(),
+    getGameStatus: jest.fn(),
 };
 
 const playerService = {
@@ -51,6 +54,18 @@ const tokenService = {
     decodeValidToken: jest.fn(),
 };
 
+const gameEngineService = {
+    distributeCards: jest.fn(),
+    playCard: jest.fn(),
+    drawCard: jest.fn(),
+    sayUno: jest.fn(),
+    challengePlayer: jest.fn(),
+};
+
+const historyService = {
+    getGameHistory: jest.fn(),
+}
+
 module.exports = {
     authService,
     cardService,
@@ -58,5 +73,7 @@ module.exports = {
     gamePlayerService,
     gameService,
     playerService,
-    tokenService
+    tokenService,
+    gameEngineService,
+    historyService,
 }

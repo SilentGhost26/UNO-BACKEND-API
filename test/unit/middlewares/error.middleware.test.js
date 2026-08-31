@@ -1,3 +1,5 @@
+jest.mock('../../../config/winston-logger.config', () => ({ error: jest.fn() }));
+const logger = require('../../../config/winston-logger.config');
 const processError = require('../../../src/middlewares/error.middleware');
 const { createRes } = require('../utils/express-mocks.utils');
 

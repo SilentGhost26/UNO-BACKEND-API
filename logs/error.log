@@ -1,0 +1,524 @@
+ERROR: 2026-08-23 15:35:50:3550 - statusCode: 409 - source: API-CALL - message: Error: Cards already initialized
+    at Object.throwError409 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/conflict.helper.js:4:19)
+    at Object.initializeCards (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/card.service.js:29:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async createCards (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/card.controller.js:13:23)
+ERROR: 2026-08-23 16:42:21:4221 - statusCode: 404 - source: API-CALL - message: Error: game with ID 123 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.getGameStatus (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:133:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameStatus (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:145:22)
+ERROR: 2026-08-23 16:49:34:4934 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:40:4940 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:41:4941 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:55:4955 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:55:4955 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:55:4955 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:55:4955 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:56:4956 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:49:56:4956 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:50:17:5017 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:50:24:5024 - statusCode: 500 - source: API-CALL - message: TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/express/lib/response.js:67:11)
+    at memoize (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/memoize.middleware.js:11:28)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:600:14)
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:610:14)
+ERROR: 2026-08-23 16:50:42:5042 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:50:46:5046 - statusCode: 500 - source: API-CALL - message: TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/express/lib/response.js:67:11)
+    at memoize (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/memoize.middleware.js:11:28)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:600:14)
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:610:14)
+ERROR: 2026-08-23 16:50:47:5047 - statusCode: 500 - source: API-CALL - message: TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/express/lib/response.js:67:11)
+    at memoize (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/memoize.middleware.js:11:28)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:600:14)
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:610:14)
+ERROR: 2026-08-23 16:50:47:5047 - statusCode: 500 - source: API-CALL - message: TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/express/lib/response.js:67:11)
+    at memoize (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/memoize.middleware.js:11:28)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:600:14)
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:610:14)
+ERROR: 2026-08-23 16:50:47:5047 - statusCode: 500 - source: API-CALL - message: TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/express/lib/response.js:67:11)
+    at memoize (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/memoize.middleware.js:11:28)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:600:14)
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:610:14)
+ERROR: 2026-08-23 16:50:47:5047 - statusCode: 500 - source: API-CALL - message: TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/express/lib/response.js:67:11)
+    at memoize (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/memoize.middleware.js:11:28)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:600:14)
+    at param (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:610:14)
+ERROR: 2026-08-23 16:51:41:5141 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 16:51:59:5159 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 17:19:58:1958 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 17:20:08:208 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 17:20:28:2028 - statusCode: 404 - source: API-CALL - message: Error: game with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-23 17:20:39:2039 - statusCode: 404 - source: API-CALL - message: Error: game with ID 12345654656465 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:62:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getGameByIdWithRules (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game.controller.js:57:22)
+ERROR: 2026-08-24 08:48:14:4814 - statusCode: 409 - source: API-CALL - message: Error: The game with ID c0675611-33dc-4867-949c-54b666e5236a is full
+    at Object.throwError409 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/conflict.helper.js:4:19)
+    at mustThereAvailableSpaceInGame (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/validators/add-game-player.validator.js:36:31)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/result.helper.js:11:56
+    at Array.reduce (<anonymous>)
+    at runValidators (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/result.helper.js:10:23)
+    at Object.addGamePlayer (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-player.service.js:35:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async addGamePlayer (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game-player.controller.js:18:28)
+ERROR: 2026-08-24 08:50:58:5058 - statusCode: 400 - source: API-CALL - message: Error: Validation failed
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/structure.middleware.js:5:30
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:30:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+ERROR: 2026-08-24 08:51:11:5111 - statusCode: 409 - source: API-CALL - message: Error: it is not the turn for the player with ID 2b4bbae8-f065-4a15-be82-af56d36dfa34
+    at Object.throwError409 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/conflict.helper.js:4:19)
+    at Object.playCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-engine.service.js:97:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async playCard (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/game-engine.controller.js:23:24)
+ERROR: 2026-08-24 08:52:55:5255 - statusCode: 404 - source: WEBSOCKET - message: Error: game with ID  not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at gameMustExist (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/validators/add-game-player.validator.js:14:30)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/result.helper.js:11:56
+    at Array.reduce (<anonymous>)
+    at runValidators (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/result.helper.js:10:23)
+    at Object.addGamePlayer (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game-player.service.js:35:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:24:24
+    at async Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:9)
+ERROR: 2026-08-24 08:53:45:5345 - statusCode: 404 - source: WEBSOCKET - message: Error: player with ID undefined not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.addGame (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:38:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:14:22
+    at async Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:9)
+ERROR: 2026-08-24 08:55:33:5533 - statusCode: 404 - source: WEBSOCKET - message: Error: player with ID undefined not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.addGame (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:38:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:15:22
+    at async Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:9)
+ERROR: 2026-08-24 08:56:52:5652 - statusCode: 404 - source: WEBSOCKET - message: Error: player with ID undefined not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.addGame (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:38:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:15:22
+    at async Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:9)
+ERROR: 2026-08-24 08:59:20:5920 - statusCode: 500 - source: WEBSOCKET - message: SequelizeValidationError: notNull Violation: Game.title cannot be null
+    at InstanceValidator._validate (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/sequelize/lib/instance-validator.js:50:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async InstanceValidator._validateAndRunHooks (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/sequelize/lib/instance-validator.js:60:7)
+    at async InstanceValidator.validate (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/sequelize/lib/instance-validator.js:54:12)
+    at async model.save (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/sequelize/lib/model.js:2426:7)
+    at async Game.create (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/sequelize/lib/model.js:1362:12)
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/repositories/game.repository.js:13:22
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/sequelize/lib/sequelize.js:507:18
+    at async Object.addGame (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/game.service.js:41:25)
+    at async /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:15:22
+ERROR: 2026-08-24 09:15:51:1551 - statusCode: 500 - source: WEBSOCKET - message: ReferenceError: req is not defined
+    at validateSchema (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:153:50)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:13:9
+    at Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:15)
+    at Socket.emit (node:events:509:28)
+    at Socket.emitUntyped (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/socket.io/dist/typed-events.js:69:22)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/socket.io/dist/socket.js:697:39
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+ERROR: 2026-08-24 09:16:14:1614 - statusCode: 400 - source: WEBSOCKET - message: Error: Validation failed
+    at validateSchema (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:155:30)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:13:9
+    at Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:15)
+    at Socket.emit (node:events:509:28)
+    at Socket.emitUntyped (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/socket.io/dist/typed-events.js:69:22)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/socket.io/dist/socket.js:697:39
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+ERROR: 2026-08-24 09:19:10:1910 - statusCode: 400 - source: WEBSOCKET - message: Error: Validation failed
+    at validateSchema (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:155:30)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/callbacks/game-engine.callbacks.js:13:9
+    at Socket.<anonymous> (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/websocket/middlewares/error.socket-wrapper.js:5:15)
+    at Socket.emit (node:events:509:28)
+    at Socket.emitUntyped (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/socket.io/dist/typed-events.js:69:22)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/socket.io/dist/socket.js:697:39
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) 
+ details: "title" is required,"maxPlayers" is required
+ERROR: 2026-08-25 09:28:44:2844 - statusCode: 400 - source: API-CALL - message: Error: Validation failed
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/structure.middleware.js:5:30
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:30:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) 
+ details: "cardsPerPlayer" must be greater than or equal to 3
+ERROR: 2026-08-25 11:48:13:4813 - statusCode: 500 - source: API-CALL - message: TypeError: Cannot read properties of undefined (reading 'groupBy')
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:15:41)
+    at getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:57)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:291:5) 
+ details: 
+ERROR: 2026-08-25 11:49:07:497 - statusCode: 500 - source: API-CALL - message: TypeError: Cannot read properties of undefined (reading 'groupBy')
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:16:41)
+    at getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:57)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:291:5) 
+ details: 
+ERROR: 2026-08-25 11:49:21:4921 - statusCode: 500 - source: API-CALL - message: TypeError: totalRequests.groupBy is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:16:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 11:49:32:4932 - statusCode: 500 - source: API-CALL - message: TypeError: totalRequests.groupBy is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:16:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 12:24:59:2459 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 12:25:03:253 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 12:25:09:259 - statusCode: 500 - source: API-CALL - message: TypeError: totalRequests.groupBy is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:18:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 12:25:45:2545 - statusCode: 500 - source: API-CALL - message: TypeError: totalRequests.groupBy is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:18:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 12:26:09:269 - statusCode: 500 - source: API-CALL - message: TypeError: apiRequests.groupBy is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:18:39)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 12:26:30:2630 - statusCode: 500 - source: API-CALL - message: TypeError: _.groupBy(...).map is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:19:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 12:27:22:2722 - statusCode: 500 - source: API-CALL - message: TypeError: _.groupBy(...).map is not a function
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:19:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 12:28:41:2841 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 12:28:41:2841 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 12:28:41:2841 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 12:30:02:302 - statusCode: 404 - source: API-CALL - message: Error: player with ID 123 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/player.service.js:25:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/player.controller.js:14:24) 
+ details: 
+ERROR: 2026-08-25 12:59:13:5913 - statusCode: 500 - source: API-CALL - message: TypeError: object is not iterable (cannot read property Symbol(Symbol.iterator))
+    at Object.fromEntries (<anonymous>)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:19:36
+    at Array.map (<anonymous>)
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:18:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 13:03:52:352 - statusCode: 500 - source: API-CALL - message: TypeError: Object.fromEntries(...).map is not a function
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:23:25
+    at Array.map (<anonymous>)
+    at Object.getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/request-stats.service.js:20:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getTotalRequests (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/request-stats.controller.js:3:31) 
+ details: 
+ERROR: 2026-08-25 15:46:34:4634 - statusCode: 404 - source: API-CALL - message: Error: player with ID 23 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/player.service.js:25:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/player.controller.js:14:24) 
+ details: 
+ERROR: 2026-08-25 15:46:36:4636 - statusCode: 404 - source: API-CALL - message: Error: player with ID 23123 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/player.service.js:25:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/player.controller.js:14:24) 
+ details: 
+ERROR: 2026-08-25 15:46:38:4638 - statusCode: 404 - source: API-CALL - message: Error: player with ID 23123123 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/player.service.js:25:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/player.controller.js:14:24) 
+ details: 
+ERROR: 2026-08-25 15:50:31:5031 - statusCode: 400 - source: API-CALL - message: Error: Validation failed
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/structure.middleware.js:5:30
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:291:5)
+    at router.handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:186:3) 
+ details: "age" must be greater than or equal to 5,"email" must be a valid email,"password" length must be at least 8 characters long
+ERROR: 2026-08-25 16:06:56:656 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:02:72 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:02:72 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:03:73 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:03:73 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:03:73 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:03:73 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:03:73 - statusCode: 403 - source: API-CALL - message: JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/jsonwebtoken/verify.js:70:17)
+    at Object.decodeValidToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/token.service.js:27:28)
+    at validateToken (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/middlewares/auth.middleware.js:21:38)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at next (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/route.js:117:3)
+    at handle (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/lib/layer.js:152:17)
+    at /media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:295:15
+    at processParams (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/node_modules/router/index.js:582:12) 
+ details: 
+ERROR: 2026-08-25 16:07:11:711 - statusCode: 404 - source: API-CALL - message: Error: player with ID 1 not found
+    at Object.throwError404 (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/helpers/not-found.helper.js:4:19)
+    at Object.findPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/services/player.service.js:25:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async getPlayerById (/media/luisb/NuevoVol/jala university/4. semester/module 1/programming 4/código/Capstone/UNO-backend/src/controllers/player.controller.js:14:24) 
+ details: 

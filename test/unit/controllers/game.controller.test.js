@@ -38,6 +38,39 @@ describe('test for game controller', () => {
         });
     });
 
+    describe('Tests for getGameByIdWithRules', () => {
+        test('get a game with rules by id and responds 200', async () => {
+            const req = { params: { id: 'game-1' } };
+            const res = createRes();
+            gameService.findGameByIdWithRules.mockResolvedValue({
+                ok: true,
+                result: {
+                    id: 'game-1',
+                    title: 'UNO',
+                    rules: {
+                        allowDrawFour: true,
+                        allowAccumulateDraw: false,
+                        allowReverse: true,
+                    }
+                }
+            });
+
+            await gameController.getGameByIdWithRules(req, res);
+
+            expect(gameService.findGameByIdWithRules).toHaveBeenCalledWith('game-1');
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({
+                id: 'game-1',
+                title: 'UNO',
+                rules: {
+                    allowDrawFour: true,
+                    allowAccumulateDraw: false,
+                    allowReverse: true,
+                }
+            });
+        });
+    });
+
     describe('Tests for updateGame', () => {
         test('update a game and responds 200', async () => {
             const req = { params: { id: 'game-1' }, body: { title: 'Updated' } };
@@ -91,6 +124,20 @@ describe('test for game controller', () => {
             expect(gameService.finishGame).toHaveBeenCalledWith('game-1', 'player-1');
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({ message: 'Game ended succesfully' });
+        });
+    });
+
+    describe('Tests for getGameStatus', () => {
+        test('get a game status and responds 200', async () => {
+            const req = { params: { id: 'game-1' } };
+            const res = createRes();
+            gameService.getGameStatus.mockResolvedValue({ ok: true, result: { id: 'game-1', title: 'UNO' } });
+
+            await gameController.getGameStatus(req, res);
+
+            expect(gameService.getGameStatus).toHaveBeenCalledWith('game-1');
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({ id: 'game-1', title: 'UNO' });
         });
     });
 });

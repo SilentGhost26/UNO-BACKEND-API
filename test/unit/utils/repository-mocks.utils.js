@@ -1,6 +1,7 @@
 const gameRepository = {
     create: jest.fn(),
     getById: jest.fn(),
+    getByIdWithRules: jest.fn(),
     update: jest.fn(),
     remove: jest.fn(),
 }
@@ -43,6 +44,15 @@ const gameCardRepository = {
     bulkCreate: jest.fn(),
     getByGameId: jest.fn(),
     getTopCardFromDiscard: jest.fn(),
+    getTopCardFromDeck: jest.fn(),
+    getPlayerHand: jest.fn(),
+    getCuantityCardsInHand: jest.fn(),
+}
+
+const historyRepository = {
+    create: jest.fn(),
+    getById: jest.fn(),
+    getByGameId: jest.fn(),
 }
 
 module.exports = {
@@ -50,5 +60,6 @@ module.exports = {
     cardRepository,
     playerRepository,
     gamePlayerRepository,
-    gameCardRepository
+    gameCardRepository,
+    historyRepository,
 }

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { cardController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
+const memoizeMiddleware = require('../middlewares/memoize.middleware');
 const cardSchema = require('../schemas/card.schema');
 
 router.post(
@@ -14,6 +15,7 @@ router.post(
 );
 router.get(
     '/cards',
+    memoizeMiddleware({ max: 1, maxAge: 600000 }),
     /**
      * #swagger.tags = ['Cards']
      * #swagger.description = 'Get all cards'
@@ -22,6 +24,7 @@ router.get(
 );
 router.get(
     '/cards/:id', 
+    memoizeMiddleware({ max: 108, maxAge: 600000 }),
     /**
      * #swagger.tags = ['Cards']
      * #swagger.description = 'Get a specific card based on the ID'

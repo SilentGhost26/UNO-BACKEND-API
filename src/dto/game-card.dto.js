@@ -8,6 +8,14 @@ const toGameCardResponseDto = (data) => {
     }
 }
 
+const toHandResponseDto = (data) => {
+    return {
+        playerId: data.playerId,
+        cards: data.cardsInHand,
+    }
+}
+
 module.exports = {
-    toGameCardResponseDto
+    toGameCardResponseDto,
+    toHandResponseDto
 }

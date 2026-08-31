@@ -4,6 +4,7 @@ const { playerController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
 const authMiddleware = require('../middlewares/auth.middleware');
 const playerSchema = require('../schemas/player.schema');
+const memoizeMiddleware = require('../middlewares/memoize.middleware');
 const playerUpdateSchema = require('../schemas/player-update.schema');
 
 router.get(
@@ -20,6 +21,7 @@ router.get(
 );
 router.get(
     '/players/:id', 
+    memoizeMiddleware({ max: 50, maxAge: 20000 }),
     /**
      * #swagger.tags = ['Players']
      * #swagger.description = 'Get a specific a player by its ID'
