@@ -249,8 +249,8 @@ const createGameEngineService = (
                 return drawnResult;
             }
             drawnCards = drawnResult.result;
-            if (currentPlayer.SaidUno) {
-                await gamePlayerRepository.update(currentPlayer.id, { sayUno: false });
+            if (currentPlayer.saidUno) {
+                await gamePlayerRepository.update(currentPlayer.id, { saidUno: false });
             }
             nextPlayer = await endTurn({ gameId, mustDraw: false, cardsToDraw: 0 });
         } else {
@@ -260,8 +260,8 @@ const createGameEngineService = (
             }
             const drawnCard = drawnResult.result[0];
             
-            if (currentPlayer.SaidUno) {
-                await gamePlayerRepository.update(currentPlayer.id, { sayUno: false });
+            if (currentPlayer.saidUno) {
+                await gamePlayerRepository.update(currentPlayer.id, { saidUno: false });
             }
             const validCard = runValidators(hasValidCardValidators, { hand: [drawnCard], lastCard, rules: game.rules, game });
             if (validCard.ok) {
@@ -328,7 +328,7 @@ const createGameEngineService = (
             cards[i].position = positions[i];
             cards[i].zone = 'DECK';
             cards[i].playerId = null;
-            await gameCardRepository.update(cards[i].id, cards[i]);
+            await gameCardRepository.update(gameId, cards[i].id, cards[i]);
         }
 
         return ok();

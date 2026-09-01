@@ -60,7 +60,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const distributeCards = (distributeCardsSchema) => wrapError(socket, async ({ gameId, cardsPerPlayer }) => {
-        validateSchema(distributeCardsSchema, {gameId, cardsPerPlayer});
+        validateSchema(distributeCardsSchema, {cardsPerPlayer});
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
@@ -76,7 +76,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const playCard = (playCardSchema) => wrapError(socket, async ({ gameId, cardId, newColor }) => {
-        validateSchema(playCardSchema, { gameId, cardId, newColor });
+        validateSchema(playCardSchema, { cardId, newColor });
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
@@ -119,7 +119,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const challenge = (challengeSchema) => wrapError(socket, async ({ challengedPlayerId, gameId }) => {
-        validateSchema(challengeSchema, { challengedPlayerId, gameId });
+        validateSchema(challengeSchema, { challengedPlayerIdsa });
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
@@ -155,8 +155,8 @@ const createGameEngineSocketCallbacks = (
         if (!updated.ok) {
             throw updated.error;
         }
-
-        roomHandler.broadcast(io, gameId, 'game-udpated', updated.result);
+        console.log('as;djjads')
+        roomHandler.broadcast(io, gameId, 'game-updated', updated.result);
     });
 
     function isInRoom(socket, room) {

@@ -30,16 +30,24 @@ const playerHasCard = ({ card, playerId, cardId }) => {
     return ok();
 }
 
-const cardMathes = ({ card, lastCard, cardId, game }) => {
+const cardMathes = ({ card, lastCard, cardId, game, rules }) => {
+    const isDrawCard = ['+2', '+4'].includes(card.Card.type);
+    const isTopDrawCard = ['+2', '+4'].includes(lastCard.Card.type);
+
+    if (game.mustDraw && rules.allowAccumulateDraw && isDrawCard && isTopDrawCard) {
+        return ok();
+    }
+
     if (lastCard.Card.type === 'NUMBER') {
-        if (card.Card.color === game.currentColor || card.Card.value === lastCard.Card.value || card.Card.color === 'MULTICOLOR') {
+        if (card.Card.color === lastCard.Card.color ||
+            card.Card.value === lastCard.Card.value ||
+            card.Card.color === 'MULTICOLOR') {
             return ok();
         }
-    } else {
-        console.log(card.Card.color)
-        if (card.Card.type === lastCard.Card.type || card.Card.color === game.currentColor || card.Card.color === 'MULTICOLOR') {
-            return ok();
-        }
+    } else if (card.Card.type === lastCard.Card.type ||
+        card.Card.color === game.currentColor ||
+        card.Card.color === 'MULTICOLOR') {
+        return ok();
     }
     return conflictHelper.throwError409(`card with ID ${cardId} does not matches`);
 }
@@ -48,9 +56,7 @@ const cardFollowRules = ({ card, rules, lastCard, game }) => {
     if (!rules.allowDrawFour && card.Card.type === '+4') {
         return conflictHelper.throwError409(`+4 cards are not allowed`);
     }
-    if (!rules.allowAccumulateDraw && 
-        (card.Card.type === '+4' || card.Card.type === '+2') && 
-        (lastCard.Card.type === '+4' || lastCard.Card.type === '+2')) {
+    if (game.mustDraw && !rules.allowAccumulateDraw) {
         return conflictHelper.throwError409('It is not possible to accumulate draw cards');
     }
     if (!rules.allowReverse && card.Card.type === 'REVERSE') {
@@ -59,8 +65,9 @@ const cardFollowRules = ({ card, rules, lastCard, game }) => {
     return ok();
 }
 
-const notNeedDraw = ({ game, rules, playerId }) => {
-    if (rules.canAccumulateDraw && game.mustDraw || !game.mustDraw) {
+const notNeedDraw = ({ card, game, rules, playerId }) => {
+    const isDrawCard = ['+2', '+4'].includes(card.Card.type);
+    if (!game.mustDraw || (rules.allowAccumulateDraw && isDrawCard)) {
         return ok();
     }
     return conflictHelper.throwError409(`player with ID ${playerId} must draw`);
