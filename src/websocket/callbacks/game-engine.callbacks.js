@@ -119,7 +119,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const challenge = (challengeSchema) => wrapError(socket, async ({ challengedPlayerId, gameId }) => {
-        validateSchema(challengeSchema, { challengedPlayerIdsa });
+        validateSchema(challengeSchema, { challengedPlayerId });
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });

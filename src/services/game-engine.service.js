@@ -127,7 +127,7 @@ const createGameEngineService = (
             return ok({
                 action: 'Player won the game',
                 played: cardDto.toResponseDto(card.Card),
-                winner: gamePlayerDto.toGamePlayerInfoDto(nextPlayer),
+                winner: gamePlayerDto.toGamePlayerInfoDto(currentPlayer),
                 scores: playersInGame.map(gamePlayerDto.toScoreResponseDto),
             });
         }
@@ -328,7 +328,7 @@ const createGameEngineService = (
             cards[i].position = positions[i];
             cards[i].zone = 'DECK';
             cards[i].playerId = null;
-            await gameCardRepository.update(gameId, cards[i].id, cards[i]);
+            await gameCardRepository.update(gameId, cards[i].cardId, cards[i]);
         }
 
         return ok();
