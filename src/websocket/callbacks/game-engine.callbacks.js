@@ -42,6 +42,12 @@ const createGameEngineSocketCallbacks = (
         }
         roomHandler.leaveRoom(socket, gameId);
         roomHandler.broadcast(socket, gameId, 'player-left', result.result);
+        if (result.result.gameFinished) {
+            roomHandler.broadcast(io, gameId, 'game-finished', {
+                winner: result.result.winner,
+                reason: 'All other players left the game',
+            });
+        }
     });
 
     const startGame = () => wrapError(socket, async ({ gameId }) => {
@@ -140,6 +146,12 @@ const createGameEngineSocketCallbacks = (
             if (result.ok) {
                 roomHandler.leaveRoom(socket, room);
                 roomHandler.broadcast(socket, room, 'player-left', result.result);
+                if (result.result.gameFinished) {
+                    roomHandler.broadcast(io, room, 'game-finished', {
+                        winner: result.result.winner,
+                        reason: 'All other players left the game',
+                    });
+                }
             }
         });
     });
@@ -155,7 +167,6 @@ const createGameEngineSocketCallbacks = (
         if (!updated.ok) {
             throw updated.error;
         }
-        console.log('as;djjads')
         roomHandler.broadcast(io, gameId, 'game-updated', updated.result);
     });
 

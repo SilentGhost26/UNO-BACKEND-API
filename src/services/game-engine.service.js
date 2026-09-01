@@ -357,7 +357,6 @@ const createGameEngineService = (
         }
 
         const cuantityCardsInHand = await gameCardRepository.getCuantityCardsInHand(gameId, playerId);
-        console.log(cuantityCardsInHand)
         if (cuantityCardsInHand > 1) {
             return conflictHelper.throwError409(`player with ID ${playerId} still has more cards`);
         }

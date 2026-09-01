@@ -90,10 +90,48 @@ const createGamePlayerService = (
         
         if (game.status === 'WAITING' && playerId === game.ownerId) {
             await gameRepository.remove(gameId);
+            await gamePlayerRepository.remove(gamePlayer.id);
+            return ok(gamePlayerDto.toGamePlayerInfoDto(gamePlayer));
         }
 
         await gamePlayerRepository.remove(gamePlayer.id);
-        return ok(gamePlayerDto.toGamePlayerInfoDto(gamePlayer));
+
+        if (game.status !== 'PLAYING') {
+            return ok(gamePlayerDto.toGamePlayerInfoDto(gamePlayer));
+        }
+
+        const activePlayers = await gamePlayerRepository.getByGameId(gameId);
+        const remainingPlayers = activePlayers.filter(p => p.playerId !== playerId);
+        const wasCurrentPlayer = game.currentPlayerIndex === gamePlayer.position;
+        let winner = null;
+        let gameFinished = false;
+
+        if (remainingPlayers.length <= 1) {
+            winner = remainingPlayers[0] || null;
+            await gameRepository.update(gameId, {
+                status: 'FINISHED',
+                winnerId: winner ? winner.playerId : null,
+            });
+            gameFinished = true;
+        } else if (wasCurrentPlayer) {
+            const idx = activePlayers.findIndex(p => p.playerId === playerId);
+            const movement = game.direction === 'RIGHT' ? 1 : -1;
+            let nextPlayer;
+            for (let offset = 1; offset < activePlayers.length; offset++) {
+                const nextIdx = (idx + movement * offset + activePlayers.length) % activePlayers.length;
+                if (activePlayers[nextIdx].playerId !== playerId) {
+                    nextPlayer = activePlayers[nextIdx];
+                    break;
+                }
+            }
+            await gameRepository.update(gameId, { currentPlayerIndex: nextPlayer.position });
+        }
+
+        return ok({
+            ...gamePlayerDto.toGamePlayerInfoDto(gamePlayer),
+            gameFinished,
+            winner: winner ? gamePlayerDto.toGamePlayerInfoDto(winner) : null,
+        });
     }
         
     /**

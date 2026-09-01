@@ -98,6 +98,23 @@ describe('tests for game engine socket callbacks', () => {
 
             expect(socket.emit).toHaveBeenCalledWith('error', { message: 'player not found', statusCode: 404 });
         });
+
+        test('broadcast game-finished when the remaining player wins by departure', async () => {
+            socket = createSocket(new Set(['game-1']));
+            callbacks = createGameEngineSocketCallbacks(io, socket, wrapError, gamePlayerService, gameService, gameEngineService, gameCardService);
+            gamePlayerService.deleteGamePlayer.mockResolvedValue({ ok: true, result: {
+                playerId: 'player-1',
+                gameFinished: true,
+                winner: { playerId: 'player-2', name: 'Luis' },
+            }});
+
+            await callbacks.leaveGame()({ gameId: 'game-1' });
+
+            expect(io.emit).toHaveBeenCalledWith('game-finished', {
+                winner: { playerId: 'player-2', name: 'Luis' },
+                reason: 'All other players left the game',
+            });
+        });
     });
 
     describe('startGame', () => {

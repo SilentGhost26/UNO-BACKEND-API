@@ -16,7 +16,6 @@ const createMemoize = ({ max, maxAge }) => {
             if (cache.size >= max) {
                 const lessUsed = [...cache.entries()].reduce((acc, curr) => curr[1].lastTimeUsed < acc[1].lastTimeUsed? curr : acc);
                 const lessUsedKey = lessUsed[0];
-                console.log('must delete the less used:  ' + lessUsedKey)
                 cache.delete(lessUsedKey);
             }
         }
