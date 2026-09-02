@@ -11,6 +11,58 @@
     "http"
   ],
   "paths": {
+    "/stats/requests": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "description": "Get the total requests that has been sent to the server",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/stats/response-times": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "description": "Get the response times of every used endpoint",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/stats/status-codes": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "description": "Get the cuantity of uses of every status code",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/stats/popular-endpoints": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "description": "Get the most used endpoint",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/players/me": {
       "get": {
         "tags": [
@@ -109,6 +161,91 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games": {
+      "get": {
+        "tags": [
+          "Games"
+        ],
+        "description": "Get games by pagination",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page of the games",
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of the page",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Games"
+        ],
+        "description": "Add a new game",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add a game",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "maxPlayers": {
+                  "type": "number",
+                  "example": 2
+                },
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "allowDrawFour": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "allowAccumulateDraw": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "allowReverse": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -244,66 +381,6 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/games": {
-      "post": {
-        "tags": [
-          "Games"
-        ],
-        "description": "Add a new game",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Add a game",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "maxPlayers": {
-                  "type": "number",
-                  "example": 2
-                },
-                "rules": {
-                  "type": "object",
-                  "properties": {
-                    "allowDrawFour": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "allowAccumulateDraw": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "allowReverse": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -864,6 +941,152 @@
           "401": {
             "description": "Unauthorized"
           }
+        }
+      }
+    },
+    "/games/{gameId}/distribute": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Register a new player",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "add a player",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "age": {
+                  "type": "number",
+                  "example": 0
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Register a new player",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "add a player",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "age": {
+                  "type": "number",
+                  "example": 0
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "authenticate a player using its email and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "authenticate player",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "logout a player using its token",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
         },
         "security": [
           {
@@ -943,117 +1166,6 @@
               "type": "object",
               "properties": {
                 "cardId": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "newColor": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/games/{gameId}/draw": {
-      "put": {
-        "tags": [
-          "GameEngine"
-        ],
-        "description": "Draw a card from the deck.",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/games/{gameId}/say-uno": {
-      "patch": {
-        "tags": [
-          "GameEngine"
-        ],
-        "description": "Say uno.",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/games/{gameId}/challenge": {
-      "post": {
-        "tags": [
-          "GameEngine"
-        ],
-        "description": "Challenge another player when he has not said uno",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Challenge a player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "challengedPlayerId": {
                   "type": "string",
                   "example": "string"
                 }

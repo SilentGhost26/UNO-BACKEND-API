@@ -6,6 +6,26 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const memoizeMiddleware = require('../middlewares/memoize.middleware');
 const gameSchema = require('../schemas/game.schema');
 
+
+router.get(
+    '/games',
+    memoizeMiddleware({ max: 100, maxAge: 2000 }),
+    /**
+     * #swagger.tags = ['Games']
+     * #swagger.description = 'Get games by pagination'
+     * #swagger.parameters['page'] = {
+        in: 'query',
+        description: 'page of the games',
+        type: 'integer'
+        }
+     * #swagger.parameters['limit'] = {
+        in: 'query',
+        description: 'limit of the page',
+        type: 'integer'
+        }
+     */
+    gameController.getGamesByPagination
+);
 router.get(
     '/games/:id/status', 
     memoizeMiddleware({ max: 100, maxAge: 1500 }),

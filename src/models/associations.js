@@ -5,6 +5,7 @@ const GameCard = require('./game-card.model');
 const GamePlayer = require('./game-player.model');
 const Rules = require('./rules.model');
 const History = require('./history.model');
+const ApiRequest = require('./api-request.model');
 
 Game.belongsTo(Player, { as: 'owner', foreignKey: 'ownerId' });
 Game.belongsTo(Player, { as: 'winner', foreignKey: 'winnerId' });
@@ -20,6 +21,7 @@ Player.hasMany(Game, { as: 'wonGames', foreignKey: 'winnerId' });
 Player.hasMany(GamePlayer, { as: 'matchedGames', foreignKey: 'playerId' });
 Player.hasMany(GameCard, { as: 'cardsInHand', foreignKey: 'playerId' });
 Player.hasMany(History, { as: 'history', foreignKey: 'playerId' });
+Player.hasMany(ApiRequest, { foreignKey: 'userId' });
 
 GameCard.belongsTo(Player, { foreignKey: 'playerId' });
 GameCard.belongsTo(Card, { foreignKey: 'cardId' });
@@ -32,6 +34,8 @@ GamePlayer.belongsTo(Player, { foreignKey: 'playerId' });
 
 History.belongsTo(Game, { foreignKey: 'gameId' });
 History.belongsTo(Player, { foreignKey: 'playerId' });
+
+ApiRequest.belongsTo(Player, { foreignKey: 'userId' });
 
 module.exports = {
     Game,

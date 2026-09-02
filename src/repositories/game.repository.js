@@ -81,10 +81,37 @@ const getByIdWithRules = async (id) => {
 
     return game;
 }
+
+/**
+ * Get a list of games based on pagination
+ * @param page : The number page to take the records
+ * @param limit : The limit of records to get
+ * @param status : The games that I want to take based on their status 
+ * @returns 
+ */
+const getWithPagination = async (page, limit, status = 'PLAYING') => {
+    const offset = (page - 1) * limit;
+
+    return await Game.findAll({
+        where: {
+            isDeleted: false,
+            status: status,
+        },
+        order: [['createdAt', 'DESC']],
+        limit: limit,
+        offset: offset,
+        include: {
+            model: Rules,
+            as: 'rules'
+        },
+    });
+}
+
 module.exports = {
     create,
     getById,
     update,
     remove,
     getByIdWithRules,
+    getWithPagination,
 }

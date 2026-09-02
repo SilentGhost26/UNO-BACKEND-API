@@ -149,6 +149,22 @@ const createGameController = (gameService) => {
         res.status(200).json(game.result);
     }
 
+    const getGamesByPagination = async (req, res, next) => {
+        const { page = 1, limit = 5 } = req.query;
+        const games = await gameService.getGamesByPagination(page, limit);
+
+        if (!games.ok) {
+            return next(games.error);
+        }
+
+        const baseUrl = req.originalUrl.split('?')[0];
+        const nextUrl = `${baseUrl}?page=${page + 1}&limit=${limit}`;
+        res.status(200).json({
+            games: games.result,
+            nextPage: nextUrl,
+        });
+    }
+
     return {
         addGame,
         getGameById,
@@ -157,7 +173,8 @@ const createGameController = (gameService) => {
         startGame,
         finishGame,
         getGameByIdWithRules,
-        getGameStatus
+        getGameStatus,
+        getGamesByPagination,
     }
 }
 

@@ -4,12 +4,14 @@ const gamePlayerRepository = require('./repositories/game-player.repository');
 const cardRepository = require('./repositories/card.repository');
 const gameCardRepository = require('./repositories/game-card.repository');
 const historyRepository = require('./repositories/history.repository');
+const apiRequestRepository = require('./repositories/api-request.repository');
 
 const gameDto = require('./dto/game.dto');
 const playerDto = require('./dto/player.dto');
 const cardDto = require('./dto/card.dto');
 const gameCardDto = require('./dto/game-card.dto');
 const gamePlayerDto = require('./dto/game-player.dto');
+const apiRequestDto = require('./dto/api-request.dto');
 const notFoundHelper = require('./helpers/not-found.helper');
 const conflictHelper = require('./helpers/conflict.helper');
 const resultHelper = require('./helpers/result.helper');
@@ -23,6 +25,7 @@ const createGameCardService = require('./services/game-card.service');
 const createPlayerService = require('./services/player.service');
 const createGameEngineService = require('./services/game-engine.service');
 const createHistoryService = require('./services/history.service');
+const createRequestStatsService = require('./services/request-stats.service');
 
 const gameStartValidators = require('./services/validators/game-start.validator');
 const gameFinishValidators = require('./services/validators/game-finish.validator');
@@ -40,6 +43,7 @@ const gameCardService = createGameCardService(gameCardRepository, gameRepository
 const playerService = createPlayerService(playerRepository, playerDto, notFoundHelper, conflictHelper, resultHelper);
 const gameEngineService = createGameEngineService(gameRepository, gameCardRepository, gamePlayerRepository,playerRepository, cardRepository, historyRepository, cardDto, gameCardDto, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, rulesPlayCardValidators, hasValidCardValidators);
 const historyService = createHistoryService(historyRepository, gameRepository, notFoundHelper, resultHelper);
+const requestStatsService = createRequestStatsService(apiRequestRepository, apiRequestDto, resultHelper);
 
 const createAuthController = require('./controllers/auth.controller');
 const createCardController = require('./controllers/card.controller');
@@ -50,6 +54,7 @@ const createGamePlayerController = require('./controllers/game-player.controller
 const createGameCardController = require('./controllers/game-card.controller');
 const createGameEngineController = require('./controllers/game-engine.controller');
 const createHistoryController = require('./controllers/history.controller');
+const createRequestStatsController = require('./controllers/request-stats.controller');
 
 const authController = createAuthController(authService);
 const cardController = createCardController(cardService);
@@ -60,6 +65,7 @@ const gamePlayerController = createGamePlayerController(gamePlayerService);
 const gameCardController = createGameCardController(gameCardService);
 const gameEngineController = createGameEngineController(gameEngineService);
 const historyController = createHistoryController(historyService);
+const requestStatsController = createRequestStatsController(requestStatsService);
 
 module.exports = {
     tokenService,
@@ -70,6 +76,7 @@ module.exports = {
     gameCardService,
     playerService,
     gameEngineService,
+    requestStatsService,
     authController,
     cardController,
     gameController,
@@ -79,4 +86,5 @@ module.exports = {
     gameCardController,
     gameEngineController,
     historyController,
+    requestStatsController,
 }

@@ -19,7 +19,7 @@ const createGameService = (
     gameCardDto,
     notFoundHelper,
     conflictHelper,
-    { runValidators, ok },
+    { runValidators, ok, err },
     gameStartValidators = [],
     gameFinishValidators = []
 ) => {
@@ -168,6 +168,26 @@ const createGameService = (
         });
     }
 
-    return { addGame, findGameById, updateGame, deleteGame, startGame, finishGame, findGameByIdWithRules, getGameStatus };
+    /**
+     * Get the games using pagination
+     * @param page : The number page 
+     * @param limit : the limits of games per page
+     * @returns 
+     */
+    const getGamesByPagination = async (page, limit) => {
+        const numberPage = Number(page);
+        const numberLimit = Number(limit);
+
+        if (Number.isNaN(numberPage) || Number.isNaN(numberLimit)) {
+            const error = new Error('The params must be numbers');
+            error.statusCode = 400;
+            return err(error);
+        }
+
+        const games = await gameRepository.getWithPagination(numberPage, numberLimit);
+        return ok(games.map(g => gameDto.toResponseDto(g)));
+    }
+
+    return { addGame, findGameById, updateGame, deleteGame, startGame, finishGame, findGameByIdWithRules, getGameStatus, getGamesByPagination };
 }
 module.exports = createGameService;
