@@ -49,8 +49,14 @@ const createGameEngineService = (
         const distributedCards = distribute(players, sortedCards, cardsPerPlayer, []);
         let updatedCards = await Promise.all(distributedCards.map(c => gameCardRepository.update(c.gameId, c.cardId, c.dataValues)));
         
+        let card;
+        do {
+            card = await gameCardRepository.getTopCardFromDeck(gameId);
+            if (card.Card.type !== 'NUMBER') {
+                await gameCardRepository.update(gameId, card.cardId, { position: 1 });
+            }
+        } while(card.Card.type !== 'NUMBER');
         
-        const card = await gameCardRepository.getTopCardFromDeck(gameId);
         await gameCardRepository.update(gameId, card.cardId, { position: 1, zone: 'DISCARD' });
         await gameRepository.update(gameId, { distributedCards: true, currentColor: card.Card.color });
 
