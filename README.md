@@ -1,3 +1,93 @@
+# UNO GAME
+This project is the backend implementation of the game UNO. This project is based on API Rest as part of the capstone project for Programming 4.
+## technology stack
+- NodeJS 
+- ExpressJS
+- MySQL
+- Sequelize
+
+
+## Architecture
+This project follows the onion architecture, where the components are separated in different layers:
+- Domain: This layer contains the implementation of the data access logic. In this layer are contained:
+    - Repositories: Implementation of the data access logic
+    - Models: Definition of the table structure for the ORM
+    - database: Definition of the conection with the database
+
+- Application: This layer contains the implementation of the business logic. Here is processed the data applying the different rules of the system. In this layer are contained:
+    - Services: Implementation of the business logic
+    - dto: Pure functions that allow us to define the data that will be returned.
+    
+- Presentation: This layer contains the implementation of the different interactive resources of the API, being the different endpoints. In this layer are contained:
+
+    - Controllers: Definition of the functions that will have the API
+    - Routes: Definitions of the URIs and type of request for the functions of controllers
+    - Middlewares: functions that will be executed before of processing a request
+    - schemas: Definition of the request body structure for the requests.
+
+## Requirements before the installation
+You must have the following tools:
+1. Have an available mysql database.
+2. Have installed node v24 or higher.
+
+## Installation
+1. Install the dependencies:
+```bash
+npm install
+```
+2. configure the `.env` file:
+```
+PORT=3000
+JWT_SECRET=secret
+
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=3306
+DATABASE_NAME=db
+DATABASE_USER=user
+DATABASE_PASSWORD=user
+
+ERROR_LOG_ROUTE=route/to/error.log
+
+FRONT_END_URL=http://localhost:5173
+```
+## How to use
+1. To run the system you need to run the following command:
+```bash
+npm start
+```
+
+### Authentication
+You can authenticate you in the system using the following endpoints:
+- POST `/auth/register`: Register yourself in the system creating an account.
+- POST `/auth/login`: Login in the system using your email and password.
+- POST `/auth/logout`: Logout from your session using your access token.
+
+### Management of game
+You can handle a game in the system using the following endpoints:
+- POST `/games`: Create a game
+- PUT `/games/{id}`: update a game that is still in waiting state.
+- PUT `/games/start`: Start a game when there are enough players.
+
+### Join to game
+You can join to a game using the following endpoint:
+- POST `/games/{gameId}/players`
+
+### Playing in a game
+There are available different features while you are playing:
+- POST `/games/{gameId}/distribute`:  You can distribute the initial cards between the players in the game from the deck. You can specify the quantity of cards per player in the request body.
+- PUT `/game/{gameId}/play`: You can play a specific from your hand. If the card matches with top card from the discard stack and follow the rules, the card will leave your hand and will go to discard stack.
+- PUT `/games/{gameId}/draw`: If you don't have a valid card to play in your turn, you will need to draw a card from the deck. Use this endpoint if in any case you must draw cards.
+- PATCH `/games/{gameId}/say-uno`: You can say uno when you only have one card in your hand.
+- POST `/games/{gameId}/challenge`: Challenge another player he  has not yet said 'uno'.
+- GET `/games/{gameId}/players/current`: You can get the current player that must play in the game.
+- GET `/games/{gameId}/cards/top-card`: You can get the top card in the discard stack.
+- GET `/games/{gameId}/cards/hand`: You can get the current cards in your hand.
+
+2. The endpoints of the system are available in the postman collection.
+3. The endpoints are documented with Open API / swagger. To use the swagger UI you must run the system and go to `/api-docs`
+
+## API structure
+```json
 {
   "swagger": "2.0",
   "info": {
@@ -5,64 +95,7 @@
     "description": "API to handle the backend system of UNO game",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
   "paths": {
-    "/stats/requests": {
-      "get": {
-        "tags": [
-          "Stats"
-        ],
-        "description": "Get the total requests that has been sent to the server",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/stats/response-times": {
-      "get": {
-        "tags": [
-          "Stats"
-        ],
-        "description": "Get the response times of every used endpoint",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/stats/status-codes": {
-      "get": {
-        "tags": [
-          "Stats"
-        ],
-        "description": "Get the cuantity of uses of every status code",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/stats/popular-endpoints": {
-      "get": {
-        "tags": [
-          "Stats"
-        ],
-        "description": "Get the most used endpoint",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/players/me": {
       "get": {
         "tags": [
@@ -161,91 +194,6 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/games": {
-      "get": {
-        "tags": [
-          "Games"
-        ],
-        "description": "Get games by pagination",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "page of the games",
-            "type": "integer"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "limit of the page",
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Games"
-        ],
-        "description": "Add a new game",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Add a game",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "maxPlayers": {
-                  "type": "number",
-                  "example": 2
-                },
-                "rules": {
-                  "type": "object",
-                  "properties": {
-                    "allowDrawFour": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "allowAccumulateDraw": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "allowReverse": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -381,6 +329,66 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games": {
+      "post": {
+        "tags": [
+          "Games"
+        ],
+        "description": "Add a new game",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add a game",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "maxPlayers": {
+                  "type": "number",
+                  "example": 2
+                },
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "allowDrawFour": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "allowAccumulateDraw": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "allowReverse": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -952,298 +960,6 @@
     "/games/{gameId}/distribute": {
       "post": {
         "tags": [
-          "Auth"
-        ],
-        "description": "Register a new player",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "add a player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "age": {
-                  "type": "number",
-                  "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Register a new player",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "add a player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "age": {
-                  "type": "number",
-                  "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "authenticate a player using its email and password",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "authenticate player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "logout a player using its token",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/games/{gameId}/distribute": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Register a new player",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "add a player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "age": {
-                  "type": "number",
-                  "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Register a new player",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "add a player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "age": {
-                  "type": "number",
-                  "example": 0
-                },
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "authenticate a player using its email and password",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "authenticate player",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "logout a player using its token",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/games/{gameId}/distribute": {
-      "post": {
-        "tags": [
           "GameEngine"
         ],
         "description": "Distribute the cards in a game between the players",
@@ -1312,8 +1028,8 @@
               "type": "object",
               "properties": {
                 "cardId": {
-                  "type": "number",
-                  "example": 0
+                  "type": "string",
+                  "example": "string"
                 },
                 "newColor": {
                   "type": "string",
@@ -1335,25 +1051,35 @@
         ]
       }
     },
-    "/games/{gameId}/history": {
-      "get": {
+    "/games/{gameId}/draw": {
+      "put": {
         "tags": [
-          "History"
+          "GameEngine"
         ],
-        "description": "get the history of a game",
+        "description": "Draw a card from the deck.",
         "parameters": [
           {
             "name": "gameId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/games/{gameId}/say-uno": {
@@ -1455,3 +1181,13 @@
     }
   }
 }
+```
+
+## Contributors
+1. Luis Eduardo Barajas
+## Version
+1.0.0
+## Author
+Luis Eduardo Barajas
+## Status
+This project is still in the development phase. 
