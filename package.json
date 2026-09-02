@@ -12,6 +12,7 @@
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
+    "test:e2e": "jest --config jest.e2e.config.js",
     "swagger-autogen": "node ./swagger/swagger.js"
   },
   "dependencies": {
