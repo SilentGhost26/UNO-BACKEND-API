@@ -1,4 +1,4 @@
-
+const { runValidators } = require('../helpers/result.helper');
 /**
  * Factory to create the game player service
  * @param gamePlayerRepository : dependency of game player repository

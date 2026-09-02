@@ -8,6 +8,91 @@
 	},
 	"item": [
 		{
+			"name": "Stats",
+			"item": [
+				{
+					"name": "total requests (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/stats/requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stats",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "response times per endpoint (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/stats/response-times",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stats",
+								"response-times"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cuantity statusCode (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/stats/status-codes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stats",
+								"status-codes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "most popular endpoint (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/stats/popular-endpoints",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stats",
+								"popular-endpoints"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Players",
 			"item": [
 				{

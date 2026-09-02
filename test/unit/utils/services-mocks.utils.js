@@ -66,6 +66,14 @@ const historyService = {
     getGameHistory: jest.fn(),
 }
 
+const requestStatsService = {
+    addApiRequest: jest.fn(),
+    getTotalRequests: jest.fn(),
+    getResponseTimes: jest.fn(),
+    getStatusCode: jest.fn(),
+    getMostPopularEndpoint: jest.fn(),
+}
+
 module.exports = {
     authService,
     cardService,
@@ -76,4 +84,5 @@ module.exports = {
     tokenService,
     gameEngineService,
     historyService,
+    requestStatsService,
 }

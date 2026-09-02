@@ -55,6 +55,11 @@ const historyRepository = {
     getByGameId: jest.fn(),
 }
 
+const apiRequestRepository = {
+    create: jest.fn(),
+    findAll:  jest.fn(),
+}
+
 module.exports = {
     gameRepository,
     cardRepository,
@@ -62,4 +67,5 @@ module.exports = {
     gamePlayerRepository,
     gameCardRepository,
     historyRepository,
+    apiRequestRepository,
 }
