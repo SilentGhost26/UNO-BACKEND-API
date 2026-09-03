@@ -27,7 +27,7 @@ npm run test:e2e
 
 ### 1. Main workflows identified
 
-The capstone project chosen is **UNO**. At least 8 distinct workflows are covered end-to-end — more than the 5 minimum required, since building the deck/dealing hands and finishing the match turned out to be substantial enough to deserve their own test cases separate from "starting a game" and "playing a move":
+At least 8 distinct workflows are covered end-to-end, since building the deck/dealing hands and finishing the match turned out to be substantial enough to deserve their own test cases separate from "starting a game" and "playing a move":
 
 | # | Workflow | Key endpoints involved |
 |---|---|---|
