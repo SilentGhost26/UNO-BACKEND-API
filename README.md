@@ -360,7 +360,7 @@ Connect with `auth: { token: "Bearer <jwt>" }`. Events (client → server): `cre
 
 ## 7. Compliance checklist by week (self-assessment)
 
-This checklist follows the exact requirement list from the assignment sheet (Weeks 5–8). Marking an item `⬜` costs nothing extra — but marking `✅` on something that doesn't actually work is penalized double, per the honor code in [MATRIZ-EVALUACION.md](MATRIZ-EVALUACION.md).
+This checklist follows the exact requirement list from the assignment sheet (Weeks 5–8).
 
 ### Week 5
 
@@ -449,7 +449,7 @@ Collection file: [`UNO.postman_collection.json`](UNO.postman_collection.json), a
 
 - Auth (`register`, `login`, `logout`) — covered.
 - Players (`me`, `:id`, update, delete) — covered.
-- Games (status, get, update, delete, create, start, end) — covered.
+- Games (status, get, update, delete, create, start, end, get by pagination) — covered.
 - Game players (join, leave, list, current) — covered.
 - Cards catalog (initialize, list, get by id) — covered.
 - Game cards (create deck, list, top card, hand, update) — covered.
