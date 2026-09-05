@@ -32,8 +32,6 @@
           </elementProp>
         </collectionProp>
       </elementProp>
-      <boolProp name="TestPlan.functional_mode">false</boolProp>
-      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
       <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults">
@@ -846,9 +844,9 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="update data"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="update data" enabled="true"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /scores/{playerGameId} (update score)">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /scores/{playerGameId} (update score)" enabled="true">
             <stringProp name="HTTPSampler.path">/scores/$1</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">PUT</stringProp>
@@ -886,7 +884,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /games/{gameId}/cards/{cardId} (update card zone/position)">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /games/{gameId}/cards/{cardId} (update card zone/position)" enabled="true">
             <stringProp name="HTTPSampler.path">/games/${GAME_ID}/cards/1</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">PUT</stringProp>
@@ -903,7 +901,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Auth Header (owner)">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Auth Header (owner)" enabled="true">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Authorization</stringProp>
@@ -912,7 +910,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
               </collectionProp>
             </HeaderManager>
             <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 updated or 404 card not found">
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 updated or 404 card not found" enabled="true">
               <collectionProp name="Asserion.test_strings">
                 <stringProp name="49586">200</stringProp>
                 <stringProp name="51512">404</stringProp>
@@ -1133,7 +1131,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /scores/{id}">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /scores/{id}" enabled="true">
             <stringProp name="HTTPSampler.path">/scores/1</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1222,10 +1220,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-        </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="07 - Missing endpoints (present in Postman, absent from this JMX plan)"/>
-        <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/requests (total requests)" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/requests (total requests)">
             <stringProp name="HTTPSampler.path">/stats/requests</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1256,7 +1251,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/response-times (per endpoint)" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/response-times (per endpoint)">
             <stringProp name="HTTPSampler.path">/stats/response-times</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1287,7 +1282,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/status-codes (count per status code)" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/status-codes (count per status code)">
             <stringProp name="HTTPSampler.path">/stats/status-codes</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1318,7 +1313,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/popular-endpoints (most requested)" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /stats/popular-endpoints (most requested)">
             <stringProp name="HTTPSampler.path">/stats/popular-endpoints</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1366,7 +1361,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Auth Header (owner)">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Auth Header (owner)" enabled="true">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Authorization</stringProp>
@@ -1523,7 +1518,7 @@ vars.put(&apos;GUEST_EMAIL&apos;, &apos;jmeter_guest_&apos; + runId + &apos;@tes
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>

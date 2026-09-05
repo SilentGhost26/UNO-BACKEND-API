@@ -484,21 +484,23 @@ One-click instructions: **Open JMeter → File → Open → select `uno-backend-
 > The other endpoints have been added to jmeter in others controllers in order to comply the the consign of adding all endpoints to postman and jmeter
 > 
 
-### 3 endpoints chosen for the video walkthrough
-
-*(to be filled in)*
 
 ---
 
 ## 11. Video demo
 
-- Link: `(paste the video link here)`
-- Duration: `(confirm it is ≤ 5 minutes)`
+- Link: [Final evaluation](https://jalauniv-my.sharepoint.com/:v:/g/personal/luis_barajas0125_jala_university/IQCVPBj0KcpMSZTa8wuNM0fMAdYUhP0Ol_xoHlxvG6al2GE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=yHYtlC)
+- Duration: 5:00 min
 - Checklist of what the video must show:
-  - [ ] 3 FP concepts explained with code on screen.
-  - [ ] Test coverage visible on screen.
-  - [ ] The UI working end-to-end with a real practical example.
-  - [ ] Running "Run All" in JMeter.
+  - [X] Readme file presentation.
+  - [X] One integration test with postman (login endpoint).
+  - [X] functional flow (creation of a game since the UI).
+  - [ ] end to end tests execution (not enough time).
+  - [X] Test coverage visible on screen (88%).
+  - [X] Practical example of the UI (creation of a game since the UI).
+  - [X] Running "Run All" in JMeter (performance test).
+  - [X] functional programming concept (pure functions).
+  - [X] next steps (creation of new rule for the config).
 
 ---
 
