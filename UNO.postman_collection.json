@@ -159,7 +159,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"asd\",\n    \"email\": \"ejemplo@mail.com\",\n    \"age\": 6\n}",
+							"raw": "{\n    \"name\": \"asd\",\n    \"age\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -167,15 +167,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/players/{{id}}",
+							"raw": "http://localhost:3000/players",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"players",
-								"{{id}}"
+								"players"
 							]
 						}
 					},
