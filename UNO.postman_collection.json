@@ -211,6 +211,76 @@
 			"name": "Games",
 			"item": [
 				{
+					"name": "by pagination (GET)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/games?page=1&limit=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new Game (POST)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1ODNkZmViLTk5YjktNGVhNS1hNDFlLWEzODk4YTA0YjkyMCIsImlhdCI6MTc4Nzc3MDkyMywiZXhwIjoxNzg3ODU3MzIzfQ.PfJmL-MAAXNWWSSQ_H-aY-Vd6x8w8cGW_o502UPpLok",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"string\",\n  \"maxPlayers\": 2,\n  \"rules\": {\n    \"allowDrawFour\": true,\n    \"allowAccumulateDraw\": false,\n    \"allowReverse\": true\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "status of a specific game (GET)",
 					"request": {
 						"method": "GET",
@@ -301,36 +371,18 @@
 					"response": []
 				},
 				{
-					"name": "new Game (POST)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"string\",\n  \"maxPlayers\": 2,\n  \"rules\": {\n    \"allowDrawFour\": true,\n    \"allowAccumulateDraw\": false,\n    \"allowReverse\": true\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/games",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"games"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "start a game (PUT)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1ODNkZmViLTk5YjktNGVhNS1hNDFlLWEzODk4YTA0YjkyMCIsImlhdCI6MTc4Nzc3MDkyMywiZXhwIjoxNzg3ODU3MzIzfQ.PfJmL-MAAXNWWSSQ_H-aY-Vd6x8w8cGW_o502UPpLok",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"url": {
@@ -865,6 +917,16 @@
 				{
 					"name": "distribute the cards in a game (POST)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1ODNkZmViLTk5YjktNGVhNS1hNDFlLWEzODk4YTA0YjkyMCIsImlhdCI6MTc4Nzc3MDkyMywiZXhwIjoxNzg3ODU3MzIzfQ.PfJmL-MAAXNWWSSQ_H-aY-Vd6x8w8cGW_o502UPpLok",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -895,11 +957,21 @@
 				{
 					"name": "play a card (PUT)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1ODNkZmViLTk5YjktNGVhNS1hNDFlLWEzODk4YTA0YjkyMCIsImlhdCI6MTc4Nzc3MDkyMywiZXhwIjoxNzg3ODU3MzIzfQ.PfJmL-MAAXNWWSSQ_H-aY-Vd6x8w8cGW_o502UPpLok",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"cardId\": \"string\",\n  \"newColor\": \"string\" //optional - use when you use a multicolor card\n}",
+							"raw": "{\n  \"cardId\": \"77\",\n  \"newColor\": \"RED\" //optional - use when you use a multicolor card\n}",
 							"options": {
 								"raw": {
 									"language": "json"
