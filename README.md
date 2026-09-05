@@ -4,7 +4,7 @@
 
 This is the backend of **UNO**, a real-time multiplayer card game built as the capstone project for Programming 4. It exposes a REST API (Express) for account management, game creation, gameplay actions and statistics, plus a **Socket.IO** layer that drives the actual match in real time (joining rooms, playing cards, drawing, saying "UNO", challenging other players).
 
-- 🎥 Video demo: see [section 11] for the link.
+- 🎥 Video demo: see [section 11](#11-video-demo) for the link.
 - 📬 Postman collection: [`UNO.postman_collection.json`](UNO.postman_collection.json), described in [section 9](#9-postman).
 
 > **This project is built 100% with functional programming: no `class`, no `this`, no `new`**, with two narrow, justified exceptions where the underlying libraries require it: `new Server(...)` from `socket.io` in [`src/websocket/socket.server.js`](src/websocket/socket.server.js), and the built-in JS `new Error(...)` used as a plain data constructor for error objects, not as an OOP design choice. Every piece of code this project owns — services, controllers, repositories, middlewares, DTOs, validators — is written as plain factory functions and closures instead of classes.
@@ -176,7 +176,7 @@ The server listens on `http://localhost:<PORT>` (default `3000`), connects the d
 ```bash
 npm test                # unit tests (jest --config jest.config.js)
 npm run test:coverage    # unit tests with coverage report
-npm run test:e2e         # end-to-end tests (jest --config jest.e2e.config.js) — see below
+npm run test:e2e         # end-to-end tests (jest --config jest.e2e.config.js)
 ```
 
 For the end-to-end suite, create a `.env.test` file following [`end-to-end test documentation.md`](end-to-end%20test%20documentation.md) first.
@@ -360,23 +360,48 @@ Connect with `auth: { token: "Bearer <jwt>" }`. Events (client → server): `cre
 
 ## 7. Compliance checklist by week (self-assessment)
 
-> This is a starting skeleton inferred from the current implementation. **Replace it with the exact requirement list from your assignment sheet (Weeks 5–8)** and confirm each ✅/⬜ before submitting — see [MATRIZ-EVALUACION.md](MATRIZ-EVALUACION.md).
+This checklist follows the exact requirement list from the assignment sheet (Weeks 5–8). Marking an item `⬜` costs nothing extra — but marking `✅` on something that doesn't actually work is penalized double, per the honor code in [MATRIZ-EVALUACION.md](MATRIZ-EVALUACION.md).
+
+### Week 5
+
+| Requirement | Status | Where |
+|---|---|---|
+| Ensure SOLID principles are followed | ✅ | [Section 3 — "SOLID, letter by letter, without classes"](#3-architecture-and-solid-applied-with-fp) |
+| Ensure clean code practices are followed | ✅ | Consistent one-file-per-resource-per-layer structure ([section 4](#4-repository-structure)), single-responsibility functions throughout (same evidence as SOLID's "S"), the `Result` type ([`src/helpers/result.helper.js`](src/helpers/result.helper.js)) replacing scattered `try/catch`, and dependencies centralized in one place ([`src/compositions.js`](src/compositions.js)) instead of duplicated `require`s |
+| Error handling in the backend | ✅ | [Section 3 — "Error handling"](#error-handling); [`src/middlewares/error.middleware.js`](src/middlewares/error.middleware.js) |
+
+### Week 6
 
 | Requirement | Status | Where |
 |---|---|---|
 | Card distribution to players | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `distributeCards`/`distribute` |
-| Turn order, direction (`REVERSE`) and skip (`BLOCK`) | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `endTurn`, `getNextPlayer` |
-| Playing a card following match rules | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `playCard`; rules in [`src/services/validators/rules-play-card.validator.js`](src/services/validators/rules-play-card.validator.js) |
-| Drawing cards / deck reload when empty | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `drawCard`, `drawCards`, `reloadDeck` |
-| Saying "UNO" and challenging | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `sayUno`, `challengePlayer` |
-| Win detection and score calculation | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `playCard` (0 cards in hand), `calculateScores` |
-| Configurable game rules (`allowDrawFour`, `allowAccumulateDraw`, `allowReverse`) | ✅ | [`src/models/rules.model.js`](src/models/rules.model.js), enforced in [`src/services/validators`](src/services/validators) |
-| Real-time gameplay over WebSocket | ✅ | [`src/websocket`](src/websocket) |
-| JWT authentication + session invalidation on logout | ✅ | [`src/services/token.service.js`](src/services/token.service.js), [`src/middlewares/auth.middleware.js`](src/middlewares/auth.middleware.js) |
-| Request statistics / API usage metrics | ✅ | [`src/services/request-stats.service.js`](src/services/request-stats.service.js) |
-| Unit test suite (services, controllers, middlewares, dto) | ✅ | [`test/unit`](test/unit) — see [section 8](#8-testing-and-coverage) |
-| End-to-end test suite | ✅ | [`test/e2e`](test/e2e) |
-| *(add the remaining assignment-specific items here)* | ⬜ | *(pending / not implemented)* |
+| Players play cards following the rules | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `playCard`; rules in [`src/services/validators/rules-play-card.validator.js`](src/services/validators/rules-play-card.validator.js) |
+| If a player can't play a card, they must draw one from the deck | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `drawCard`, enforced against [`src/services/validators/has-valid-card.validator.js`](src/services/validators/has-valid-card.validator.js) (drawing is rejected with `409` while a valid card still exists in hand) |
+| Players must say "UNO" when they have one card left | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `sayUno` (rejects with `409` unless exactly one card remains) |
+| Players can challenge others for not saying "UNO" | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `challengePlayer` (penalizes the challenged player by drawing 2 cards) |
+| The player's turn ends after playing or drawing a card | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `endTurn`, called from both `playCard` and the turn-passing branches of `drawCard` |
+| Game ends when a player runs out of cards | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `playCard` (checks `cuantityCardsInHand === 0`, sets the game to `FINISHED` and calls `calculateScores`) |
+| Players can check the current state of the game | ✅ | `GET /games/:id/status` → [`src/services/game.service.js`](src/services/game.service.js) → `getGameStatus` |
+| Players can see their own cards during the game | ✅ | `GET /games/:gameId/cards/hand` → [`src/services/game-card.service.js`](src/services/game-card.service.js) → `getPlayerHand` |
+| Players can see the move history of the game | ✅ | `GET /games/:gameId/history` → [`src/services/history.service.js`](src/services/history.service.js); entries written by `historyRepository.create` inside `playCard`/`drawCard` |
+| Players can see the current scores of all players | ✅ | `GET /scores/games/:gameId` → [`src/services/game-player.service.js`](src/services/game-player.service.js) |
+| Multiplayer support | ✅ | [`src/services/game-player.service.js`](src/services/game-player.service.js) (join/leave, `maxPlayers`), turn order driven by the ordered player list in [`src/repositories/game-player.repository.js`](src/repositories/game-player.repository.js), real-time sync over [`src/websocket`](src/websocket) rooms |
+| Error logging in the backend | ✅ | [`config/winston-logger.config.js`](config/winston-logger.config.js), written to `ERROR_LOG_ROUTE` from [`src/middlewares/error.middleware.js`](src/middlewares/error.middleware.js) |
+
+### Week 7
+
+| Requirement | Status | Where |
+|---|---|---|
+| Players' turns follow a clockwise direction | ✅ | `game.direction` field (`'RIGHT'`/`'LEFT'`), resolved by `getNextPlayer` inside `endTurn` in [`src/services/game-engine.service.js`](src/services/game-engine.service.js) |
+| Skip cards (BLOCK) | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `endTurn` sets `skip = true` for a `BLOCK` card, making `getNextPlayer` advance by 2 positions instead of 1 |
+| Reverse cards | ✅ | [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `endTurn` flips `game.direction` for a `REVERSE` card, gated by the `allowReverse` rule in [`src/services/validators/rules-play-card.validator.js`](src/services/validators/rules-play-card.validator.js) |
+| Draw cards if a play isn't possible | ✅ | Same evidence as Week 6's "must draw" requirement — [`src/services/game-engine.service.js`](src/services/game-engine.service.js) → `drawCard` |
+
+### Week 8
+
+| Requirement | Status | Where |
+|---|---|---|
+| User interface | ✅ | Separate repository: [`UNO-frontend`](https://gitlab.com/jala-university1/cohort-5/ES.CSPR-244.GA.T2.26.M1/SC/laboratorios-p4/luis-eduardo-barajas-cabrera/capstone/frontend) — a Vite + vanilla JS client (`src/views`, `src/components`, `src/controllers`, `src/router`, `src/services`) that talks to this backend over both REST and `socket.io-client` |
 
 ---
 
@@ -424,7 +449,7 @@ Collection file: [`UNO.postman_collection.json`](UNO.postman_collection.json), a
 
 - Auth (`register`, `login`, `logout`) — covered.
 - Players (`me`, `:id`, update, delete) — covered.
-- Games (status, get, update, delete, create, start, end) — covered. ⚠️ **`GET /games` (paginated list) is missing from the collection** — add a request for it to keep this in sync with [section 6](#6-api-reference).
+- Games (status, get, update, delete, create, start, end) — covered.
 - Game players (join, leave, list, current) — covered.
 - Cards catalog (initialize, list, get by id) — covered.
 - Game cards (create deck, list, top card, hand, update) — covered.
@@ -455,7 +480,9 @@ The Thread Group runs **50 concurrent users**, each with a unique generated emai
 
 One-click instructions: **Open JMeter → File → Open → select `uno-backend-tests.jmx` → click "Run All"**. Check the **Summary Report** and **Aggregate Graph** listeners for the results.
 
-⚠️ Endpoints from [section 6](#6-api-reference) not currently exercised by this plan: the read-only `Players` endpoints, `GET /games` (list), `GET /games/:id`, `PUT/DELETE /games/:id`, `GET /games/:gameId/players`, `PUT /games/:gameId/cards/:cardId`, the `Cards` catalog read endpoints, `POST /auth/logout`, and the four `/stats/*` endpoints.
+> [!NOTE]
+> The other endpoints have been added to jmeter in others controllers in order to comply the the consign of adding all endpoints to postman and jmeter
+> 
 
 ### 3 endpoints chosen for the video walkthrough
 
