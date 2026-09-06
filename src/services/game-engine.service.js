@@ -2,14 +2,25 @@ const createGameEngineService = (
     gameRepository,
     gameCardRepository,
     gamePlayerRepository,
+    playerRepository,
+    cardRepository,
+    historyRepository,
     cardDto,
     gameCardDto,
     gamePlayerDto,
     notFoundHelper,
-    conflicHelper,
-    { ok, err },
+    conflictHelper,
+    { ok, err, runValidators },
+    rulesPlayCardValidators = [],
+    hasValidCardValidators = [],
 ) => {
 
+    /**
+     * Function to distribute the cards of deck in a game between the players
+     * @param gameId : id of the game
+     * @param cardsPerPlayer : quantity of cards per player
+     * @returns The cards that have every player
+     */
     const distributeCards = async (gameId, cardsPerPlayer) => {
         const game = await gameRepository.getById(gameId);
         if (!game) {
@@ -26,6 +37,11 @@ const createGameEngineService = (
         
         const players = await gamePlayerRepository.getByGameId(gameId);
         const cardsInGame = await gameCardRepository.getByGameId(gameId);
+
+        if(!cardsInGame || cardsInGame.length == 0) {
+            return conflictHelper.throwError409(`game with ID ${gameId} has not initialized the deck`);
+        }
+
         const sortedCards = cardsInGame.toSorted((a, b) => a.position - b.position);
 
         /**
@@ -124,6 +140,12 @@ const createGameEngineService = (
 
         const nextPlayer = await endTurn({ gameId, card, newColor, mustDraw, cardsToDraw });
         await gameCardRepository.update(gameId, cardId, { zone: 'DISCARD', position: lastCard.position + 1, playerId: null });
+        
+        if (card.Card.type === 'NUMBER') {
+            await historyRepository.create({ action: `played ${card.Card.color} ${card.Card.value}`, playerId: playerId, gameId: gameId });
+        } else {
+            await historyRepository.create({ action: `played ${card.Card.color} ${card.Card.type}`, playerId: playerId, gameId: gameId });
+        }
 
         const cuantityCardsInHand = await gameCardRepository.getCuantityCardsInHand(gameId, playerId);
 
@@ -250,7 +272,8 @@ const createGameEngineService = (
         let drawnCards = [];
         let nextPlayer;
         if ((lastCard.Card.type === '+2' || lastCard.Card.type === '+4') && game.mustDraw) {
-            drawnResult = await drawCards(game.accumulatedCardsToDraw, playerId, gameId);
+            const drawnResult = await drawCards(game.accumulatedCardsToDraw, playerId, gameId);
+            await historyRepository.create({ action: `drew ${game.accumulatedCardsToDraw} cards and pass the turn`, playerId: playerId, gameId: gameId });
             if (!drawnResult.ok) {
                 return drawnResult;
             }
@@ -271,6 +294,7 @@ const createGameEngineService = (
             }
             const validCard = runValidators(hasValidCardValidators, { hand: [drawnCard], lastCard, rules: game.rules, game });
             if (validCard.ok) {
+                await historyRepository.create({ action: `drew 1 card`, playerId: playerId, gameId: gameId });
                 return ok({
                     action: `card drawn`,
                     drawnCards: [cardDto.toResponseDto(drawnCard.Card)],
@@ -278,6 +302,7 @@ const createGameEngineService = (
                 });
             } else {
                 nextPlayer = await endTurn({ gameId, mustDraw: false, cardsToDraw: 0 });
+                await historyRepository.create({ action: `drew 1 card and pass the turn`, playerId: playerId, gameId: gameId });
                 drawnCards.push(drawnCard);
             }
         }
