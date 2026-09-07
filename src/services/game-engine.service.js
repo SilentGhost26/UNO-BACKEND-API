@@ -65,8 +65,14 @@ const createGameEngineService = (
         const distributedCards = distribute(players, sortedCards, cardsPerPlayer, []);
         let updatedCards = await Promise.all(distributedCards.map(c => gameCardRepository.update(c.gameId, c.cardId, c.dataValues)));
         
+        let card;
+        do {
+            card = await gameCardRepository.getTopCardFromDeck(gameId);
+            if (card.Card.type !== 'NUMBER') {
+                await gameCardRepository.update(gameId, card.cardId, { position: 1 });
+            }
+        } while(card.Card.type !== 'NUMBER');
         
-        const card = await gameCardRepository.getTopCardFromDeck(gameId);
         await gameCardRepository.update(gameId, card.cardId, { position: 1, zone: 'DISCARD' });
         await gameRepository.update(gameId, { distributedCards: true, currentColor: card.Card.color });
 
@@ -92,7 +98,6 @@ const createGameEngineService = (
         if (!currentPlayer) {
             return notFoundHelper.throwError404(playerId, 'player');
         }
-        console.log(currentPlayer.playerId)
         if (currentPlayer.playerId !== playerId) {
             return conflictHelper.throwError409(`it is not the turn for the player with ID ${playerId}`);
         }
@@ -150,7 +155,7 @@ const createGameEngineService = (
             return ok({
                 action: 'Player won the game',
                 played: cardDto.toResponseDto(card.Card),
-                winner: gamePlayerDto.toGamePlayerInfoDto(nextPlayer),
+                winner: gamePlayerDto.toGamePlayerInfoDto(currentPlayer),
                 scores: playersInGame.map(gamePlayerDto.toScoreResponseDto),
             });
         }
@@ -267,14 +272,14 @@ const createGameEngineService = (
         let drawnCards = [];
         let nextPlayer;
         if ((lastCard.Card.type === '+2' || lastCard.Card.type === '+4') && game.mustDraw) {
-            drawnResult = await drawCards(game.accumulatedCardsToDraw, playerId, gameId);
+            const drawnResult = await drawCards(game.accumulatedCardsToDraw, playerId, gameId);
             await historyRepository.create({ action: `drew ${game.accumulatedCardsToDraw} cards and pass the turn`, playerId: playerId, gameId: gameId });
             if (!drawnResult.ok) {
                 return drawnResult;
             }
             drawnCards = drawnResult.result;
-            if (currentPlayer.SaidUno) {
-                await gamePlayerRepository.update(currentPlayer.id, { sayUno: false });
+            if (currentPlayer.saidUno) {
+                await gamePlayerRepository.update(currentPlayer.id, { saidUno: false });
             }
             nextPlayer = await endTurn({ gameId, mustDraw: false, cardsToDraw: 0 });
         } else {
@@ -284,8 +289,8 @@ const createGameEngineService = (
             }
             const drawnCard = drawnResult.result[0];
             
-            if (currentPlayer.SaidUno) {
-                await gamePlayerRepository.update(currentPlayer.id, { sayUno: false });
+            if (currentPlayer.saidUno) {
+                await gamePlayerRepository.update(currentPlayer.id, { saidUno: false });
             }
             const validCard = runValidators(hasValidCardValidators, { hand: [drawnCard], lastCard, rules: game.rules, game });
             if (validCard.ok) {
@@ -354,7 +359,7 @@ const createGameEngineService = (
             cards[i].position = positions[i];
             cards[i].zone = 'DECK';
             cards[i].playerId = null;
-            await gameCardRepository.update(cards[i].id, cards[i]);
+            await gameCardRepository.update(gameId, cards[i].cardId, cards[i]);
         }
 
         return ok();
@@ -383,7 +388,6 @@ const createGameEngineService = (
         }
 
         const cuantityCardsInHand = await gameCardRepository.getCuantityCardsInHand(gameId, playerId);
-        console.log(cuantityCardsInHand)
         if (cuantityCardsInHand > 1) {
             return conflictHelper.throwError409(`player with ID ${playerId} still has more cards`);
         }

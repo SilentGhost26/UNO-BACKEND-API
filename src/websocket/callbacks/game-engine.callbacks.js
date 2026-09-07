@@ -42,6 +42,12 @@ const createGameEngineSocketCallbacks = (
         }
         roomHandler.leaveRoom(socket, gameId);
         roomHandler.broadcast(socket, gameId, 'player-left', result.result);
+        if (result.result.gameFinished) {
+            roomHandler.broadcast(io, gameId, 'game-finished', {
+                winner: result.result.winner,
+                reason: 'All other players left the game',
+            });
+        }
     });
 
     const startGame = () => wrapError(socket, async ({ gameId }) => {
@@ -60,7 +66,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const distributeCards = (distributeCardsSchema) => wrapError(socket, async ({ gameId, cardsPerPlayer }) => {
-        validateSchema(distributeCardsSchema, {gameId, cardsPerPlayer});
+        validateSchema(distributeCardsSchema, {cardsPerPlayer});
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
@@ -76,7 +82,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const playCard = (playCardSchema) => wrapError(socket, async ({ gameId, cardId, newColor }) => {
-        validateSchema(playCardSchema, { gameId, cardId, newColor });
+        validateSchema(playCardSchema, { cardId, newColor });
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
@@ -119,7 +125,7 @@ const createGameEngineSocketCallbacks = (
     });
 
     const challenge = (challengeSchema) => wrapError(socket, async ({ challengedPlayerId, gameId }) => {
-        validateSchema(challengeSchema, { challengedPlayerId, gameId });
+        validateSchema(challengeSchema, { challengedPlayerId });
         const playerId = socket.player.id;
         if (!isInRoom(socket, gameId)) {
             return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
@@ -137,12 +143,31 @@ const createGameEngineSocketCallbacks = (
         const playerId = socket.player.id;
         socket.rooms.forEach(async room => {
             const result = await gamePlayerService.deleteGamePlayer(room, playerId);
-            if (!result.ok) {
-                throw result.error;
+            if (result.ok) {
+                roomHandler.leaveRoom(socket, room);
+                roomHandler.broadcast(socket, room, 'player-left', result.result);
+                if (result.result.gameFinished) {
+                    roomHandler.broadcast(io, room, 'game-finished', {
+                        winner: result.result.winner,
+                        reason: 'All other players left the game',
+                    });
+                }
             }
-            roomHandler.leaveRoom(socket, room);
-            roomHandler.broadcast(socket, room, 'player-left', result.result);
         });
+    });
+
+    const updateGame = (gameSchema) => wrapError(socket, async ({ gameId,   gameData }) => {
+        validateSchema(gameSchema, gameData);
+        const playerId = socket.player.id;
+        if (!isInRoom(socket, gameId)) {
+            return socket.emit('error', { message: 'not joined to this game', statusCode: 403 });
+        }
+
+        const updated = await gameService.updateGame(gameId, gameData);
+        if (!updated.ok) {
+            throw updated.error;
+        }
+        roomHandler.broadcast(io, gameId, 'game-updated', updated.result);
     });
 
     function isInRoom(socket, room) {
@@ -159,7 +184,7 @@ const createGameEngineSocketCallbacks = (
         }
     }
 
-    return { createGame, enterGame, leaveGame, startGame, distributeCards, sayUno, challenge, playCard, draw, leaveByError };
+    return { createGame, enterGame, leaveGame, startGame, distributeCards, sayUno, challenge, playCard, draw, leaveByError, updateGame };
 }
 
 module.exports = createGameEngineSocketCallbacks;

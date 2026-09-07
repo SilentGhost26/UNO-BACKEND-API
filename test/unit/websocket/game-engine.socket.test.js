@@ -13,6 +13,7 @@ const createCallbacks = () => ({
     sayUno: jest.fn(),
     challenge: jest.fn(),
     leaveByError: jest.fn(),
+    updateGame: jest.fn(),
 });
 
 describe('tests for game engine socket wiring', () => {

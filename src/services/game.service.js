@@ -141,8 +141,10 @@ const createGameService = (
             });
         }
 
-        const currentPlayer = await gamePlayerRepository.getCurrentPlayerToPlay(id); 
-        currentPlayer.Player = await playerRepository.getById(currentPlayer.playerId);
+        const currentPlayer = game.status === 'PLAYING' ? await gamePlayerRepository.getCurrentPlayerToPlay(id) : null;
+        if (currentPlayer) {
+            currentPlayer.Player = await playerRepository.getById(currentPlayer.playerId);
+        }
         const topCard = await gameCardRepository.getTopCardFromDiscard(id);
         const hands = await Promise.all(
             players.map(async p => {
@@ -156,7 +158,7 @@ const createGameService = (
         const topCardDiscard = topCard? cardDto.toResponseDto(topCard.Card) : null;
         return ok({
             game: gameDto.toStatusResponseDto(game),
-            currentPlayer: gamePlayerDto.toGamePlayerInfoDto(currentPlayer),
+            currentPlayer: currentPlayer ? gamePlayerDto.toGamePlayerInfoDto(currentPlayer) : null,
             topCard: topCardDiscard,
             hands: hands,
             history: history.map(h => { 
@@ -184,7 +186,7 @@ const createGameService = (
             return err(error);
         }
 
-        const games = await gameRepository.getWithPagination(numberPage, numberLimit);
+        const games = await gameRepository.getWithPagination(numberPage, numberLimit, 'WAITING');
         return ok(games.map(g => gameDto.toResponseDto(g)));
     }
 

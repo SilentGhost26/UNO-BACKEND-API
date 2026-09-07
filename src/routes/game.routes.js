@@ -28,7 +28,6 @@ router.get(
 );
 router.get(
     '/games/:id/status', 
-    memoizeMiddleware({ max: 100, maxAge: 1500 }),
     /**
      * #swagger.tags = ['Games']
      * #swagger.description = 'Get the status of a game by its ID'

@@ -65,7 +65,10 @@ const createAuthService = (
         }
         
         if (result) {
-            return ok(tokenService.createUserToken(player));
+            return ok({
+                token: tokenService.createUserToken(player),
+                playerId: player.id,
+            });
         } else {
             const error = new Error('incorrect email or password');
             error.statusCode = 401;

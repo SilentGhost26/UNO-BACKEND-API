@@ -147,10 +147,10 @@ describe('test for game player service', () => {
     describe('Tests for deleteGamePlayer', () => {
         test('delete a player from a game successfully', async () => {
             gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'WAITING' });
-            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue({ id: 'gp-1' });
+            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue({ id: 'gp-1', playerId: 'player-1', Player: { name: 'luis'} });
 
             const result = await gamePlayerService.deleteGamePlayer('game-1', 'player-1');
-            expect(result).toEqual({ ok: true, result: undefined });
+            expect(result).toEqual({ ok: true, result: { id: 'gp-1', playerId: 'player-1', name: 'luis' }});
             expect(gamePlayerRepository.remove).toHaveBeenCalledWith('gp-1');
         });
 
@@ -177,6 +177,19 @@ describe('test for game player service', () => {
                 message: 'player in game with ID player-1 not found',
                 statusCode: 404,
             });
+        });
+
+        test('finish a playing game and declare the remaining player winner', async () => {
+            const leavingPlayer = { id: 'gp-1', playerId: 'player-1', position: 1, Player: { name: 'Ana' } };
+            const winner = { id: 'gp-2', playerId: 'player-2', position: 2, Player: { name: 'Luis' } };
+            gameRepository.getById.mockResolvedValue({ id: 'game-1', status: 'PLAYING', currentPlayerIndex: 1, direction: 'RIGHT' });
+            gamePlayerRepository.getByGameIdPlayerId.mockResolvedValue(leavingPlayer);
+            gamePlayerRepository.getByGameId.mockResolvedValue([leavingPlayer, winner]);
+
+            const result = await gamePlayerService.deleteGamePlayer('game-1', 'player-1');
+
+            expect(gameRepository.update).toHaveBeenCalledWith('game-1', { status: 'FINISHED', winnerId: 'player-2' });
+            expect(result.result).toMatchObject({ gameFinished: true, winner: { playerId: 'player-2', name: 'Luis' } });
         });
     });
 

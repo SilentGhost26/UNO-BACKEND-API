@@ -39,7 +39,7 @@ router.put(
      * #swagger.parameters['body'] = {
        in: 'body',
        description: 'Play a card',
-       schema: { cardId: "string", newColor: "string" } 
+       schema: { cardId: 0, newColor: "string" } 
       }
      */
     gameEngineController.playCard

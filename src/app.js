@@ -15,7 +15,9 @@ const errorMiddleware = require('./middlewares/error.middleware');
 const trackingMiddleware = require('./middlewares/tracking.middleware');
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONT_END_URL,
+}));
 app.use('/', requestStatsRoutes);
 app.use(trackingMiddleware);
 app.use('/', playerRoutes);

@@ -15,7 +15,12 @@ describe('toStatusResponseDto', () => {
             ownerId: 'owner-1',
             winnerId: 'player-1',
             currentColor: 'RED',
-            createdAt: '2026-07-28T00:00:00.000Z'
+            createdAt: '2026-07-28T00:00:00.000Z',
+            rules: {
+                allowDrawFour: true,
+                allowAccumulateDraw: true,
+                allowReverse: false,
+            }
         };
         
         const dto = {
@@ -90,13 +95,23 @@ describe('fromUpdateDto', () => {
         const dto = {
             title: 'UNO',
             maxPlayers: 4,
-            status: 'PLAYING'
+            status: 'PLAYING',
+            rules: {
+                allowDrawFour: true,
+                allowAccumulateDraw: true,
+                allowReverse: false,
+            }
         };
         
         const game = {
             title: 'UNO',
             maxPlayers: 4,
-            status: 'PLAYING'
+            status: 'PLAYING',
+            rules: {
+                allowDrawFour: true,
+                allowAccumulateDraw: true,
+                allowReverse: false,
+            }
         };
         
         expect(fromUpdateDto(dto)).toStrictEqual(game);

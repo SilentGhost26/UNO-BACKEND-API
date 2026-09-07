@@ -26,11 +26,11 @@ describe('test for auth controller', () => {
         test('authenticate a player from the request body and responds 200 with a token', async () => {
             const req = { body: { email: 'ada@example.com', password: 'secret123' } };
             const res = createRes();
-            authService.authenticatePlayer.mockResolvedValue({ ok: true, result: 'secret-token' });
+            authService.authenticatePlayer.mockResolvedValue({ ok: true, result: { token: 'secret-token', playerId: 'player-1' }});
             
             await authController.authenticatePlayer(req, res);
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ access_token: 'secret-token' });
+            expect(res.json).toHaveBeenCalledWith({ access_token: 'secret-token', playerId: 'player-1' });
         });
     });
 

@@ -101,7 +101,7 @@ describe('test for auth service', () => {
             const result = await authService.authenticatePlayer('ana@test.com', 'secret');
 
             expect(result.ok).toBe(true);
-            expect(result.result).toBe('jwt-token');
+            expect(result.result.token).toBe('jwt-token');
             expect(tokenService.createUserToken).toHaveBeenCalledWith(expect.objectContaining({ id: 'player-1' }));
         });
 

@@ -12,6 +12,7 @@ const config = {
         'src/websocket/handlers/**.js',
         'src/websocket/sockets/**.js'],
     coverageDirectory: 'coverage',
+    testMatch: ['**/test/unit/**/*.test.js'],
     clearMocks: true,
     resetMocks: true
 };
