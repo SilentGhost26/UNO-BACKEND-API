@@ -4,6 +4,7 @@ const toResponseDto = (data) => {
         name: data.name,
         age: data.age,
         email: data.email,
+        status: data.status,
         createdAt: data.createdAt
     }
 }

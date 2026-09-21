@@ -86,7 +86,7 @@ const createAuthService = (
            return notFoundHelper.throwError404(playerId, 'player');
         }
         
-        await playerRepository.update(playerId, { loggedOutAt: Date.now() });
+        await playerRepository.update(playerId, { status: 'OFFLINE', loggedOutAt: Date.now() });
         return ok();
     }
 

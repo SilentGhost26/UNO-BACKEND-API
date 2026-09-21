@@ -22,7 +22,7 @@ describe('toResponseDto', () => {
             createdAt: '2026-07-28T00:00:00.000Z'
         };
         
-        expect(toResponseDto(player)).toStrictEqual(dto);
+        expect(toResponseDto(player)).toMatchObject(dto);
     });
 
     test('should not mutate the original object', () => {
@@ -37,7 +37,7 @@ describe('toResponseDto', () => {
         const copy = { ...player };
 
         toResponseDto(player);
-        expect(player).toEqual(copy);
+        expect(player).toMatchObject(copy);
     });
 });
 

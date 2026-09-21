@@ -25,6 +25,11 @@ const Player = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        status: {
+            type: DataTypes.ENUM('ONLINE', 'OFFLINE'),
+            defaultValue: 'OFFLINE',
+            allowNull: false,
+        },
         isDeleted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
