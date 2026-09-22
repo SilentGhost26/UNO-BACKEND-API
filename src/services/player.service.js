@@ -8,10 +8,11 @@
  */
 const createPlayerService = (
     playerRepository,
+    playerRegistry,
     playerDto,
     notFoundHelper,
     conflictHelper,
-    { ok }
+    { ok, err }
 ) => {
 
     /**
@@ -69,8 +70,26 @@ const createPlayerService = (
         }
         return date;
     }
+
+    const updatePlayerStatus = async (id, status) => {
+        if (status !== 'ONLINE' && status !== 'OFFLINE')
+        {
+            return err(new Error(`nvalid status: ${status}`));
+        }
+
+        const updatedPlayer = await playerRepository.update(id, { status });
+       if (!updatedPlayer) {
+           return notFoundHelper.throwError404(id, 'player');
+        }
+
+        return ok();
+    }
+
+    const getTotalOnlinePlayers = () => {
+        return playerRegistry.getOnlineCount();
+    }
     
-    return { findPlayerById, updatePlayer, deletePlayer, getLoggedOutDateByPlayerId };
+    return { findPlayerById, updatePlayer, deletePlayer, getLoggedOutDateByPlayerId, updatePlayerStatus };
 }
 
 module.exports = createPlayerService;

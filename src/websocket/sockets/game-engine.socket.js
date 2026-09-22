@@ -1,4 +1,3 @@
-const roomHandler = require('../handlers/room.handler');
 const gameSchema = require('../../schemas/game.schema');
 const distributeCardsSchema = require('../../schemas/distribute-cards.schema');
 const playCardSchema = require('../../schemas/play-card.schema');
