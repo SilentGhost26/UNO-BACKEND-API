@@ -27,4 +27,8 @@ function isOnline(playerId) {
     return onlinePlayers.has(playerId);
 }
 
-module.exports = { addConnection, removeConnection, getOnlineCount, isOnline };
+function getOnlinePlayers() {
+    return [...onlinePlayers.keys()];
+}
+
+module.exports = { addConnection, removeConnection, getOnlineCount, isOnline, getOnlinePlayers };

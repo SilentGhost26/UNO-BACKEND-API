@@ -8,6 +8,26 @@ const memoizeMiddleware = require('../middlewares/memoize.middleware');
 const playerUpdateSchema = require('../schemas/player-update.schema');
 
 router.get(
+    '/players',
+    memoizeMiddleware({ max: 100, maxAge: 1000 }),
+    /**
+     * #swagger.tags = ['Players']
+     * #swagger.description = 'Get players by pagination'
+     * #swagger.parameters['page'] = {
+        in: 'query',
+        description: 'page of the players',
+        type: 'integer'
+        }
+     * #swagger.parameters['limit'] = {
+        in: 'query',
+        description: 'limit of the page',
+        type: 'integer'
+        }
+     */
+    playerController.getPlayersByPagination
+);
+
+router.get(
     '/players/me', 
     authMiddleware, 
     /**

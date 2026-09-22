@@ -186,6 +186,12 @@ const createGameService = (
             return err(error);
         }
 
+        if (numberPage <= 0 || numberLimit <= 0) {
+            const error = new Error('The params must be positive values');
+            error.statusCode = 400;
+            return err(error);
+        }
+
         const games = await gameRepository.getWithPagination(numberPage, numberLimit, 'WAITING');
         return ok(games.map(g => gameDto.toResponseDto(g)));
     }

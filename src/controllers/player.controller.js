@@ -81,12 +81,37 @@ const createPlayerController = (playerService) => {
         res.status(200).json({ total: total.result });
     }
 
+    const getPlayersByPagination = async (req, res, next) => {
+        const { page = 1, limit = 5 } = req.query;
+        const players = await playerService.getPlayersByPagination(page, limit);
+
+        if (!players.ok)
+        {
+            return next(players.error);
+        }
+
+        const response = { players: players };
+
+        const baseUrl = req.originalUrl.split('?')[0];
+
+        if (page > 1) {
+            const prevPageUrl = `${baseUrl}?page=${page - 1}&limit=${limit}`;
+            response.prevPageUrl = prevPageUrl;
+        }
+
+        const nextPageUrl = `${baseUrl}?page=${page + 1}&limit=${limit}`;
+        response.nextPageUrl = nextPageUrl;
+
+        res.status(200).json(response);
+    }
+
     return {
         getPlayerById,
         updatePlayer,
         deletePlayer,
         getProfile,
         getTotalOnlinePlayers,
+        getPlayersByPagination,
     }
 }
 

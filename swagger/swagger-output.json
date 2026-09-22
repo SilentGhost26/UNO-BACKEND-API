@@ -63,66 +63,32 @@
         }
       }
     },
-    "/players/me": {
-      "get": {
-        "tags": [
-          "Players"
-        ],
-        "description": "Get a the profile of a player by its jwt token",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/players/{id}": {
-      "get": {
-        "tags": [
-          "Players"
-        ],
-        "description": "Get a specific a player by its ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/players/total": {
-      "get": {
-        "tags": [
-          "Players"
-        ],
-        "description": "Get the total of players that are currently online",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/players": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "description": "Get players by pagination",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page of the players",
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of the page",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
       "put": {
         "tags": [
           "Players"
@@ -186,6 +152,65 @@
             "apiKeyAuth": []
           }
         ]
+      }
+    },
+    "/players/me": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "description": "Get a the profile of a player by its jwt token",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/players/total": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "description": "Get the total of players that are currently online",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/players/{id}": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "description": "Get a specific a player by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     },
     "/games": {

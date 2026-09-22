@@ -88,8 +88,28 @@ const createPlayerService = (
     const getTotalOnlinePlayers = () => {
         return ok(playerRegistry.getOnlineCount());
     }
+
+    const getPlayersByPagination = async (page, limit) => {
+        const numberPage = Number(page);
+        const numberLimit = Number(limit);
+
+        if (Number.isNaN(numberPage) || Number.isNaN(numberLimit)) {
+            const error = new Error('The params must be numbers');
+            error.statusCode = 400;
+            return err(error);
+        }
+
+        if (numberPage <= 0 || numberLimit <= 0) {
+            const error = new Error('The params must be positive values');
+            error.statusCode = 400;
+            return err(error);
+        }
+
+        const players = await playerRepository.getByPagination(numberPage, numberLimit);
+        return ok(players.map(playerDto.toResponseDto));
+    }
     
-    return { findPlayerById, updatePlayer, deletePlayer, getLoggedOutDateByPlayerId, updatePlayerStatus, getTotalOnlinePlayers };
+    return { findPlayerById, updatePlayer, deletePlayer, getLoggedOutDateByPlayerId, updatePlayerStatus, getTotalOnlinePlayers, getPlayersByPagination };
 }
 
 module.exports = createPlayerService;

@@ -81,11 +81,32 @@ const getLoggedOutDateById = async (id) => {
     return player.loggedOutAt;
 }
 
+/**
+ * Get a list of players using pagination
+ * @param page : The page number that will be gotten
+ * @param limit : The limit of records in the list
+ * @returns a list of players ordered by status and name
+ */
+const getByPagination = async (page, limit) => {
+    const offset = (page - 1) * limit;
+
+    return Player.findAll({
+        where: {
+            isDeleted: false,
+        },
+        order: [['status', 'ASC'],
+                ['name', 'ASC']],
+        limit: limit,
+        offset: offset,
+    });
+}
+
 module.exports = {
     create,
     getById,
     update,
     remove,
     getByEmail,
-    getLoggedOutDateById
+    getLoggedOutDateById,
+    getByPagination,
 }
