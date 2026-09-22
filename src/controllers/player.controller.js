@@ -72,11 +72,21 @@ const createPlayerController = (playerService) => {
         res.status(200).json(player.result);
     }
 
+    const getTotalOnlinePlayers = (req, res, next) => {
+        const total = playerService.getTotalOnlinePlayers();
+        if (!total.ok) {
+            return next(total.error);
+        }
+
+        res.status(200).json({ total: total.result });
+    }
+
     return {
         getPlayerById,
         updatePlayer,
         deletePlayer,
-        getProfile
+        getProfile,
+        getTotalOnlinePlayers,
     }
 }
 

@@ -86,10 +86,10 @@ const createPlayerService = (
     }
 
     const getTotalOnlinePlayers = () => {
-        return playerRegistry.getOnlineCount();
+        return ok(playerRegistry.getOnlineCount());
     }
     
-    return { findPlayerById, updatePlayer, deletePlayer, getLoggedOutDateByPlayerId, updatePlayerStatus };
+    return { findPlayerById, updatePlayer, deletePlayer, getLoggedOutDateByPlayerId, updatePlayerStatus, getTotalOnlinePlayers };
 }
 
 module.exports = createPlayerService;

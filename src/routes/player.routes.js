@@ -20,6 +20,14 @@ router.get(
     playerController.getProfile
 );
 router.get(
+    '/players/total',
+    /**
+     * #swagger.tags = ['Players']
+     * #swagger.description = 'Get the total of players that are currently online'
+     */
+    playerController.getTotalOnlinePlayers
+);
+router.get(
     '/players/:id', 
     memoizeMiddleware({ max: 50, maxAge: 20000 }),
     /**
@@ -28,6 +36,7 @@ router.get(
      */
     playerController.getPlayerById
 );
+
 router.put(
     '/players', 
     authMiddleware, 

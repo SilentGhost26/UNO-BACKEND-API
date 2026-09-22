@@ -5,6 +5,7 @@ const cardRepository = require('./repositories/card.repository');
 const gameCardRepository = require('./repositories/game-card.repository');
 const historyRepository = require('./repositories/history.repository');
 const apiRequestRepository = require('./repositories/api-request.repository');
+const playerRegisty = require('./registry/player.registry');
 
 const gameDto = require('./dto/game.dto');
 const playerDto = require('./dto/player.dto');
@@ -40,7 +41,7 @@ const authService = createAuthService(tokenService, playerRepository, notFoundHe
 const gamePlayerService = createGamePlayerService(gamePlayerRepository, gameRepository, playerRepository, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, addGamePlayervalidators);
 const cardService = createCardService(cardRepository, cardDto, notFoundHelper, conflictHelper, resultHelper);
 const gameCardService = createGameCardService(gameCardRepository, gameRepository, cardRepository, playerRepository, gamePlayerRepository, gameCardDto, cardDto, notFoundHelper, conflictHelper, resultHelper, rulesCreateDeckValidators);
-const playerService = createPlayerService(playerRepository, playerDto, notFoundHelper, conflictHelper, resultHelper);
+const playerService = createPlayerService(playerRepository, playerRegisty, playerDto, notFoundHelper, conflictHelper, resultHelper);
 const gameEngineService = createGameEngineService(gameRepository, gameCardRepository, gamePlayerRepository,playerRepository, cardRepository, historyRepository, cardDto, gameCardDto, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, rulesPlayCardValidators, hasValidCardValidators);
 const historyService = createHistoryService(historyRepository, gameRepository, notFoundHelper, resultHelper);
 const requestStatsService = createRequestStatsService(apiRequestRepository, apiRequestDto, resultHelper);

@@ -1,9 +1,10 @@
 const createPlayerService = require('../../../src/services/player.service');
-const { ok } = require('../../../src/helpers/result.helper');
+const { ok, err } = require('../../../src/helpers/result.helper');
 const { playerRepository } = require('../utils/repository-mocks.utils');
 const playerDto = require('../../../src/dto/player.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
 const conflictHelper = require('../../../src/helpers/conflict.helper');
+const playerRegisry = require('../../../src/registry/player.registry');
 
 let playerService;
 
@@ -11,10 +12,11 @@ describe('test for player service', () => {
     beforeEach(() => {
         playerService = createPlayerService(
             playerRepository,
+            playerRegisry,
             playerDto,
             notFoundHelper,
             conflictHelper,
-            { ok }
+            { ok, err }
         );
     });
 
