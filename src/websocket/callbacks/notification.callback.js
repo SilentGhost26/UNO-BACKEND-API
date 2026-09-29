@@ -2,17 +2,6 @@ const roomHandler = require('../handlers/room.handler');
 
 /**
  * Factory to create the callbacks of the invitation events
- *
- * Protocol:
- *  - send-invitation   { playerId, gameId }  -> invitation-sent      to every tab of the invited player
- *  - accept-invitation { invitationId }      -> player-joined        to the game room
- *                                               invitation-accepted  to every tab of the sender
- *                                               invitation-resolved  to every tab of the receiver
- *  - reject-invitation { invitationId }      -> invitation-rejected  to every tab of the sender
- *                                               invitation-resolved  to every tab of the receiver
- *
- * An invitation can only be answered once, by the player that was invited, before it expires.
- * See src/registry/invitation.registry.js
  */
 const createNotificationCallbacks = (
     io,

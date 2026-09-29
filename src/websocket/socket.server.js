@@ -22,7 +22,7 @@ const initializeSocket = (server) => {
     });
     io.use(authMiddleware);
     io.on('connection', (socket) => {
-        // Personal room: reaches every tab of the player (used by the invitations)
+        
         roomHandler.joinRoom(socket, roomHandler.playerRoom(socket.player.id));
 
         const gameEngineSocketCallbacks = createGameEngineSocketCallbacks(io,socket, errorWrapper, gamePlayerService, gameService, gameEngineService, gameCardService);

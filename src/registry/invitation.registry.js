@@ -1,17 +1,3 @@
-// Registry of the invitations sent between players.
-//
-// Lifecycle of an invitation:
-//
-//   PENDING --claim--> PROCESSING --settle--> ACCEPTED | REJECTED | FAILED
-//      |                    |
-//      |                    +--release--> PENDING (transient error, the player can try again)
-//      +--(ttl)--> EXPIRED
-//
-// Every operation that changes the status is synchronous on purpose. Node runs one
-// callback at a time, so two players (or two tabs of the same player) that answer at the
-// same time can not claim the same invitation: the first one moves it to PROCESSING and
-// the second one gets a 409. Do not add an `await` between the check and the change.
-
 const { randomUUID } = require('crypto');
 const { ok, err } = require('../helpers/result.helper');
 
