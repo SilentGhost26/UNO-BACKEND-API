@@ -6,6 +6,7 @@ const gameCardRepository = require('./repositories/game-card.repository');
 const historyRepository = require('./repositories/history.repository');
 const apiRequestRepository = require('./repositories/api-request.repository');
 const playerRegisty = require('./registry/player.registry');
+const createInvitationRegistry = require('./registry/invitation.registry');
 
 const gameDto = require('./dto/game.dto');
 const playerDto = require('./dto/player.dto');
@@ -47,6 +48,7 @@ const gameEngineService = createGameEngineService(gameRepository, gameCardReposi
 const historyService = createHistoryService(historyRepository, gameRepository, notFoundHelper, resultHelper);
 const requestStatsService = createRequestStatsService(apiRequestRepository, apiRequestDto, resultHelper);
 createExitService(playerRegisty, playerRepository);
+const invitationRegistry = createInvitationRegistry();
 
 const createAuthController = require('./controllers/auth.controller');
 const createCardController = require('./controllers/card.controller');
@@ -72,6 +74,7 @@ const requestStatsController = createRequestStatsController(requestStatsService)
 
 module.exports = {
     tokenService,
+    invitationRegistry,
     gameService,
     authService,
     gamePlayerService,

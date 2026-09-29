@@ -142,6 +142,8 @@ const createGameEngineSocketCallbacks = (
     const leaveByError = () => wrapError(socket, async (data) => {
         const playerId = socket.player.id;
         socket.rooms.forEach(async room => {
+            // The socket own room and the personal room of the player are not games
+            if (room === socket.id || roomHandler.isPlayerRoom(room)) return;
             const result = await gamePlayerService.deleteGamePlayer(room, playerId);
             if (result.ok) {
                 roomHandler.leaveRoom(socket, room);
