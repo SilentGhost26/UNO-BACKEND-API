@@ -31,4 +31,13 @@ function getOnlinePlayers() {
     return [...onlinePlayers.keys()];
 }
 
-module.exports = { addConnection, removeConnection, getOnlineCount, isOnline, getOnlinePlayers };
+function getConnections(playerId) {
+    if (isOnline(playerId)) {
+        return [...onlinePlayers.get(playerId)];
+    }
+    return null;
+}
+
+
+
+module.exports = { addConnection, removeConnection, getOnlineCount, isOnline, getOnlinePlayers, getConnections };
