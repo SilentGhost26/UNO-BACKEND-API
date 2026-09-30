@@ -187,6 +187,8 @@ For the end-to-end suite, create a `.env.test` file following [`end-to-end test 
 
 Base URL: `http://localhost:<PORT>`. Endpoints marked 🔒 require `Authorization: Bearer <token>`.
 
+> 📄 Detailed reference (request/response examples, status codes and notes for every endpoint and WebSocket event): [`docs/http-endpoints.md`](docs/http-endpoints.md) and [`docs/websocket-events.md`](docs/websocket-events.md).
+
 > ⚠️ Two CRUD-style endpoints for `Cards` and `Scores` were intentionally **not implemented** — see [section 12](#12-decisions-and-known-limitations) for why.
 
 ### Auth — [`src/routes/auth.routes.js`](src/routes/auth.routes.js)
