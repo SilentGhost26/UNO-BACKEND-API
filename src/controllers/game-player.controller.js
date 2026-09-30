@@ -3,6 +3,8 @@
  * @param gamePlayerService : dependency of game player service
  * @returns a literal object that contains the functions of game player controller
  */
+const publisher = require('../websocket/publish');
+
 const createGamePlayerController = (gamePlayerService) => {
 
     const addGamePlayer = async (req, res, next) => {
@@ -20,6 +22,8 @@ const createGamePlayerController = (gamePlayerService) => {
             return next(gamePlayer.error);
         }
         res.status(201).json(gamePlayer.result);
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
     }
 
     const removeGamePlayer = async (req, res, next) => {
@@ -40,6 +44,8 @@ const createGamePlayerController = (gamePlayerService) => {
             message: "Player left the game succesfully",
             player: result.result,
         });
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
     }
 
     const getPlayersInGame = async (req, res, next) => {

@@ -16,7 +16,6 @@ const registerGameHandler = (
     socket.on('draw', gameEngineCallbacks.draw());
     socket.on('say-uno', gameEngineCallbacks.sayUno());
     socket.on('challenge', gameEngineCallbacks.challenge(challengeSchema));
-    socket.on('disconnecting', gameEngineCallbacks.leaveByError());
     socket.on('update-game', gameEngineCallbacks.updateGame(gameSchema));
 }
 

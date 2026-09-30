@@ -31,6 +31,6 @@ describe('tests for game engine socket wiring', () => {
         expect(socket.on).toHaveBeenCalledWith('draw', callbacks.draw());
         expect(socket.on).toHaveBeenCalledWith('say-uno', callbacks.sayUno());
         expect(socket.on).toHaveBeenCalledWith('challenge', callbacks.challenge());
-        expect(socket.on).toHaveBeenCalledWith('disconnecting', callbacks.leaveByError());
+        expect(socket.on).not.toHaveBeenCalledWith('disconnecting', expect.any(Function));
     });
 });
