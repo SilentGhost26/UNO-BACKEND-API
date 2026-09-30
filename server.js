@@ -9,6 +9,7 @@ const htpp = require('http');
 const server = htpp.createServer(app);
 const { Server } = require('socket.io');
 const initializeServer = require('./src/websocket/socket.server');
+const { cardService } = require('./src/compositions');
 const PORT = process.env.PORT || 3000;
 
 async function runServer() {
@@ -18,6 +19,9 @@ async function runServer() {
 
         await sequelize.sync({ alter: false});
         console.log('Models syncronized correctly');
+
+        const cards = await cardService.initializeCards();
+        if (!cards.ok && cards.error?.statusCode !== 409) throw cards.error;
     
         app.use(
             '/api-docs',

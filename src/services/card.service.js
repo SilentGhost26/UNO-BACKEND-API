@@ -50,7 +50,7 @@ const createCardService = (
             newCards.push({color: 'MULTICOLOR', value: null, type: t});
         });
         
-        await cardDto.toResponseDto(cardRepository.bulkCreate(newCards));
+        await cardRepository.bulkCreate(newCards);
         return ok();
     }
     
