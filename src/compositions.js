@@ -26,6 +26,8 @@ const createCardService = require('./services/card.service');
 const createGameCardService = require('./services/game-card.service');
 const createPlayerService = require('./services/player.service');
 const createGameEngineService = require('./services/game-engine.service');
+const createLaunchGameService = require('./services/launch-game.service');
+const launchGameRepository = require('./repositories/launch-game.repository');
 const createHistoryService = require('./services/history.service');
 const createRequestStatsService = require('./services/request-stats.service');
 const createExitService = require('./services/exit.service');
@@ -45,6 +47,7 @@ const cardService = createCardService(cardRepository, cardDto, notFoundHelper, c
 const gameCardService = createGameCardService(gameCardRepository, gameRepository, cardRepository, playerRepository, gamePlayerRepository, gameCardDto, cardDto, notFoundHelper, conflictHelper, resultHelper, rulesCreateDeckValidators);
 const playerService = createPlayerService(playerRepository, playerRegisty, playerDto, notFoundHelper, conflictHelper, resultHelper);
 const gameEngineService = createGameEngineService(gameRepository, gameCardRepository, gamePlayerRepository,playerRepository, cardRepository, historyRepository, cardDto, gameCardDto, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, rulesPlayCardValidators, hasValidCardValidators);
+const launchGameService = createLaunchGameService(launchGameRepository, gameStartValidators, rulesCreateDeckValidators, resultHelper);
 const historyService = createHistoryService(historyRepository, gameRepository, notFoundHelper, resultHelper);
 const requestStatsService = createRequestStatsService(apiRequestRepository, apiRequestDto, resultHelper);
 createExitService(playerRegisty, playerRepository);
@@ -68,7 +71,7 @@ const playerController = createPlayerController(playerService);
 const scoreController = createScoreController(gamePlayerService);
 const gamePlayerController = createGamePlayerController(gamePlayerService);
 const gameCardController = createGameCardController(gameCardService);
-const gameEngineController = createGameEngineController(gameEngineService);
+const gameEngineController = createGameEngineController(gameEngineService, launchGameService);
 const historyController = createHistoryController(historyService);
 const requestStatsController = createRequestStatsController(requestStatsService);
 
@@ -82,6 +85,7 @@ module.exports = {
     gameCardService,
     playerService,
     gameEngineService,
+    launchGameService,
     requestStatsService,
     authController,
     cardController,

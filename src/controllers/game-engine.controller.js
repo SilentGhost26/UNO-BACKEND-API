@@ -1,6 +1,18 @@
+const publisher = require('../websocket/publish');
+
 const createGameEngineController = (
     gameEngineService,
+    launchGameService,
 ) => {
+    const launchGame = async (req, res, next) => {
+        const { gameId } = req.params;
+        const result = await launchGameService.launchGame(gameId, req.player.id, req.body.cardsPerPlayer);
+        if (!result.ok) return next(result.error);
+        res.status(200).json(result.result);
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
+    }
+
     const distributeCards = async (req, res, next) => {
         const { gameId } = req.params;
         const cardsPerPlayer = req.body.cardsPerPlayer;
@@ -13,6 +25,7 @@ const createGameEngineController = (
             message: "Cards distributed succesfully",
             players: distributedCards.result,
         });
+        publisher.gameUpdated(gameId);
     }
 
     const playCard = async (req, res, next) => {
@@ -26,6 +39,8 @@ const createGameEngineController = (
         }
 
         res.status(200).json(action.result);
+        publisher.gameUpdated(gameId);
+        if (action.result?.winner) publisher.lobbyUpdated();
     }
 
     const drawCard = async (req, res, next) => {
@@ -37,6 +52,7 @@ const createGameEngineController = (
             return next(action.error);
         }
         res.status(200).json(action.result);
+        publisher.gameUpdated(gameId);
     }
 
     const sayUno = async (req, res, next) => {
@@ -48,6 +64,7 @@ const createGameEngineController = (
             return next(action.error);
         }
         res.status(200).json(action.result);
+        publisher.gameUpdated(gameId);
     }
 
     const challengePlayer = async(req, res, next) => {
@@ -59,8 +76,9 @@ const createGameEngineController = (
             return next(action.error);
         }
         res.status(200).json(action.result);
+        publisher.gameUpdated(gameId);
     }
-    return { distributeCards, playCard, drawCard, sayUno, challengePlayer }
+    return { launchGame, distributeCards, playCard, drawCard, sayUno, challengePlayer }
 }
 
 module.exports = createGameEngineController;

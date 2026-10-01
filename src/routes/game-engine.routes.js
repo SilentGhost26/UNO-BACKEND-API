@@ -8,6 +8,13 @@ const playCardSchema = require('../schemas/play-card.schema');
 const challengeSchema = require('../schemas/challenge.schema');
 
 router.post(
+    '/games/:gameId/launch',
+    authMiddleware,
+    structureMiddleware(distributeCardsSchema),
+    gameEngineController.launchGame
+);
+
+router.post(
     '/games/:gameId/distribute', 
     authMiddleware,
     structureMiddleware(distributeCardsSchema),
