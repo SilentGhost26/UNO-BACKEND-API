@@ -32,7 +32,8 @@ async function runServer() {
         initializeServer(server);
 
         server.listen(PORT, () => {
-            console.log(`Server running on http://localhost:${PORT}`)
+            console.log(`Server running on http://localhost:${PORT}`);
+            console.log(`API documentation: http://localhost:${PORT}/api-docs`);
         })
     } catch(error){
         console.error('Error starting the server: ', error);
