@@ -24,6 +24,9 @@ const toStatusResponseDto = (data) => {
         ownerId: data.ownerId,
         winnerId: data.winnerId,
         currentColor: data.currentColor,
+        direction: data.direction,
+        mustDraw: data.mustDraw,
+        accumulatedCardsToDraw: data.accumulatedCardsToDraw,
         createdAt: data.createdAt,
     }
 }

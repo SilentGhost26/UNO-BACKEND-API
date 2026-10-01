@@ -17,6 +17,7 @@ const toResponseDto = (data) => {
 const toScoreResponseDto = (data) => {
     return {
         id: data.id,
+        playerId: data.playerId,
         name: data.Player.name,
         score: data.score
     }
