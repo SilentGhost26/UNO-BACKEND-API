@@ -8,6 +8,39 @@ const playCardSchema = require('../schemas/play-card.schema');
 const challengeSchema = require('../schemas/challenge.schema');
 
 router.post(
+    '/games/:gameId/launch',
+    authMiddleware,
+    structureMiddleware(distributeCardsSchema),
+    /**
+     * #swagger.tags = ['GameEngine']
+     * #swagger.summary = 'Start a game and deal cards atomically'
+     * #swagger.description = 'The game owner starts a waiting game with at least two players. The deck is created and the initial hands are dealt in one transaction.'
+     * #swagger.security = [{ "apiKeyAuth": [] }]
+     * #swagger.parameters['body'] = {
+         in: 'body',
+         required: true,
+         description: 'Number of cards per player (integer from 3 to 10)',
+         '@schema': {
+           type: 'object',
+           required: ['cardsPerPlayer'],
+           properties: {
+             cardsPerPlayer: { type: 'integer', minimum: 3, maximum: 10, example: 7 }
+           }
+         }
+       }
+     * #swagger.responses[200] = {
+         description: 'Game started and cards dealt successfully',
+         schema: { gameId: 'game-uuid', cardsPerPlayer: 7, players: 2 }
+       }
+     * #swagger.responses[409] = { description: 'The game cannot be started or already has a deck' }
+     * #swagger.responses[400] = { description: 'Invalid cardsPerPlayer value' }
+     * #swagger.responses[404] = { description: 'Game or player not found' }
+     * #swagger.responses[503] = { description: 'Card catalog is not initialized' }
+     */
+    gameEngineController.launchGame
+);
+
+router.post(
     '/games/:gameId/distribute', 
     authMiddleware,
     structureMiddleware(distributeCardsSchema),

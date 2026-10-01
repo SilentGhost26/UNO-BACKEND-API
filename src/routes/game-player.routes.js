@@ -30,7 +30,6 @@ router.delete(
 );
 router.get(
     '/games/:gameId/players', 
-    memoizeMiddleware({ max: 100, maxAge: 1000 }),
     /**
      * #swagger.tags = ['GamePlayers']
      * #swagger.description = 'Get the players that are in a game'

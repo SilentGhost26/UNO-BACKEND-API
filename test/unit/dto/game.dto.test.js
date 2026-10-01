@@ -15,6 +15,9 @@ describe('toStatusResponseDto', () => {
             ownerId: 'owner-1',
             winnerId: 'player-1',
             currentColor: 'RED',
+            direction: 'RIGHT',
+            mustDraw: false,
+            accumulatedCardsToDraw: 0,
             createdAt: '2026-07-28T00:00:00.000Z',
             rules: {
                 allowDrawFour: true,
@@ -31,6 +34,9 @@ describe('toStatusResponseDto', () => {
             ownerId: 'owner-1',
             winnerId: 'player-1',
             currentColor: 'RED',
+            direction: 'RIGHT',
+            mustDraw: false,
+            accumulatedCardsToDraw: 0,
             createdAt: '2026-07-28T00:00:00.000Z'
         };
         

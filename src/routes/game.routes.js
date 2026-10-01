@@ -9,7 +9,6 @@ const gameSchema = require('../schemas/game.schema');
 
 router.get(
     '/games',
-    memoizeMiddleware({ max: 100, maxAge: 2000 }),
     /**
      * #swagger.tags = ['Games']
      * #swagger.description = 'Get games by pagination'

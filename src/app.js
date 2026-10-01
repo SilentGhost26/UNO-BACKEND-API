@@ -16,7 +16,7 @@ const trackingMiddleware = require('./middlewares/tracking.middleware');
 
 app.use(express.json());
 app.use(cors({
-    origin: process.env.FRONT_END_URL,
+    origin: process.env.FRONT_END_URL || 'http://localhost:3001',
 }));
 app.use('/', requestStatsRoutes);
 app.use(trackingMiddleware);

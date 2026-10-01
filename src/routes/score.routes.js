@@ -18,7 +18,6 @@ router.get(
 );
 router.get(
     '/scores/games/:gameId', 
-    memoizeMiddleware({ max: 200, maxAge: 2000 }),
     /**
      * #swagger.tags = ['Scores']
      * #swagger.description = 'Get a the scores of the players in a specific game'

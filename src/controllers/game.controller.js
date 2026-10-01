@@ -3,6 +3,8 @@
  * @param gameService : dependency of game service
  * @returns a literal object that contains the functions of game controller
  */
+const publisher = require('../websocket/publish');
+
 const createGameController = (gameService) => {
 
     const addGame = async (req, res, next) => {
@@ -33,6 +35,7 @@ const createGameController = (gameService) => {
             return next(game.error);
         }
         res.status(201).json(game.result);
+        publisher.lobbyUpdated();
     }
 
     const getGameById = async (req, res, next) => {
@@ -80,6 +83,8 @@ const createGameController = (gameService) => {
             return next(game.error);
         }
         res.status(200).json(game.result);
+        publisher.gameUpdated(id);
+        publisher.lobbyUpdated();
     }
         
     const deleteGame = async (req, res, next) => {
@@ -96,6 +101,8 @@ const createGameController = (gameService) => {
             return next(result.error);
         }
         res.status(204).send();
+        publisher.gameUpdated(id);
+        publisher.lobbyUpdated();
     }
 
     const startGame = async (req, res, next) => {
@@ -115,6 +122,7 @@ const createGameController = (gameService) => {
         res.status(200).json({
             message: "Game started succesfully"
         })
+        publisher.lobbyUpdated();
     }
 
     const finishGame = async (req, res, next) => {
@@ -134,6 +142,8 @@ const createGameController = (gameService) => {
         res.status(200).json({
             message: "Game ended succesfully"
         })
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
     }
 
     const getGameStatus = async (req, res, next) => {

@@ -1,4 +1,5 @@
 const roomHandler = require('../handlers/room.handler');
+const publisher = require('../publish');
 
 const createGameEngineSocketCallbacks = (
     io,
@@ -18,6 +19,7 @@ const createGameEngineSocketCallbacks = (
         }
         roomHandler.joinRoom(socket, game.result.id);
         socket.emit('created-game', game.result);
+        publisher.lobbyUpdated();
     });
 
     const enterGame = () => wrapError(socket, async ({ gameId }) => {
@@ -29,6 +31,8 @@ const createGameEngineSocketCallbacks = (
 
         roomHandler.joinRoom(socket, gameId);
         roomHandler.broadcast(io, gameId, 'player-joined', result.result);
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
     });
 
     const leaveGame = () => wrapError(socket, async ({ gameId }) => {
@@ -42,6 +46,8 @@ const createGameEngineSocketCallbacks = (
         }
         roomHandler.leaveRoom(socket, gameId);
         roomHandler.broadcast(socket, gameId, 'player-left', result.result);
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
         if (result.result.gameFinished) {
             roomHandler.broadcast(io, gameId, 'game-finished', {
                 winner: result.result.winner,
@@ -63,6 +69,8 @@ const createGameEngineSocketCallbacks = (
         }
 
         roomHandler.broadcast(io, gameId, 'game-started', null);
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
     });
 
     const distributeCards = (distributeCardsSchema) => wrapError(socket, async ({ gameId, cardsPerPlayer }) => {
@@ -79,6 +87,7 @@ const createGameEngineSocketCallbacks = (
         }
 
         roomHandler.broadcast(io, gameId, 'distributed-cards', result.result);
+        publisher.gameUpdated(gameId);
     });
 
     const playCard = (playCardSchema) => wrapError(socket, async ({ gameId, cardId, newColor }) => {
@@ -94,6 +103,8 @@ const createGameEngineSocketCallbacks = (
         }
 
         roomHandler.broadcast(io, gameId, 'card-played', played.result);
+        publisher.gameUpdated(gameId);
+        if (played.result?.winner) publisher.lobbyUpdated();
     });
 
     const draw = () => wrapError(socket, async ({ gameId }) => {
@@ -108,6 +119,7 @@ const createGameEngineSocketCallbacks = (
         }
         socket.emit('cards-drawn', drawnCards.result);
         roomHandler.broadcast(socket, gameId, 'cards-drawn', { action: drawnCards.result.action, nextPlayer: drawnCards.result.nextPlayer });
+        publisher.gameUpdated(gameId);
     });
 
     const sayUno = () => wrapError(socket, async ({ gameId }) => {
@@ -122,6 +134,7 @@ const createGameEngineSocketCallbacks = (
         }
 
         roomHandler.broadcast(io, gameId, 'said-uno', saidUno.result);
+        publisher.gameUpdated(gameId);
     });
 
     const challenge = (challengeSchema) => wrapError(socket, async ({ challengedPlayerId, gameId }) => {
@@ -137,6 +150,7 @@ const createGameEngineSocketCallbacks = (
         }
 
         roomHandler.broadcast(io, gameId, 'player-challenged', challenged.result);
+        publisher.gameUpdated(gameId);
     });
 
     const leaveByError = () => wrapError(socket, async (data) => {
@@ -170,6 +184,8 @@ const createGameEngineSocketCallbacks = (
             throw updated.error;
         }
         roomHandler.broadcast(io, gameId, 'game-updated', updated.result);
+        publisher.gameUpdated(gameId);
+        publisher.lobbyUpdated();
     });
 
     function isInRoom(socket, room) {

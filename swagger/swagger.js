@@ -9,6 +9,13 @@ const doc = {
     },
     host: `localhost:${process.env.PORT || 3000}`,
     schemes: ['http'],
+    securityDefinitions: {
+        apiKeyAuth: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'Authorization',
+        },
+    },
 }
 
 const outputFile = './swagger-output.json';

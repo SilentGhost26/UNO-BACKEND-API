@@ -304,6 +304,7 @@ Base URL: `http://localhost:<PORT>`. Endpoints marked 🔒 require `Authorizatio
 | Method | Route | Description |
 |---|---|---|
 | POST 🔒 | `/games/:gameId/distribute` | Deal the initial hands from the deck |
+| POST 🔒 | `/games/:gameId/launch` | Start, build the deck, and deal initial hands atomically (owner only; body: `{ "cardsPerPlayer": 7 }`) |
 | PUT 🔒 | `/games/:gameId/play` | Play a card from hand |
 | PUT 🔒 | `/games/:gameId/draw` | Draw a card when there is no valid play |
 | PATCH 🔒 | `/games/:gameId/say-uno` | Declare "UNO" with one card left |

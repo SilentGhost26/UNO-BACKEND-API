@@ -10,6 +10,13 @@
   "schemes": [
     "http"
   ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
   "paths": {
     "/stats/requests": {
       "get": {
@@ -978,6 +985,93 @@
         "responses": {
           "401": {
             "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/games/{gameId}/launch": {
+      "post": {
+        "tags": [
+          "GameEngine"
+        ],
+        "summary": "Start a game and deal cards atomically",
+        "description": "The game owner starts a waiting game with at least two players. The deck is created and the initial hands are dealt in one transaction.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Number of cards per player (integer from 3 to 10)",
+            "schema": {
+              "type": "object",
+              "required": [
+                "cardsPerPlayer"
+              ],
+              "properties": {
+                "cardsPerPlayer": {
+                  "type": "integer",
+                  "minimum": 3,
+                  "maximum": 10,
+                  "example": 7
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Game started and cards dealt successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gameId": {
+                  "type": "string",
+                  "example": "game-uuid"
+                },
+                "cardsPerPlayer": {
+                  "type": "number",
+                  "example": 7
+                },
+                "players": {
+                  "type": "number",
+                  "example": 2
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid cardsPerPlayer value"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Game or player not found"
+          },
+          "409": {
+            "description": "The game cannot be started or already has a deck"
+          },
+          "503": {
+            "description": "Card catalog is not initialized"
           }
         },
         "security": [

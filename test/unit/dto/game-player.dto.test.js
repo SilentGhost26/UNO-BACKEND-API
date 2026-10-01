@@ -71,6 +71,7 @@ describe('toScoreResponseDto', () => {
     test('should get a score responseDto', () => {
         const data = {
             id: '1',
+            playerId: 'player-1',
             score: 15,
             Player: {
                 name: 'Alice'
@@ -79,6 +80,7 @@ describe('toScoreResponseDto', () => {
         
         const dto = {
             id: '1',
+            playerId: 'player-1',
             name: 'Alice',
             score: 15
         };
