@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const { authController } = require('../compositions');
 const structureMiddleware = require('../middlewares/structure.middleware');
@@ -6,8 +7,17 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const playerSchema = require('../schemas/player.schema');
 const loginSchema = require('../schemas/login.schema');
 
+const limiter = rateLimit({
+    windowMs: 2 * 60 * 1000,
+    max: 10,
+    message: {
+        message: "Too many requests. Try again later"
+    }
+});
+
 router.post(
     '/auth/register', 
+    limiter,
     structureMiddleware(playerSchema), 
     /**
      * #swagger.tags = ['Auth']
@@ -22,6 +32,7 @@ router.post(
 );
 router.post(
     '/auth/login', 
+    limiter,
     structureMiddleware(loginSchema), 
     /**
      * #swagger.tags = ['Auth']

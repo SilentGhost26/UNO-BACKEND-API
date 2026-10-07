@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const app = express();
 const playerRoutes = require('./routes/player.routes');
@@ -14,6 +15,15 @@ const requestStatsRoutes = require('./routes/request-stats.routes');
 const errorMiddleware = require('./middlewares/error.middleware');
 const trackingMiddleware = require('./middlewares/tracking.middleware');
 
+const limiter = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 100,
+    message: {
+        message: "Too many requests. Try again later"
+    },
+});
+
+app.use(limiter);
 app.use(express.json());
 app.use(cors({
     origin: process.env.FRONT_END_URL || 'http://localhost:3001',
