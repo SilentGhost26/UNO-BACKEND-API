@@ -9,7 +9,7 @@ const loginSchema = require('../schemas/login.schema');
 
 const limiter = rateLimit({
     windowMs: 2 * 60 * 1000,
-    max: 10,
+    max: 12,
     message: {
         message: "Too many requests. Try again later"
     }

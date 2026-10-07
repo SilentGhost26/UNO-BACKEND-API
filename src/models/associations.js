@@ -6,6 +6,7 @@ const GamePlayer = require('./game-player.model');
 const Rules = require('./rules.model');
 const History = require('./history.model');
 const ApiRequest = require('./api-request.model');
+const Log = require('./log.model');
 
 Game.belongsTo(Player, { as: 'owner', foreignKey: 'ownerId' });
 Game.belongsTo(Player, { as: 'winner', foreignKey: 'winnerId' });

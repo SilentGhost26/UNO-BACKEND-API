@@ -10,7 +10,6 @@ const errorFormat = wintston.format.combine(
 const logger = wintston.createLogger({
     transports: [
         new wintston.transports.Console({ format: errorFormat }),
-        new wintston.transports.File({ filename: process.env.ERROR_LOG_ROUTE, level: 'error', format: errorFormat }),
     ],
 });
 

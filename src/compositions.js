@@ -5,6 +5,7 @@ const cardRepository = require('./repositories/card.repository');
 const gameCardRepository = require('./repositories/game-card.repository');
 const historyRepository = require('./repositories/history.repository');
 const apiRequestRepository = require('./repositories/api-request.repository');
+const logRepository = require('./repositories/log.repository');
 const playerRegisty = require('./registry/player.registry');
 const createInvitationRegistry = require('./registry/invitation.registry');
 
@@ -31,6 +32,8 @@ const launchGameRepository = require('./repositories/launch-game.repository');
 const createHistoryService = require('./services/history.service');
 const createRequestStatsService = require('./services/request-stats.service');
 const createExitService = require('./services/exit.service');
+const createLoggerService = require('./services/logger.service');
+const createDbTransportStream = require('./logger/db-transport.logger');
 
 const gameStartValidators = require('./services/validators/game-start.validator');
 const gameFinishValidators = require('./services/validators/game-finish.validator');
@@ -38,6 +41,8 @@ const addGamePlayervalidators = require('./services/validators/add-game-player.v
 const rulesCreateDeckValidators = require('./services/validators/rules-create-deck.validator');
 const rulesPlayCardValidators = require('./services/validators/rules-play-card.validator');
 const hasValidCardValidators = require('./services/validators/has-valid-card.validator');
+
+const logger = require('../config/winston-logger.config');
 
 const tokenService = createTokenService();
 const gameService = createGameService(gameRepository, playerRepository, gamePlayerRepository, gameCardRepository, historyRepository, gameDto, cardDto, gamePlayerDto, gameCardDto, notFoundHelper, conflictHelper, resultHelper, gameStartValidators, gameFinishValidators);
@@ -52,6 +57,9 @@ const historyService = createHistoryService(historyRepository, gameRepository, n
 const requestStatsService = createRequestStatsService(apiRequestRepository, apiRequestDto, resultHelper);
 createExitService(playerRegisty, playerRepository);
 const invitationRegistry = createInvitationRegistry();
+const loggerService = createLoggerService(logger);
+
+const dbTransportStream = createDbTransportStream(logRepository);
 
 const createAuthController = require('./controllers/auth.controller');
 const createCardController = require('./controllers/card.controller');
@@ -84,6 +92,8 @@ module.exports = {
     cardService,
     gameCardService,
     playerService,
+    loggerService,
+    dbTransportStream,
     gameEngineService,
     launchGameService,
     requestStatsService,
