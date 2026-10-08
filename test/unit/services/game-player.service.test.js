@@ -5,10 +5,13 @@ const gamePlayerDto = require('../../../src/dto/game-player.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
 const conflictHelper = require('../../../src/helpers/conflict.helper');
 const addGamePlayerValidators = require('../../../src/services/validators/add-game-player.validator');
+const { createLoggerServiceMock } = require('../utils/logger-mocks.utils');
 let gamePlayerService;
+let loggerService;
 
 describe('test for game player service', () => {
     beforeEach(() => {
+        loggerService = createLoggerServiceMock();
         gamePlayerService = createGamePlayerService(
             gamePlayerRepository,
             gameRepository,
@@ -18,6 +21,7 @@ describe('test for game player service', () => {
             conflictHelper,
             { runValidators, ok },
             addGamePlayerValidators,
+            loggerService,
         );
     });
 

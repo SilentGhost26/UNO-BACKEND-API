@@ -9,10 +9,13 @@ const notFoundHelper = require('../../../src/helpers/not-found.helper');
 const conflictHelper = require('../../../src/helpers/conflict.helper');
 const startGameValidators = require('../../../src/services/validators/game-start.validator');
 const finishGameValidators = require('../../../src/services/validators/game-finish.validator');
+const { createLoggerServiceMock } = require('../utils/logger-mocks.utils');
 let gameService;
+let loggerService;
 
 describe('test for game service', () => {
     beforeEach(() => {
+        loggerService = createLoggerServiceMock();
         gameService = createGameService(
             gameRepository,
             playerRepository,
@@ -27,7 +30,8 @@ describe('test for game service', () => {
             conflictHelper,
             { runValidators, ok },
             startGameValidators,
-            finishGameValidators
+            finishGameValidators,
+            loggerService
         )
     });
 

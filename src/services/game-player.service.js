@@ -1,4 +1,5 @@
 const { runValidators } = require('../helpers/result.helper');
+const { message } = require('../schemas/player.schema');
 /**
  * Factory to create the game player service
  * @param gamePlayerRepository : dependency of game player repository
@@ -18,6 +19,7 @@ const createGamePlayerService = (
     conflictHelper,
     { runValidators, ok },
     addGamePlayervalidators = [],
+    logger,
 ) => {
     /**
      * Add a playingPlayer to a specific game, initializing its score
@@ -39,6 +41,7 @@ const createGamePlayerService = (
         gamePlayer.position = currentPlayers[currentPlayers.length - 1].position + 1;
         
         const newGamePlayer = await gamePlayerRepository.create(gamePlayer);
+        logger.info('GAME_PLAYER_JOINED', { playerId: player.id, gameId: game.id });
         return ok(gamePlayerDto.toResponseDto(newGamePlayer));
     }
             
@@ -95,7 +98,7 @@ const createGamePlayerService = (
         }
 
         await gamePlayerRepository.remove(gamePlayer.id);
-
+        logger.info('GAME_PLAYER_LEFT', { playerId: gamePlayer.id, gameId: game.id });
         if (game.status !== 'PLAYING') {
             return ok(gamePlayerDto.toGamePlayerInfoDto(gamePlayer));
         }
@@ -113,6 +116,7 @@ const createGamePlayerService = (
                 winnerId: winner ? winner.playerId : null,
             });
             gameFinished = true;
+            logger.info('GAME_FINISHED', { gameId: game.id, message: 'only remains one player in the game' });
         } else if (wasCurrentPlayer) {
             const idx = activePlayers.findIndex(p => p.playerId === playerId);
             const movement = game.direction === 'RIGHT' ? 1 : -1;

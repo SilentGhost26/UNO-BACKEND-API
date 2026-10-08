@@ -5,6 +5,7 @@ const { playerRepository } = require('../utils/repository-mocks.utils');
 const playerDto = require('../../../src/dto/player.dto');
 const notFoundHelper = require('../../../src/helpers/not-found.helper');
 const conflictHelper = require('../../../src/helpers/conflict.helper');
+const { createLoggerServiceMock } = require('../utils/logger-mocks.utils');
 
 jest.mock('bcrypt', () => ({
     hash: jest.fn(),
@@ -13,17 +14,20 @@ jest.mock('bcrypt', () => ({
 
 let authService;
 let tokenService;
+let loggerService;
 
 describe('test for auth service', () => {
     beforeEach(() => {
         tokenService = { createUserToken: jest.fn() };
+        loggerService = createLoggerServiceMock();
         authService = createAuthService(
             tokenService,
             playerRepository,
             notFoundHelper,
             conflictHelper,
             { ok, err },
-            playerDto
+            playerDto,
+            loggerService
         );
     });
 

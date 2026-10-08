@@ -8,6 +8,7 @@ const saltRounds = 10;
  * @param notFoundHelper : dependency of not found helper
  * @param conflictHelper : dependency of conflict helper
  * @param playerDto : dependency of player dto
+ * @param logger : dependency of logger service
  * @returns 
  */
 const createAuthService = (
@@ -16,7 +17,8 @@ const createAuthService = (
     notFoundHelper,
     conflictHelper,
     { ok, err },
-    playerDto
+    playerDto,
+    logger,
 ) => {
     /**
      * Register a new player
@@ -41,6 +43,7 @@ const createAuthService = (
         }
         
         const newPlayer = await playerRepository.create(player);
+        logger.info('PLAYER_REGISTERED', {playerId: newPlayer.id});
         return ok(playerDto.toResponseDto(newPlayer));
     }
     /**
@@ -65,6 +68,7 @@ const createAuthService = (
         }
         
         if (result) {
+            logger.info('PLAYER_AUTHENTICATED', { playerId: player.id });
             return ok({
                 token: tokenService.createUserToken(player),
                 playerId: player.id,
@@ -87,6 +91,7 @@ const createAuthService = (
         }
         
         await playerRepository.update(playerId, { status: 'OFFLINE', loggedOutAt: Date.now() });
+        logger.info('PLAYER_LOGOUT', { playerId: player.id });
         return ok();
     }
 

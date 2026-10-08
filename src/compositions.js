@@ -44,10 +44,12 @@ const hasValidCardValidators = require('./services/validators/has-valid-card.val
 
 const logger = require('../config/winston-logger.config');
 
+const loggerService = createLoggerService(logger);
+
 const tokenService = createTokenService();
-const gameService = createGameService(gameRepository, playerRepository, gamePlayerRepository, gameCardRepository, historyRepository, gameDto, cardDto, gamePlayerDto, gameCardDto, notFoundHelper, conflictHelper, resultHelper, gameStartValidators, gameFinishValidators);
-const authService = createAuthService(tokenService, playerRepository, notFoundHelper, conflictHelper, resultHelper, playerDto);
-const gamePlayerService = createGamePlayerService(gamePlayerRepository, gameRepository, playerRepository, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, addGamePlayervalidators);
+const gameService = createGameService(gameRepository, playerRepository, gamePlayerRepository, gameCardRepository, historyRepository, gameDto, cardDto, gamePlayerDto, gameCardDto, notFoundHelper, conflictHelper, resultHelper, gameStartValidators, gameFinishValidators, loggerService);
+const authService = createAuthService(tokenService, playerRepository, notFoundHelper, conflictHelper, resultHelper, playerDto, loggerService);
+const gamePlayerService = createGamePlayerService(gamePlayerRepository, gameRepository, playerRepository, gamePlayerDto, notFoundHelper, conflictHelper, resultHelper, addGamePlayervalidators, loggerService);
 const cardService = createCardService(cardRepository, cardDto, notFoundHelper, conflictHelper, resultHelper);
 const gameCardService = createGameCardService(gameCardRepository, gameRepository, cardRepository, playerRepository, gamePlayerRepository, gameCardDto, cardDto, notFoundHelper, conflictHelper, resultHelper, rulesCreateDeckValidators);
 const playerService = createPlayerService(playerRepository, playerRegisty, playerDto, notFoundHelper, conflictHelper, resultHelper);
@@ -55,9 +57,9 @@ const gameEngineService = createGameEngineService(gameRepository, gameCardReposi
 const launchGameService = createLaunchGameService(launchGameRepository, gameStartValidators, rulesCreateDeckValidators, resultHelper);
 const historyService = createHistoryService(historyRepository, gameRepository, notFoundHelper, resultHelper);
 const requestStatsService = createRequestStatsService(apiRequestRepository, apiRequestDto, resultHelper);
-createExitService(playerRegisty, playerRepository);
+createExitService(playerRegisty, playerRepository, loggerService);
 const invitationRegistry = createInvitationRegistry();
-const loggerService = createLoggerService(logger);
+
 
 const dbTransportStream = createDbTransportStream(logRepository);
 

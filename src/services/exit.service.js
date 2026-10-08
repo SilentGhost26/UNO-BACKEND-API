@@ -4,7 +4,8 @@
 
 const createExitService = (
     playerRegistry,
-    playerRepository
+    playerRepository,
+    logger,
 ) => {
     const cleanup = async () => {
         await logoutPlayers();
@@ -21,6 +22,7 @@ const createExitService = (
 
     process.on('SIGINT', async () => {
         console.log('SIGNINT RECEIVED, CLOSING SERVER...');
+        logger.info('SERVER_SHUTDOWN');
         await cleanup();
         process.exit(0);
     });

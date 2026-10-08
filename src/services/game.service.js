@@ -21,7 +21,8 @@ const createGameService = (
     conflictHelper,
     { runValidators, ok, err },
     gameStartValidators = [],
-    gameFinishValidators = []
+    gameFinishValidators = [],
+    logger,
 ) => {
 
     /**
@@ -40,6 +41,7 @@ const createGameService = (
         
         const newGame = await gameRepository.create(game);
         await gamePlayerRepository.create({ gameId: newGame.id, playerId: newGame.ownerId, position: 1 });
+        logger.info('GAME_CREATED', { playerId: player.id, gameId: newGame.id });
         return ok(gameDto.toResponseDto(newGame));
     }
     
@@ -107,6 +109,7 @@ const createGameService = (
         }
 
         await gameRepository.update(gameId, { status: 'PLAYING' });
+        logger.info('GAME_STARTED', { playerId: player.id, gameId: game.id });
         return ok();
     }
     
@@ -124,6 +127,7 @@ const createGameService = (
             return result;
         }
         await gameRepository.update(gameId, { status: 'FINISHED' });
+        logger.info('GAME_FINISHED', { playerId: player.id, gameId: game.id });
         return ok();
     }
 

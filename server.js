@@ -12,7 +12,7 @@ const htpp = require('http');
 const server = htpp.createServer(app);
 const { Server } = require('socket.io');
 const initializeServer = require('./src/websocket/socket.server');
-const { cardService } = require('./src/compositions');
+const { cardService, loggerService } = require('./src/compositions');
 const PORT = process.env.PORT || 3000;
 
 const logger = require('./config/winston-logger.config');
@@ -26,7 +26,7 @@ async function runServer() {
         console.log('Models syncronized correctly');
 
         logger.add(dbTransportStream);
-
+        loggerService.info('SERVER_STARTED', { });
         const cards = await cardService.initializeCards();
         if (!cards.ok && cards.error?.statusCode !== 409) throw cards.error;
     
